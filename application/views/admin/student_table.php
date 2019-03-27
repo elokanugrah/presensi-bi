@@ -5,7 +5,7 @@
     <section class="content-header">
       <h1>
         Data
-        <small>pengunjung perpustakaan</small>
+        <small>siswa magang</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -16,6 +16,12 @@
 
     <!-- Main content -->
     <div class="col-xs-12">
+      <?php if ($this->session->has_userdata('input_success')) { ?>
+      <div class="alert alert-success alert-dismissible" style="margin-top:30px;">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <i class="icon fa fa-check-circle"></i><?php echo $this->session->flashdata('input_success'); ?>
+        </div>
+      <?php } ?>
       <?php if ($this->session->has_userdata('edit_success')) { ?>
       <div class="alert alert-info alert-dismissible" style="margin-top:30px;">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -34,7 +40,8 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Pengunjung Perpustakaan</h3>
+              <h3 class="box-title">Data Siswa Magang</h3>
+              <a href="<?php echo site_url('StudentIntern/add'); ?>"><button type="button" class="btn btn-success btn-sm badge mt-1 pull-right"><i class="fa fa-plus"></i></button></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -42,28 +49,31 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nomor identitas</th>
+                  <th>NIM</th>
                   <th>Nama</th>
                   <th>Jenis Kelamin</th>
-                  <th>Status</th>
-                  <th>Instansi</th>
-                  <th>Alamat</th>
+                  <th>Asal</th>
+                  <th>Status Magang</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($data_guest as $key => $row) {?>
+                <?php foreach ($data_student as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->id_number; ?></td>
                   <td><?php echo $row->name; ?></td>
                   <td><?php echo $row->sex; ?></td>
-                  <td><?php echo $row->occupation; ?></td>
-                  <td><?php echo $row->instance; ?></td>
-                  <td><?php echo $row->address; ?></td>
+                  <td><?php echo $row->collage; ?></td>
+                  <?php if ($row->active == 'Aktif') {
+                    $label = 'label-success';
+                  } else {
+                    $label = 'label-danger';
+                  } ?>
+                  <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
                   <td align="center">
-                    <a href="<?php echo site_url('Guest/edit/'.$row->member_id) ?>"><button type="button" class="btn btn-info btn-sm badge mt-1"><i class="fa fa-pencil"></i></button></a>
-                    <button type="button" class="btn btn-danger btn-sm badge mt-1" data-toggle="modal" data-target="#modal-delete<?php echo $row->member_id; ?>"><i class="fa fa-trash"></i></button>
+                    <a href="<?php echo site_url('StudentIntern/edit/'.$row->student_id) ?>"><button type="button" class="btn btn-info btn-sm badge mt-1"><i class="fa fa-pencil"></i></button></a>
+                    <button type="button" class="btn btn-danger btn-sm badge mt-1" data-toggle="modal" data-target="#modal-delete<?php echo $row->student_id; ?>"><i class="fa fa-trash"></i></button>
                   </td>
                 </tr>
                 <?php }?>
@@ -79,19 +89,19 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-    <?php foreach ($data_guest as $key => $row) {?>
-        <div class="modal modal-danger fade" id="modal-delete<?php echo $row->member_id; ?>">
+    <?php foreach ($data_student as $key => $row) {?>
+        <div class="modal modal-danger fade" id="modal-delete<?php echo $row->student_id; ?>">
           <div class="modal-dialog">
             <div class="modal-content">
-              <form role="form" action="<?php echo site_url('Guest/delete/'.$row->member_id) ?>" method="post">
+              <form role="form" action="<?php echo site_url('StudentIntern/delete/'.$row->student_id) ?>" method="post">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Hapus Data Pengunjung</h4>
+                <h4 class="modal-title">Hapus Data Siswa Magang</h4>
               </div>
               <div class="modal-body">
-                <p>Yakin ingin menghapus pengunjung dengan nomor identitas <?php echo $row->id_number; ?> a/n <?php echo $row->name; ?>?</p>
-                <small>Dengan menghapus data pengunjung tersebut maka data pengunjung pada buku tamu dan buku rekomendasi akan terhapus.</small>
+                <p>Yakin ingin menghapus siswa magang dengan nama <?php echo $row->name; ?>?</p>
+                <small>Dengan menghapus data siswa magang tersebut maka data siswa pada tabel presensi akan terhapus.</small>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>

@@ -2,10 +2,10 @@
 	/**
 	* 
 	*/
-	class Guest_model extends CI_Model
+	class Student_model extends CI_Model
 	{
-		public $nama_table	='member';
-		public $id			='member_id';
+		public $nama_table	='student';
+		public $id			='student_id';
 		public $order		='DESC';
 
 		function __construct()
@@ -25,28 +25,9 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
-		function get_count()
-		{
-			$this->db->order_by($this->id,$this->order);
-			return $this->db->get($this->nama_table)->num_rows();
-		}
-
-		function cek_member($id_number, $name)
-		{
-			$this->db->where('id_number',$id_number);
-			$this->db->where('name',$name);
-			return $this->db->get($this->nama_table)->row();
-		}
-
 		function data_adding($data)
 		{
 			return $this->db->insert($this->nama_table,$data);
-		}
-		
-		function get_by_idnumber($id)
-		{
-			$this->db->where('id_number',$id);
-			return $this->db->get($this->nama_table)->row();
 		}
 
 		function edit_data($id,$data)

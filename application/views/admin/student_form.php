@@ -5,7 +5,7 @@
     <section class="content-header">
       <h1>
         Data
-        <small>pengunjung perpustakaan</small>
+        <small>siswa magang</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -21,13 +21,13 @@
           <div class="box">
             <form role="form" action="<?php echo $action; ?>" method="post">
             <div class="box-header with-border">
-              <h3 class="box-title">Data Pengunjung Perpustakaan</h3>
+              <h3 class="box-title">Data Siswa Magang</h3>
             </div>
             <!-- /.box-header -->
             <div style="padding-top: 10px;"></div>
             <div class="box-body no-padding">
               <div class="form-group col-xs-12">
-                <label>Nomor Identitas</label>
+                <label>NIM</label>
 
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -65,21 +65,21 @@
               <div class="col-xs-6">
                 <label>Status</label>
                 <div class="form-group has-feedback">
-                  <select class="form-control select2" name="occupation" style="width: 100%;" required>
-                      <?php foreach ($occupation_data as $key => $row) {?>
-                      <option value="<?php echo $row->occupation_name; ?>" <?php if($row->occupation_name==$occupation) echo 'selected="selected"';?> ><?php echo $row->occupation_name; ?></option>
-                      <?php } ?>
+                  <select class="form-control" name="active" required>
+                    <option value="Tidak diketahui" selected hidden>Status</option>
+                    <option value="Aktif" <?php if($active == "Aktif") echo 'selected="selected"';?> >Aktif</option>
+                    <option value="Non Aktif" <?php if($active == "Non Aktif") echo 'selected="selected"';?> >Non Aktif</option>
                   </select>
                 </div>
                 <!-- /.input group -->
               </div>
               <div class="form-group col-xs-6">
-                <label>Instansi</label>
+                <label>Asal</label>
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-university"></i>
                   </div>
-                  <input type="text" class="form-control" name="instance" value="<?php echo $instance;?>">
+                  <input type="text" class="form-control" name="collage" value="<?php echo $collage;?>">
                 </div>
                 <!-- /.input group -->
               </div>
@@ -99,7 +99,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-              <input name="member_id" value="<?php echo $member_id;?>" hidden>
+              <input name="student_id" value="<?php echo $student_id;?>" hidden>
               <button type="reset" class="btn btn-default">Reset</button>
               <button type="submit" class="btn btn-primary pull-right">Simpan</button>
             </div>
