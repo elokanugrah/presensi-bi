@@ -7,11 +7,11 @@ class Bookrecomendation extends CI_Controller
 {
 	function __construct()
 	{
-		parent::__construct();/*
+		parent::__construct();
 		$this->load->model('Bookrecomendation_model');
 		$this->load->model('Booktype_model');
 		$this->load->model('Guest_model');
-		$this->load->model('Guestbook_model');*/
+		$this->load->model('Guestbook_model');
 	}
 
 	public function index()

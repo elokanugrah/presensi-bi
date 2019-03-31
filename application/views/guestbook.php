@@ -1,123 +1,74 @@
-<?php $this->load->view('headerfooter/header_guest'); ?>
-
-<body class="hold-transition login-page">
-    <div class="login-box">
-      <div class="login-logo">
-        <img src="<?php echo base_url() ?>assets/dist/img/perpustakaan.png" height="64">
-      </div>
-    <!-- /.login-logo -->
-    <?php if ($this->session->has_userdata('input_success')) { ?>
-      <div class="alert alert-success alert-dismissible" style="margin-top:20px;">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <i class="icon fa fa-check"></i><?php echo $this->session->flashdata('input_success'); ?>
-      </div>
-    <?php } ?>
-    <?php if ($this->session->has_userdata('guest_message')) { ?>
-      <div class="alert alert-warning alert-dismissible" style="margin-top:20px;">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <i class="icon fa fa-warning"></i><?php echo $this->session->flashdata('guest_message'); ?>
-      </div>
-    <?php } ?>
-    <?php if ($this->session->has_userdata('failed_message')) { ?>
-      <div class="alert alert-warning alert-dismissible" style="margin-top:20px;">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <i class="icon fa fa-warning"></i><?php echo $this->session->flashdata('failed_message'); ?>
-      </div>
-    <?php } ?>
-    <div class="login-box-body">
-        <p class="login-box-msg">Identitas Pengunjung Perpustakaan</p>
-        <div class="main_panel">
-            <form role="form" action="" method="post">
-            <div class="form-group has-feedback">
-                <input type="text" name="id_number" class="form-control" placeholder="Nomor Identitas" required>
-                <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input type="text" name="name" class="form-control" placeholder="Nama Pengunjung" required>
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            </div>
-            <div class="social-auth-links">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Masuk</button>
-            </div>
-            <a href="<?php echo site_url('BookRecomendation') ?>">Rekomendasikan buku baru</a>
-      </form>
-  </div>
-  <?php if ($this->session->has_userdata('guest_message')) { ?>
-  <style type="text/css">
-  div.main_panel
-  {
-    display:none;
-  }
-  </style>
-<div class="second_panel">
-    <form role="form" action="<?php echo site_url('GuestBook/register_action');?>" method="post">
-      <div class="form-group has-feedback">
-          <input type="text" name="id_number" class="form-control" placeholder="Nomor identitas Pegawai/Pelajar" value="<?php echo $this->session->flashdata('id_number'); ?>" required>
-          <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="text" name="name" class="form-control" placeholder="Nama Pengunjung" value="<?php echo $this->session->flashdata('name'); ?>" required>
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-    </div>
-    <div class="social-auth-links text-center">
-      <p>- Lengkapi form dibawah ini -</p>
-  </div>
-  <div class="form-group has-feedback">
-    <select class="form-control" name="sex" style="width: 100%;" required>
-        <option value="" selected hidden>Jenis Kelamin</option>
-        <option value="Laki-laki">Laki-laki</option>
-        <option value="Perempuan">Perempuan</option>
-    </select>
-  </div>
-  <?php 
-  $occupation=$this->Occupation_model->getall_data();
-  ?>
-  <div class="form-group has-feedback">
-    <select class="form-control select2" name="occupation" style="width: 100%;" required>
-        <option value="" disabled selected hidden>Status</option>
-        <?php foreach ($occupation as $key => $row) {?>
-        <option value="<?php echo $row->occupation_name; ?>" ><?php echo $row->occupation_name; ?></option>
-        <?php } ?>
-    </select>
-  </div>
-  <div class="form-group has-feedback">
-    <input type="text" name="instance" class="form-control" placeholder="Instansi" required>
-      <span class="fa fa-university form-control-feedback"></span>
-  </div>
-  <div class="form-group has-feedback">
-    <textarea class="form-control" name="address" rows="4" placeholder="Alamat" required></textarea>
-    <span class="glyphicon glyphicon-home form-control-feedback"></span>
-  </div>
-<div class="social-auth-links text-center">
-  <button type="submit" class="btn btn-primary btn-block btn-flat">Daftarkan</button>
-</form>
-</div>
-<?php } ?>
-</div>
-</div>
-<!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-<!-- jQuery 3 -->
-<script src="<?php echo base_url() ?>assets/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="<?php echo base_url() ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Select2 -->
-<script src="<?php echo base_url() ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
-<!-- iCheck -->
-<script src="<?php echo base_url() ?>assets/plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' /* optional */
-  })
-})
-</script>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>TITLE</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+      var timestamp = '<?=time();?>';
+      function updateTime(){
+        var tanggallengkap = new String();
+        var namahari = ("Minggu Senin Selasa Rabu Kamis Jumat Sabtu");
+        namahari = namahari.split(" ");
+        var namabulan = ("Januari Februari Maret April Mei Juni Juli Agustus September Oktober November Desember");
+        namabulan = namabulan.split(" ");
+        var tgl = new Date();
+        var hour=tgl.getHours();
+        var minute=tgl.getMinutes();
+        var second=tgl.getSeconds();
+        if(hour <10 ){hour='0'+hour;}
+        if(minute <10 ) {minute='0' + minute; }
+        if(second<10){second='0' + second;}
+        var hari = tgl.getDay();
+        var tanggal = tgl.getDate();
+        var bulan = tgl.getMonth();
+        var tahun = tgl.getFullYear();
+        tanggallengkap = namahari[hari] + ", " +tanggal + " " + namabulan[bulan] + " " + tahun;
+        $('#hour').html(hour);
+        $('#minute').html(minute);
+        $('#second').html(second);
+        $('#date').html(tanggallengkap);
+        timestamp++;
+      }
+      $(function(){
+        setInterval(updateTime, 1000);
+      });
+    </script>
+  
+  <!-- Font -->
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
+  <!-- <link href="<?php echo base_url() ?>assets/common-css/ionicons.css" rel="stylesheet"> -->
+  <link href="<?php echo base_url() ?>assets/06-comming-soon/css/styles.css" rel="stylesheet">
+  <link href="<?php echo base_url() ?>assets/06-comming-soon/css/responsive.css" rel="stylesheet">
+</head>
+<body>
+  <div class="main-area-wrapper" style="background-image:url(assets/dist/img/background_bi.jpg);">
+    <div class="main-area center-text" >
+      <div class="display-table">
+        <div class="display-table-cell">
+          <img src="<?php echo base_url() ?>assets/dist/img/magang.png" style="max-height: 12%; width: 30%; margin-bottom: 32px;">
+          <div id="normal-countdown" data-date="2018/01/01" style="padding-top: 20px;"><div class="time-sec"><h3 class="main-time"><div id="hour"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="minute"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="second"></div></h3></div></div>
+          <p class="font-white" id="date" style="font-size: 14pt; margin-top: 20px; margin-bottom: 10%;"></p>
+          <button type="button" id="tombol">Test</button>
+          
+        </div><!-- display-table -->
+      </div><!-- display-table-cell -->
+    </div><!-- main-area -->
+  </div><!-- main-area-wrapper -->
 </body>
+<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
+<script>
+  $('#tombol').on('click', function() {
+    Swal.fire({
+      type: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  })
+</script>
 </html>
