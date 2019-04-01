@@ -50,7 +50,7 @@
     <div class="main-area center-text" >
       <div class="display-table">
         <div class="display-table-cell">
-          <img src="<?php echo base_url() ?>assets/dist/img/magang.png" style="max-height: 12%; width: 30%; margin-bottom: 32px;">
+          <img src="<?php echo base_url() ?>assets/dist/img/magang.png" style="max-height: 15%; width: 30%; margin-bottom: 32px;">
           <div id="normal-countdown" data-date="2018/01/01" style="padding-top: 20px;"><div class="time-sec"><h3 class="main-time"><div id="hour"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="minute"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="second"></div></h3></div></div>
           <p class="font-white" id="date" style="font-size: 14pt; margin-top: 20px; margin-bottom: 10%;"></p>
           <button type="button" id="tombol">Test</button>
@@ -60,15 +60,15 @@
     </div><!-- main-area -->
   </div><!-- main-area-wrapper -->
 </body>
-<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
+</html>
 <script>
   $('#tombol').on('click', function() {
     Swal.fire({
       type: 'success',
-      title: 'Your work has been saved',
+      title: 'Selamat datang',
       showConfirmButton: false,
-      timer: 1500
+      timer: 2000
     })
   })
 </script>
-</html>
+<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
