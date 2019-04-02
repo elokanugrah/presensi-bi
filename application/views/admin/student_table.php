@@ -41,7 +41,7 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Siswa Magang</h3>
-              <a href="<?php echo site_url('StudentIntern/add'); ?>"><button type="button" class="btn btn-success btn-sm badge mt-1 pull-right"><i class="fa fa-plus"></i></button></a>
+              <a href="<?php echo site_url('StudentIntern/add'); ?>"><button type="button" class="btn btn-primary btn-sm badge mt-1 pull-right"><i class="fa fa-plus"></i></button></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -72,8 +72,9 @@
                   } ?>
                   <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
                   <td align="center">
-                    <a href="<?php echo site_url('StudentIntern/edit/'.$row->student_id) ?>"><button type="button" class="btn btn-info btn-sm badge mt-1"><i class="fa fa-pencil"></i></button></a>
-                    <button type="button" class="btn btn-danger btn-sm badge mt-1" data-toggle="modal" data-target="#modal-delete<?php echo $row->student_id; ?>"><i class="fa fa-trash"></i></button>
+                    <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
+                    <a href="<?php echo site_url('StudentIntern/edit/'.$row->student_id) ?>" class="btn btn-info btn-sm badge mt-1"><i class="fa fa-pencil"></i></a>
+                    <a href="<?php echo site_url('StudentIntern/delete/'.$row->student_id) ?>" data-name="<?php echo $row->name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
                 <?php }?>
@@ -89,32 +90,6 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-    <?php foreach ($data_student as $key => $row) {?>
-        <div class="modal modal-danger fade" id="modal-delete<?php echo $row->student_id; ?>">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form role="form" action="<?php echo site_url('StudentIntern/delete/'.$row->student_id) ?>" method="post">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Hapus Data Siswa Magang</h4>
-              </div>
-              <div class="modal-body">
-                <p>Yakin ingin menghapus siswa magang dengan nama <?php echo $row->name; ?>?</p>
-                <small>Dengan menghapus data siswa magang tersebut maka data siswa pada tabel presensi akan terhapus.</small>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-outline">Hapus</button>
-              </div>
-              </form>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-      <?php }?>
-        <!-- /.modal -->
   </div>
   <!-- /.content-wrapper -->
 <?php $this->load->view('headerfooter/footer_admin'); ?>
@@ -132,7 +107,26 @@
       'info'        : true,
       'autoWidth'   : false
     })
+    $('.delete-data').on('click', function(e) {
+      e.preventDefault();
+      const href = $(this).attr('href');
+      const name = $(this).attr('data-name');
+      Swal.fire({
+        title: 'Yakin ingin menghapus data \nsiswa magang?',
+        text: "data siswa magang a/n "+name+" akan dihapus!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!'
+      }).then((result) => {
+        if (result.value) {
+          document.location.href = href;
+        }
+      })
+    })
   })
 </script>
+<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
 </body>
 </html>

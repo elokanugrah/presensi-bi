@@ -13,16 +13,36 @@ class StudentIntern extends CI_Controller
             redirect('/');
         }*/
 		$this->load->model('Student_model');
+        $this->load->model('Attendance_model');
 	}
 
 	public function index()
 	{
 		$student=$this->Student_model->ambil_data();
         $data=array(
-            'data_student'  => $student,
-            'action'        => site_url('student/edit_action')
+            'data_student'  => $student
         );
 		$this->load->view('admin/student_table',$data);
+    }
+
+    public function student($id)
+    {
+        $student=$this->Student_model->getdata_by_id($id);
+        $attendance=$this->Attendance_model->getall_by_student($id);
+        $percentage=$this->Attendance_model->get_percentage($id);
+        $in_stats=$this->Attendance_model->get_instats($id);
+        $data=array(
+            'data_student'  => $student,
+            'data_attendance'  => $attendance,
+            'data_percent' => $percentage->percentage,
+            'present' => $percentage->present,
+            'alpha' => $percentage->alpha,
+            'sick' => $percentage->sick,
+            'permit' => $percentage->permit,
+            'total' => $percentage->total,
+            'in_stats' => $in_stats
+        );
+        $this->load->view('admin/student_attendance',$data);
     }
 
     function add()
@@ -86,7 +106,7 @@ class StudentIntern extends CI_Controller
         $this->session->set_flashdata('edit_success', 'Data dengan NIM '.$this->input->post('id_number').' a/n '.$this->input->post('name').' berhasil diubah!');
         redirect(site_url('StudentIntern'));
     }
-
+    
     function delete($id)
     {
         $student = $this->Student_model->getdata_by_id($id);

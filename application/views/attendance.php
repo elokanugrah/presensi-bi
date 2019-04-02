@@ -53,8 +53,8 @@
           <img src="<?php echo base_url() ?>assets/dist/img/magang.png" style="max-height: 15%; width: 30%; margin-bottom: 32px;">
           <div id="normal-countdown" data-date="2018/01/01" style="padding-top: 20px;"><div class="time-sec"><h3 class="main-time"><div id="hour"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="minute"></div></h3></div><div class="time-sec"><h3 class="main-time"><div id="second"></div></h3></div></div>
           <p class="font-white" id="date" style="font-size: 14pt; margin-top: 20px; margin-bottom: 10%;"></p>
-          <button type="button" id="tombol">Test</button>
-          
+          <button type="button" id="ontime">On Time</button>
+          <button type="button" id="telat">Telat</button>
         </div><!-- display-table -->
       </div><!-- display-table-cell -->
     </div><!-- main-area -->
@@ -62,12 +62,23 @@
 </body>
 </html>
 <script>
-  $('#tombol').on('click', function() {
+  $('#ontime').on('click', function() {
     Swal.fire({
-      type: 'success',
-      title: 'Selamat datang',
+      /*type: 'success',*/
+      title: 'Ontime!',
+      imageUrl: 'https://media.giphy.com/media/111ebonMs90YLu/giphy.gif',
       showConfirmButton: false,
-      timer: 2000
+      timer: 3000
+    })
+  })
+
+  $('#telat').on('click', function() {
+    Swal.fire({
+      /*type: 'success',*/
+      title: 'Telat!',
+      imageUrl: 'https://media.giphy.com/media/U4VXRfcY3zxTi/giphy.gif',
+      showConfirmButton: false,
+      timer: 3000
     })
   })
 </script>
