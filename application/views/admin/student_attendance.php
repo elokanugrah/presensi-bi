@@ -121,7 +121,7 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Tanggal</th>
+                  <th>Hari / Tanggal</th>
                   <th>Waktu Masuk</th>
                   <th>Waktu Pulang</th>
                   <th>Status Masuk</th>
@@ -134,7 +134,17 @@
                 <?php foreach ($data_attendance as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
-                  <td><?php echo date("d-M-Y", strtotime($row->date)); ?></td>
+                  <td><?php 
+                  $hari = array ( 
+                          1 => 'Senin',
+                          'Selasa',
+                          'Rabu',
+                          'Kamis',
+                          'Jumat',
+                          'Sabtu',
+                          'Minggu'
+                        ); 
+                        echo $hari[ date('N', strtotime($row->date)) ] .', '. date("d-M-Y", strtotime($row->date)); ?></td>
                   <td><?php echo $row->time_in; ?></td>
                   <td><?php echo $row->time_out; ?></td>
                   <?php if ($row->status_in == 'on time') {
@@ -158,15 +168,16 @@
                   } else {
                     $label_note = 'label-danger';
                   }?>
-                  <td><span class="label <?php echo $label_note; ?>"><?php echo $row->note; ?></span> <a class="btn btn-default btn-sm badge mt-1 pull-right" href="javascript:void(0)" onclick="edit_person('<?php echo $row->attendance_id; ?>')"><i class="fa fa-edit"></i></a></td>
+                  <td><span class="label <?php echo $label_note; ?>"><?php echo $row->note; ?></span> <a class="btn btn-default btn-sm badge mt-1 pull-right" href="javascript:void(0)" onclick="edit_note('<?php echo $row->attendance_id; ?>')"><i class="fa fa-edit"></i></a></td>
                   <td align="center">
-                    <a href="<?php echo site_url('StudentIntern/edit/'.$row->attendance_id) ?>" class="btn btn-info btn-sm badge mt-1"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->attendance_id; ?>')"><i class="fa fa-pencil"></i></a>
                     <a href="<?php echo site_url('StudentIntern/delete/'.$row->attendance_id) ?>" data-date="<?php echo $row->date; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
                 <?php }?>
                 </tfoot>
               </table>
+              <?php echo date('H:i:s', strtotime("01:00:00")); ?>
             </div>
             <!-- /.box-body -->
           </div>
@@ -179,11 +190,11 @@
     <div class="modal fade" id="modal-note">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form role="form" id="form" action="#" method="post">
+          <form role="form" id="form_note" action="#" method="post">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Ubah Data Jenis Buku</h4>
+            <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
             <div class="input-group">
@@ -199,6 +210,58 @@
                       <option value="Izin">Izin</option>
                 </select>
               </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input name="attendance_id" hidden>
+            <input name="student_id" hidden>
+            <input type="text" name="date_in" hidden>
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.content -->
+    <div class="modal fade" id="modal-edit">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form role="form" id="form_edit" action="#" method="post">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="box-body">
+            <div class="form-group col-xs-12">
+              <label for="inputTimeIn" class="control-label">Tanggal</label>
+                <div class="input-group date">
+                  <input type="text" name="date_in" class="form-control" id="datepicker">
+                  <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-6">
+              <label for="inputTimeIn" class="control-label">Masuk</label>
+                <div class="input-group">
+                  <input type="text" name="time_in" class="form-control timepicker">
+                  <div class="input-group-addon">
+                  <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-6">
+              <label for="inputTimeOut" class="control-label">Keluar</label>
+                <div class="input-group">
+                  <input type="text" name="time_out" class="form-control timepicker">
+                  <div class="input-group-addon">
+                  <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -220,7 +283,11 @@
 <!-- DataTables -->
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script>
+<!-- bootstrap time picker -->
+<script src="<?php echo base_url() ?>assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script>
   $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable({
@@ -231,6 +298,38 @@
       'info'        : true,
       'autoWidth'   : false
     })
+    //Timepicker
+    $('.timepicker').timepicker({
+        showInputs: false,
+        showMeridian: false,
+        minuteStep: 5,
+        secondStep: 10,
+        showSeconds: true
+      }).on('changeTime.timepicker', function(e) {
+      var hours=e.time.hours, //Returns an integer
+          min=e.time.minutes
+          sec=e.time.seconds
+      if(hours < 10) {
+        if(min < 10 && sec < 10){
+          $(e.currentTarget).val('0' + hours + ':' + '0' + min + ':' + '0' + sec);
+        }
+        else if(min >= 10 && sec < 10){
+          $(e.currentTarget).val('0' + hours + ':' + min + ':' + '0' + sec);
+        }
+        else if(min < 10 && sec >= 10){
+          $(e.currentTarget).val('0' + hours + ':' + '0' + min + ':' + sec);
+        }
+        else{
+          $(e.currentTarget).val('0' + hours + ':' + min + ':' + sec);
+        }
+      }
+    })
+    //Date picker
+    $('#datepicker').datepicker({
+      format: 'dd-M-yyyy',
+      autoclose: true
+    })
+
     $('.delete-data').on('click', function(e) {
       e.preventDefault();
       const href = $(this).attr('href');
@@ -292,9 +391,9 @@
     })
   })
 
-  function edit_person(id)
+  function edit_note(id)
   {
-      $('#form')[0].reset(); // reset form on modals
+      $('#form_note')[0].reset(); // reset form on modals
       $('.form-group').removeClass('has-error'); // clear error class
       $('.help-block').empty(); // clear error string
    
@@ -308,9 +407,46 @@
               $('[name="attendance_id"]').val(data.attendance.attendance_id);
               $('[name="student_id"]').val(data.attendance.student_id);
               $('[name="note"]').val(data.attendance.note);
-              $('#form').attr('action', '<?php echo site_url('Attendance/edit_student_attendance_action')?>');
+              $('[name="date_in"]').val(data.attendance.date);
+              $('#form_note').attr('action', '<?php echo site_url('Attendance/edit_studentnote_action')?>');
               $('#modal-note').modal('show'); // show bootstrap modal when complete loaded
               $('.modal-title').text('Ubah Keterangan'); // Set title to Bootstrap modal title
+   
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+              alert('Error get data from ajax');
+          }
+      })
+    }
+  function edit_datetime(id)
+  {
+      $('#form_edit')[0].reset(); // reset form on modals
+      $('.form-group').removeClass('has-error'); // clear error class
+      $('.help-block').empty(); // clear error string
+   
+      //Ajax Load data from ajax
+      $.ajax({
+          url : "<?php echo site_url('Attendance/edit_student_attendance/')?>/" + id,
+          type: "GET",
+          dataType: "JSON",
+          success: function(data)
+          {
+              var st = data.attendance.date;
+              var dt = new Date(st);
+              var tanggal = dt.getDate();
+              if(tanggal <10 ){tanggal='0'+tanggal;}
+              var bulan = dt.getMonth();
+              var tahun = dt.getFullYear();
+              var namabulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              $('[name="attendance_id"]').val(data.attendance.attendance_id);
+              $('[name="student_id"]').val(data.attendance.student_id);
+              $('[name="date_in"]').val(tanggal+'-'+namabulan[bulan]+'-'+tahun);
+              $('[name="time_in"]').val(data.attendance.time_in);
+              $('[name="time_out"]').val(data.attendance.time_out);
+              $('#form_edit').attr('action', '<?php echo site_url('Attendance/edit_studentatt_action')?>');
+              $('#modal-edit').modal('show'); // show bootstrap modal when complete loaded
+              $('.modal-title').text('Ubah Waktu'); // Set title to Bootstrap modal title
    
           },
           error: function (jqXHR, textStatus, errorThrown)

@@ -120,7 +120,7 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> treeview">
+        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> <?php echo active_link('Workinghours'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -130,6 +130,7 @@
           <ul class="treeview-menu">
             <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i> Siswa Magang</a></li>
             <li class="<?php echo active_link('Schedule'); ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-circle-o"></i> Jadwal Kerja</a></li>
+            <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
           </ul>
         </li>
       </ul>
