@@ -113,7 +113,7 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Kehadiran</h3>
-              <a href="<?php echo site_url('StudentIntern/add'); ?>" class="btn btn-primary btn-sm badge mt-1 pull-right"><i class="fa fa-plus"></i></a>
+              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right"><i class="fa fa-plus"></i></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -135,6 +135,7 @@
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php 
+                  date_default_timezone_set("Asia/Bangkok");
                   $hari = array ( 
                           1 => 'Senin',
                           'Selasa',
@@ -144,7 +145,8 @@
                           'Sabtu',
                           'Minggu'
                         ); 
-                        echo $hari[ date('N', strtotime($row->date)) ] .', '. date("d-M-Y", strtotime($row->date)); ?></td>
+                        $dateday=$hari[ date('N', strtotime($row->date)) ] .', '. date("d-M-Y", strtotime($row->date));
+                        echo $dateday; ?></td>
                   <td><?php echo $row->time_in; ?></td>
                   <td><?php echo $row->time_out; ?></td>
                   <?php if ($row->status_in == 'on time') {
@@ -171,13 +173,12 @@
                   <td><span class="label <?php echo $label_note; ?>"><?php echo $row->note; ?></span> <a class="btn btn-default btn-sm badge mt-1 pull-right" href="javascript:void(0)" onclick="edit_note('<?php echo $row->attendance_id; ?>')"><i class="fa fa-edit"></i></a></td>
                   <td align="center">
                     <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->attendance_id; ?>')"><i class="fa fa-pencil"></i></a>
-                    <a href="<?php echo site_url('StudentIntern/delete/'.$row->attendance_id) ?>" data-date="<?php echo $row->date; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
+                    <a href="<?php echo site_url('Attendance/delete/'.$row->attendance_id) ?>" data-date="<?php echo $dateday; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
                 <?php }?>
                 </tfoot>
               </table>
-              <?php echo date('H:i:s', strtotime("01:00:00")); ?>
             </div>
             <!-- /.box-body -->
           </div>
@@ -187,6 +188,66 @@
       </div>
       <!-- /.row -->
     </section>
+    <div class="modal fade" id="modal-add">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form role="form" id="form_add" action="#" method="post">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title-edit"></h4>
+          </div>
+          <div class="box-body">
+            <div class="form-group col-xs-12">
+              <label for="inputTimeIn" class="control-label">Tanggal</label>
+                <div class="input-group date">
+                  <input type="text" name="date_in" class="form-control" id="datepicker" value="<?php echo date('d-M-Y'); ?>">
+                  <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-6">
+              <label for="inputTimeIn" class="control-label">Masuk</label>
+                <div class="input-group">
+                  <input type="text" name="time_in" class="form-control timepicker" value="<?php echo date('H:i:s'); ?>">
+                  <div class="input-group-addon">
+                  <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-6">
+              <label for="inputTimeOut" class="control-label">Keluar</label>
+                <div class="input-group">
+                  <input type="text" name="time_out" class="form-control timepicker" value="<?php echo date('H:i:s'); ?>">
+                  <div class="input-group-addon">
+                  <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-12">
+              <label class="control-label">Kehadiran</label>
+                <select class="form-control" name="note" required>
+                    <option value="" selected hidden>Kehadiran</option>
+                    <option value="Hadir">Hadir</option>
+                    <option value="Alpha">Alpha</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Izin">Izin</option>
+                </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input name="student_id" value="<?php echo $data_student->student_id; ?>" hidden>
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.content -->
     <div class="modal fade" id="modal-note">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -194,7 +255,7 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"></h4>
+            <h4 class="modal-title-note"></h4>
           </div>
           <div class="modal-body">
             <div class="input-group">
@@ -215,7 +276,7 @@
           <div class="modal-footer">
             <input name="attendance_id" hidden>
             <input name="student_id" hidden>
-            <input type="text" name="date_in" hidden>
+            <input type="text" name="date_inn" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
           </div>
@@ -233,7 +294,7 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"></h4>
+            <h4 class="modal-title-edit"></h4>
           </div>
           <div class="box-body">
             <div class="form-group col-xs-12">
@@ -327,7 +388,9 @@
     //Date picker
     $('#datepicker').datepicker({
       format: 'dd-M-yyyy',
-      autoclose: true
+      autoclose: true,
+      orientation: "bottom auto",
+      todayHighlight: true,  
     })
 
     $('.delete-data').on('click', function(e) {
@@ -336,7 +399,7 @@
       const date = $(this).attr('data-date');
       Swal.fire({
         title: 'Yakin ingin menghapus data \nkehadiran siswa?',
-        text: "data kehadiran pada tanggal "+date+" akan dihapus!",
+        text: "data kehadiran pada hari "+date+" akan dihapus!",
         type: 'warning',
         showCancelButton: true,
         reverseButtons: true,
@@ -391,11 +454,18 @@
     })
   })
 
+  function add_datetime(id)
+  {
+      $('#form_add')[0].reset(); // reset form on modals
+   
+      $('#form_add').attr('action', '<?php echo site_url('Attendance/add_studentatt_action')?>');
+      $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
+      $('.modal-title-add').text('Tambah Kehadiran'); // Set title to Bootstrap modal title
+    }
+
   function edit_note(id)
   {
       $('#form_note')[0].reset(); // reset form on modals
-      $('.form-group').removeClass('has-error'); // clear error class
-      $('.help-block').empty(); // clear error string
    
       //Ajax Load data from ajax
       $.ajax({
@@ -404,13 +474,13 @@
           dataType: "JSON",
           success: function(data)
           {
-              $('[name="attendance_id"]').val(data.attendance.attendance_id);
-              $('[name="student_id"]').val(data.attendance.student_id);
-              $('[name="note"]').val(data.attendance.note);
-              $('[name="date_in"]').val(data.attendance.date);
+              $('[name="attendance_id"]').val(data.attendance_id);
+              $('[name="student_id"]').val(data.student_id);
+              $('[name="note"]').val(data.note);
+              $('[name="date_inn"]').val(data.date);
               $('#form_note').attr('action', '<?php echo site_url('Attendance/edit_studentnote_action')?>');
               $('#modal-note').modal('show'); // show bootstrap modal when complete loaded
-              $('.modal-title').text('Ubah Keterangan'); // Set title to Bootstrap modal title
+              $('.modal-title-note').text('Ubah Keterangan'); // Set title to Bootstrap modal title
    
           },
           error: function (jqXHR, textStatus, errorThrown)
@@ -419,11 +489,10 @@
           }
       })
     }
+
   function edit_datetime(id)
   {
       $('#form_edit')[0].reset(); // reset form on modals
-      $('.form-group').removeClass('has-error'); // clear error class
-      $('.help-block').empty(); // clear error string
    
       //Ajax Load data from ajax
       $.ajax({
@@ -432,21 +501,21 @@
           dataType: "JSON",
           success: function(data)
           {
-              var st = data.attendance.date;
+              var st = data.date;
               var dt = new Date(st);
               var tanggal = dt.getDate();
               if(tanggal <10 ){tanggal='0'+tanggal;}
               var bulan = dt.getMonth();
               var tahun = dt.getFullYear();
               var namabulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-              $('[name="attendance_id"]').val(data.attendance.attendance_id);
-              $('[name="student_id"]').val(data.attendance.student_id);
-              $('[name="date_in"]').val(tanggal+'-'+namabulan[bulan]+'-'+tahun);
-              $('[name="time_in"]').val(data.attendance.time_in);
-              $('[name="time_out"]').val(data.attendance.time_out);
+              $('[name="attendance_id"]').val(data.attendance_id);
+              $('[name="student_id"]').val(data.student_id);
+              $('[name="date_in"]').datepicker('update',tanggal+'-'+namabulan[bulan]+'-'+tahun);
+              $('[name="time_in"]').val(data.time_in);
+              $('[name="time_out"]').val(data.time_out);
               $('#form_edit').attr('action', '<?php echo site_url('Attendance/edit_studentatt_action')?>');
               $('#modal-edit').modal('show'); // show bootstrap modal when complete loaded
-              $('.modal-title').text('Ubah Waktu'); // Set title to Bootstrap modal title
+              $('.modal-title-edit').text('Ubah Waktu'); // Set title to Bootstrap modal title
    
           },
           error: function (jqXHR, textStatus, errorThrown)
