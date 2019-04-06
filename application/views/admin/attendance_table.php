@@ -5,7 +5,7 @@
     <section class="content-header">
       <h1>
         Data
-        <small>siswa magang</small>
+        <small>kehadiran magang</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -38,83 +38,12 @@
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-          <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-user"></i>
-              <h3 class="box-title">Identitas</h3>
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="row">
-                <div class="col-xs-3">
-                  <b>Nama Siswa:<br>
-                  </b> <?php echo $data_student->name; ?><br>
-                  <b>NIM:<br>
-                  </b> <?php echo $data_student->id_number; ?><br>
-                  <b>Jenis Kelamin:<br>
-                  </b> <?php echo $data_student->sex; ?><br>
-                  <b>Asal:<br>
-                  </b> <?php echo $data_student->collage; ?><br>
-                  <b>Alamat:<br>
-                  </b> <?php echo $data_student->address; ?><br>
-                  <b>Status Magang:<br>
-                  <?php if ($data_student->active == 'Aktif') {
-                    $label_active = 'label-success';
-                  } else {
-                    $label_active = 'label-danger';
-                  } ?>
-                  </b> <span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-3">
-                  <b>Total Hari Kerja:<br>
-                  </b> <?php echo $total; ?> hari<br>
-                  <b>Persentase Kehadiran:<br>
-                  <?php if ($data_percent >= 80) {
-                    $label_percent = 'label-success';
-                  } elseif ($data_percent >= 70 && $data_percent < 80) {
-                    $label_percent = 'label-warning';
-                  } else {
-                    $label_percent = 'label-danger';
-                  } ?>
-                  </b> <span class="label <?php echo $label_percent; ?>"><?php echo number_format($data_percent, 2, '.', ''); ?> %</span><br>
-                  <b>Kehadiran:<br>
-                  </b> <?php echo $present.' hadir'; ?> <?php echo '/ '.$alpha.' alpha'; ?> <?php echo '/ '.$sick.' sakit'; ?> <?php echo '/ '.$permit.' izin'; ?>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-3">
-                  <b>Kehadiran:<br>
-                  </b>
-                  <br><div class="chart">
-                    <canvas id="pie-chart2" class="pull-right" style="max-height: 180px; max-width: 180px;"></canvas>
-                  </div>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-3">
-                  <b>Ketepatan waktu:<br>
-                  </b>
-                  <br><div class="chart">
-                    <canvas id="pie-chart" class="pull-right" style="max-height: 180px; max-width: 180px;"></canvas>
-                  </div>
-                </div>
-                <!-- /.col -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Kehadiran</h3>
-              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus"></i></a>
-              <a href="<?php echo site_url('StudentIntern/print/'.$data_student->student_id) ?>" target="blank" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
+              <h3 class="box-title">Data Kehadiran Magang</h3>
+              <a href="javascript:void(0)" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
+              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
+              <a href="#" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -122,11 +51,13 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Hari / Tanggal</th>
+                  <th>Tanggal</th>
+                  <th>Nama</th>
+                  <th>NIM</th>
                   <th>Waktu Masuk</th>
-                  <th>Waktu Pulang</th>
                   <th>Status Masuk</th>
-                  <th>Status Pulang</th>
+                  <th>Waktu Keluar</th>
+                  <th>Status Keluar</th>
                   <th>Keterangan</th>
                   <th>Aksi</th>
                 </tr>
@@ -148,14 +79,16 @@
                         ); 
                         $dateday=$hari[ date('N', strtotime($row->date)) ] .', '. date("d M Y", strtotime($row->date));
                         echo $dateday; ?></td>
+                  <td><?php echo $row->name; ?></td>
+                  <td><?php echo $row->id_number; ?></td>
                   <td><?php echo $row->time_in; ?></td>
-                  <td><?php echo $row->time_out; ?></td>
                   <?php if ($row->status_in == 'on time') {
                     $label_in = 'label-success';
                   } else {
                     $label_in = 'label-warning';
                   } ?>
                   <td><span class="label <?php echo $label_in; ?>"><?php echo $row->status_in; ?></span></td>
+                  <td><?php echo $row->time_out; ?></td>
                   <?php if ($row->status_out == 'on time') {
                     $label_out = 'label-success';
                   } else {
@@ -171,10 +104,10 @@
                   } else {
                     $label_note = 'label-danger';
                   }?>
-                  <td><span class="label <?php echo $label_note; ?>"><?php echo $row->note; ?></span> <a class="btn btn-default btn-sm badge mt-1 pull-right" href="javascript:void(0)" onclick="edit_note('<?php echo $row->attendance_id; ?>')"><i class="fa fa-edit"></i></a></td>
+                  <td><span class="label <?php echo $label_note; ?>"><?php echo $row->note; ?></span> <a class="btn btn-default btn-sm badge mt-1 pull-right" href="javascript:void(0)" onclick="edit_note('<?php echo $row->attendance_id; ?>', '<?php echo $row->name; ?>')" ><i class="fa fa-edit"></i></a></td>
                   <td align="center">
-                    <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->attendance_id; ?>')"><i class="fa fa-pencil"></i></a>
-                    <a href="<?php echo site_url('Attendance/delete/'.$row->attendance_id) ?>" data-date="<?php echo $dateday; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->attendance_id; ?>', '<?php echo $row->name; ?>')"><i class="fa fa-pencil"></i></a>
+                    <a href="<?php echo site_url('Report/delete/'.$row->attendance_id) ?>" data-name="<?php echo $row->name; ?>" data-date="<?php echo $dateday; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
                 <?php }?>
@@ -189,6 +122,7 @@
       </div>
       <!-- /.row -->
     </section>
+    <!-- modal-add -->
     <div class="modal fade" id="modal-add">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -196,9 +130,17 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title-add"></h4>
+            <h4 class="modal-title-edit"></h4>
           </div>
           <div class="box-body">
+            <div class="form-group col-xs-12">
+              <label class="control-label">Nama</label>
+                <select class="form-control select2" name="student_id" style="width: 100%;" required>
+                    <?php foreach ($data_student as $key => $row) {?>
+                    <option value="<?php echo $row->student_id; ?>"><?php echo $row->id_number; ?> - <?php echo $row->name; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
             <div class="form-group col-xs-12">
               <label for="inputTimeIn" class="control-label">Tanggal</label>
                 <div class="input-group date">
@@ -228,17 +170,23 @@
             </div>
             <div class="form-group col-xs-12">
               <label class="control-label">Kehadiran</label>
-                <select class="form-control" name="note" required>
-                    <option value="" selected hidden>Kehadiran</option>
-                    <option value="Hadir">Hadir</option>
-                    <option value="Alpha">Alpha</option>
-                    <option value="Sakit">Sakit</option>
-                    <option value="Izin">Izin</option>
-                </select>
+                <div class="input-group">
+                <div class="form-group has-feedback">
+                  <select class="form-control" name="note" required>
+                      <option value="Tidak diketahui" selected hidden>Kehadiran</option>
+                      <option value="Hadir">Hadir</option>
+                      <option value="Alpha">Alpha</option>
+                      <option value="Sakit">Sakit</option>
+                      <option value="Izin">Izin</option>
+                  </select>
+                </div>
+                <div class="input-group-addon">
+                  <i class="glyphicon glyphicon-list-alt"></i>
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
-            <input name="student_id" value="<?php echo $data_student->student_id; ?>" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
           </div>
@@ -248,7 +196,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-    <!-- /.content -->
+    <!-- modal-note -->
     <div class="modal fade" id="modal-note">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -277,7 +225,8 @@
           <div class="modal-footer">
             <input name="attendance_id" hidden>
             <input name="student_id" hidden>
-            <input type="text" name="date_inn" hidden>
+            <input name="date_inn" hidden>
+            <input name="name2" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
           </div>
@@ -287,7 +236,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-    <!-- /.content -->
+    <!-- modal-edit -->
     <div class="modal fade" id="modal-edit">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -329,6 +278,7 @@
           <div class="modal-footer">
             <input name="attendance_id" hidden>
             <input name="student_id" hidden>
+            <input name="name3" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
           </div>
@@ -349,8 +299,11 @@
 <script src="<?php echo base_url() ?>assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<script>
+  <script>
   $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
     $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
@@ -360,6 +313,7 @@
       'info'        : true,
       'autoWidth'   : false
     })
+
     //Timepicker
     $('.timepicker').timepicker({
         showInputs: false,
@@ -405,9 +359,10 @@
     $('.delete-data').on('click', function(e) {
       e.preventDefault();
       const href = $(this).attr('href');
+      const name = $(this).attr('data-name');
       const date = $(this).attr('data-date');
       Swal.fire({
-        title: 'Yakin ingin menghapus data \nkehadiran siswa?',
+        title: 'Yakin ingin menghapus data \nkehadiran '+name+'?',
         text: "data kehadiran pada hari "+date+" akan dihapus!",
         type: 'warning',
         showCancelButton: true,
@@ -421,63 +376,20 @@
         }
       })
     })
-
-    new Chart(document.getElementById("pie-chart"), {
-        type: 'pie',
-        data: {
-          labels: ["On time", "Telat", "Tanpa Keterangan"],
-          datasets: [{
-            label: "Population (millions)",
-            backgroundColor: ["#00a65a", "#f39c12", "#dddddd"],
-            data: [<?php echo $in_stats->ontime; ?>, <?php echo $in_stats->late; ?>, <?php echo $in_stats->nan; ?>]
-          }]
-        },
-        options: {
-          title: {
-            display: false,
-            text: 'Persentase Ontime'
-          },
-          legend: {
-            display: false
-          }
-        }
-    })
-
-    new Chart(document.getElementById("pie-chart2"), {
-        type: 'pie',
-        data: {
-          labels: ["Hadir", "Alpha", "Sakit", "Izin", "Tanpa Keterangan", "#dddddd"],
-          datasets: [{
-            label: "Population (millions)",
-            backgroundColor: ["#00a65a", "#f56954", "#f39c12", "#00c0ef"],
-            data: [<?php echo $present; ?>, <?php echo $alpha; ?>, <?php echo $sick; ?>, <?php echo $permit; ?>, <?php echo $nan; ?>]
-          }]
-        },
-        options: {
-          title: {
-            display: false,
-            text: 'Persentase Ontime'
-          },
-          legend: {
-            display: false
-          }
-        }
-    })
   })
 
-  function add_datetime()
+  function add_datetime(id)
   {
     $('#form_add')[0].reset(); // reset form on modals
  
-    $('#form_add').attr('action', '<?php echo site_url('Attendance/add_studentatt_action')?>');
+    $('#form_add').attr('action', '<?php echo site_url('Report/add_studentatt_action')?>');
     $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
     $('.modal-title-add').text('Tambah Kehadiran'); // Set title to Bootstrap modal title
   }
 
-  function edit_note(id)
+  function edit_note(id, name)
   {
     $('#form_note')[0].reset(); // reset form on modals
- 
     //Ajax Load data from ajax
     $.ajax({
         url : "<?php echo site_url('Attendance/edit_student_attendance/')?>/" + id,
@@ -489,7 +401,8 @@
             $('[name="student_id"]').val(data.student_id);
             $('[name="note"]').val(data.note);
             $('[name="date_inn"]').val(data.date);
-            $('#form_note').attr('action', '<?php echo site_url('Attendance/edit_studentnote_action')?>');
+            $('[name="name2"]').val(name);
+            $('#form_note').attr('action', '<?php echo site_url('Report/edit_studentnote_action')?>');
             $('#modal-note').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title-note').text('Ubah Keterangan'); // Set title to Bootstrap modal title
  
@@ -501,7 +414,7 @@
     })
   }
 
-  function edit_datetime(id)
+  function edit_datetime(id, name)
   {
     $('#form_edit')[0].reset(); // reset form on modals
  
@@ -524,9 +437,10 @@
             $('[name="date_in"]').datepicker('update',tanggal+'-'+namabulan[bulan]+'-'+tahun);
             $('[name="time_in"]').val(data.time_in);
             $('[name="time_out"]').val(data.time_out);
-            $('#form_edit').attr('action', '<?php echo site_url('Attendance/edit_studentatt_action')?>');
+            $('[name="name3"]').val(name);
+            $('#form_edit').attr('action', '<?php echo site_url('Report/edit_studentatt_action')?>');
             $('#modal-edit').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title-edit').text('Ubah Waktu'); // Set title to Bootstrap modal title
+            $('.modal-title-edit').text('Ubah waktu kehadiran a/n '+name); // Set title to Bootstrap modal title
  
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -537,6 +451,5 @@
   }
 </script>
 <script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </body>
 </html>

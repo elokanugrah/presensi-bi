@@ -19,6 +19,14 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function getall_data_comp()
+		{
+			$this->db->select('student.student_id, student.name, student.id_number, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
+			$this->db->join('student', 'student.student_id=attendance.student_id');
+			$this->db->order_by($this->id,$this->order);
+			return $this->db->get($this->nama_table)->result();
+		}
+
 		function getall_by_student($id)
 		{
 			$this->db->where('student_id',$id);
@@ -38,6 +46,7 @@
 			$alpha = 'Alpha';
 			$sakit = 'Sakit';
 			$izin = 'Izin';
+			$nan = '';
 			$this->db->select('((
 							    SELECT COUNT(attendance_id) FROM attendance
 							    WHERE student_id = '.$s_id.'
@@ -64,6 +73,11 @@
 								(
 								SELECT COUNT(attendance_id) FROM attendance
 							    WHERE student_id = '.$s_id.'
+							    AND note = "'.$nan.'"
+								) AS nan,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+							    WHERE student_id = '.$s_id.'
 							    AND note = "'.$hadir.'"
 								) AS present,
 								COUNT(attendance_id) AS total');
@@ -75,6 +89,7 @@
 		{
 			$ontime = 'on time';
 			$late = 'telat';
+			$nan = '';
 			$this->db->select('((
 							    SELECT COUNT(attendance_id) FROM attendance
 							    WHERE student_id = '.$s_id.'
@@ -84,7 +99,12 @@
 							    SELECT COUNT(attendance_id) FROM attendance
 							    WHERE student_id = '.$s_id.'
 							    AND status_in = "'.$late.'"
-								)) AS late');
+								)) AS late,
+								((
+							    SELECT COUNT(attendance_id) FROM attendance
+							    WHERE student_id = '.$s_id.'
+							    AND status_in = "'.$nan.'"
+								)) AS nan');
 			$this->db->where('student_id', $s_id);
 			return $this->db->get($this->nama_table)->row();
 		}

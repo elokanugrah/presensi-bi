@@ -3,49 +3,29 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
-class Attendance extends CI_Controller
+class Report extends CI_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Student_model');
+        /*if(!$this->session->userdata('logined') || $this->session->userdata('logined') != true)
+        {
+            redirect('/');
+        }*/
         $this->load->model('Attendance_model');
+        $this->load->model('Student_model');
         $this->load->model('Workinghours_model');
 	}
 
 	public function index()
 	{
-		
-		$this->load->view('attendance');
-	}
-
-	function edit_student_attendance($id)
-    {
-        $data=$this->Attendance_model->getdata_by_id($id);
-        $data->date = ($data->date == '0000-00-00') ? '' : $data->date; // if 0000-00-00 set tu empty for datepicker compatibility
-        echo json_encode($data);
-    }
-
-    function edit_studentnote_action()
-    {
+		$attendance=$this->Attendance_model->getall_data_comp();
+        $active_student=$this->Student_model->get_data_activeonly();
         $data=array(
-            'note'      => $this->input->post('note')
+            'data_attendance'  => $attendance,
+            'data_student'     => $active_student
         );
-        $id=$this->input->post('attendance_id');
-        $s_id=$this->input->post('student_id');
-        $hari = array ( 
-          1 => 'Senin',
-          'Selasa',
-          'Rabu',
-          'Kamis',
-          'Jumat',
-          'Sabtu',
-          'Minggu'
-        ); 
-        $date = $hari[ date('N', strtotime($this->input->post('date_inn'))) ] .', '. date("d-M-Y", strtotime($this->input->post('date_inn')));
-        $this->Attendance_model->edit_data($id,$data);
-        $this->session->set_flashdata('edit_success', 'Keterangan pada hari '.$date.' diubah!');
-        redirect(site_url('StudentIntern/student/'.$s_id));
+		$this->load->view('admin/attendance_table',$data);
     }
 
     function add_studentatt_action()
@@ -72,7 +52,6 @@ class Attendance extends CI_Controller
         } else {
             $status_out='';
         }
-        
         $s_id=$this->input->post('student_id');
         $data=array(
             'student_id' => $s_id,
@@ -83,9 +62,34 @@ class Attendance extends CI_Controller
             'status_out'      => $status_out,
             'note'      => $this->input->post('note')
         );
+        $student = $this->Student_model->getdata_by_id($s_id);
         $this->Attendance_model->add_data($data);
-        $this->session->set_flashdata('input_success', 'Data kehadiran pada tanggal '.$this->input->post('date_in').' berhasil ditambahkan!');
-        redirect(site_url('StudentIntern/student/'.$s_id));
+        $date = $hari[ date('N', strtotime($this->input->post('date_in'))) ] .', '. date("d M Y", strtotime($this->input->post('date_in')));
+        $this->session->set_flashdata('input_success', 'Data kehadiran siswa a/n '.$student->name.' pada tanggal '.$date.' berhasil ditambahkan!');
+        redirect('Report');
+    }
+
+    function edit_studentnote_action()
+    {
+        $data=array(
+            'note'      => $this->input->post('note')
+        );
+        $id=$this->input->post('attendance_id');
+        $s_id=$this->input->post('student_id');
+        $name=$this->input->post('name2');
+        $hari = array ( 
+          1 => 'Senin',
+          'Selasa',
+          'Rabu',
+          'Kamis',
+          'Jumat',
+          'Sabtu',
+          'Minggu'
+        ); 
+        $date = $hari[ date('N', strtotime($this->input->post('date_inn'))) ] .', '. date("d M Y", strtotime($this->input->post('date_inn')));
+        $this->Attendance_model->edit_data($id,$data);
+        $this->session->set_flashdata('edit_success', 'Keterangan siswa magang a/n '.$name.' pada hari '.$date.' diubah!');
+        redirect('Report');
     }
 
     function edit_studentatt_action()
@@ -123,10 +127,10 @@ class Attendance extends CI_Controller
         $id=$this->input->post('attendance_id');
         $s_id=$this->input->post('student_id');
         $this->Attendance_model->edit_data($id,$data);
-        $this->session->set_flashdata('edit_success', 'Tanggal / waktu kehadiran berhasil diubah!');
-        redirect(site_url('StudentIntern/student/'.$s_id));
+        $this->session->set_flashdata('edit_success', 'Tanggal / waktu kehadiran a/n '.$this->input->post('name3').' berhasil diubah!');
+        redirect('Report');
     }
-
+    
     function delete($id)
     {
         $attendance = $this->Attendance_model->getdata_by_id($id);
@@ -140,10 +144,11 @@ class Attendance extends CI_Controller
           'Minggu'
         ); 
         $s_id=$attendance->student_id;
-        $date = $hari[ date('N', strtotime($attendance->date)) ] .', '. date("d-M-Y", strtotime($attendance->date));
+        $student = $this->Student_model->getdata_by_id($s_id);
+        $date = $hari[ date('N', strtotime($attendance->date)) ] .', '. date("d M Y", strtotime($attendance->date));
         $this->Attendance_model->delete_data($id);
-        $this->session->set_flashdata('delete_success', 'Data kehadiran pada hari '.$date.' berhasil dihapus!');
-        redirect(site_url('StudentIntern/student/'.$s_id));
+        $this->session->set_flashdata('delete_success', 'Data kehadiran a/n '.$student->name.' pada hari '.$date.' berhasil dihapus!');
+        redirect('Report');
     }
 }
 

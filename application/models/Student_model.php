@@ -19,6 +19,13 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function get_data_activeonly()
+		{
+			$this->db->where('active','Aktif');
+			$this->db->order_by($this->id,$this->order);
+			return $this->db->get($this->nama_table)->result();
+		}
+
 		function getdata_by_id($id)
 		{
 			$this->db->where($this->id,$id);

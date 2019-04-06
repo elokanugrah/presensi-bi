@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Buku Tamu Perpustakaan</title>
+  <title>Presensi Siswa Magang</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -55,7 +55,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>BI</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Perpustakaan <b>BI</b></span>
+      <span class="logo-lg">Presensi <b>BI</b></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -120,6 +120,11 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
+        <li class="<?php echo active_link('Report'); ?>">
+          <a href="<?php echo site_url('Report') ?>">
+            <i class="fa fa-files-o"></i> <span>Laporan Rekapitulasi</span>
+          </a>
+        </li>
         <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> <?php echo active_link('Workinghours'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
@@ -129,8 +134,8 @@
           </a>
           <ul class="treeview-menu">
             <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i> Siswa Magang</a></li>
-            <li class="<?php echo active_link('Schedule'); ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-circle-o"></i> Jadwal Kerja</a></li>
             <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
+            <li class="<?php echo active_link('Schedule'); ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-circle-o"></i> Jadwal Kerja*</a></li>
           </ul>
         </li>
       </ul>

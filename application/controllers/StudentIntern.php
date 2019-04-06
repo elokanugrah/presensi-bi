@@ -39,26 +39,12 @@ class StudentIntern extends CI_Controller
             'alpha' => $percentage->alpha,
             'sick' => $percentage->sick,
             'permit' => $percentage->permit,
+            'nan' => $percentage->nan,
             'total' => $percentage->total,
             'in_stats' => $in_stats
         );
         $this->load->view('admin/student_attendance',$data);
     }
-
-    function add()
-    {
-        $data=array(
-            'student_id'    => set_value('pegawai_id'),
-            'id_number'     => set_value('nip'),
-            'name'          => set_value('nidn'),
-            'sex'           => set_value('nama_pegawai'),
-            'active'        => set_value('inisial'),
-            'collage'       => set_value('prodi_id'),
-            'address'       => set_value('prodi_idd'),
-            'action'        => site_url('StudentIntern/add_action')
-        );
-        $this->load->view('admin/student_form',$data);
-    } 
 
     function add_action()
     {
@@ -77,18 +63,8 @@ class StudentIntern extends CI_Controller
 
     function edit($id)
 	{
-		$student=$this->Student_model->getdata_by_id($id);
-        $data=array(
-            'student_id'           => set_value('student_id',$student->student_id),    
-            'id_number'           => set_value('id_number',$student->id_number),
-            'name'          => set_value('name',$student->name),
-            'sex'  => set_value('sex',$student->sex),
-            'active'       => set_value('active',$student->active),
-            'collage'       => set_value('collage',$student->collage),
-            'address'       => set_value('address',$student->address),
-            'action'    => site_url('StudentIntern/edit_action')
-        );
-        $this->load->view('admin/student_form',$data);
+		$data=$this->Student_model->getdata_by_id($id);
+        echo json_encode($data);
 	}
 
     function edit_action()
@@ -105,6 +81,27 @@ class StudentIntern extends CI_Controller
         $this->Student_model->edit_data($id,$data);
         $this->session->set_flashdata('edit_success', 'Data dengan NIM '.$this->input->post('id_number').' a/n '.$this->input->post('name').' berhasil diubah!');
         redirect(site_url('StudentIntern'));
+    }
+
+    function print($id)
+    {
+        $student=$this->Student_model->getdata_by_id($id);
+        $attendance=$this->Attendance_model->getall_by_student($id);
+        $percentage=$this->Attendance_model->get_percentage($id);
+        $in_stats=$this->Attendance_model->get_instats($id);
+        $data=array(
+            'data_student'  => $student,
+            'data_attendance'  => $attendance,
+            'data_percent' => $percentage->percentage,
+            'present' => $percentage->present,
+            'alpha' => $percentage->alpha,
+            'sick' => $percentage->sick,
+            'permit' => $percentage->permit,
+            'nan' => $percentage->nan,
+            'total' => $percentage->total,
+            'in_stats' => $in_stats
+        );
+        $this->load->view('admin/student_attendance_print',$data);
     }
     
     function delete($id)
