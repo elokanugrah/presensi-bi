@@ -265,7 +265,7 @@
               </div>
               <div class="form-group has-feedback">
                 <select class="form-control" name="note" required>
-                    <option value="Tidak diketahui" selected hidden>Kehadiran</option>
+                    <option value="" selected hidden>Kehadiran</option>
                     <option value="Hadir">Hadir</option>
                     <option value="Alpha">Alpha</option>
                      <option value="Sakit">Sakit</option>

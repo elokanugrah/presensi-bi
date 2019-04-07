@@ -41,12 +41,28 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Kehadiran Magang</h3>
-              <a href="javascript:void(0)" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
-              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
+              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
+              <a href="<?php echo site_url('Report/add_perdate') ?>" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
               <a href="#" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="row">
+                <div class="form-group has-feedback">
+                  <div class="col-md-12 pull-right">
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input type="text" name="date" class="form-control pull-right" id="reservation" value="">
+                      <div class="input-group-addon">
+                        <button type="submit" class="btn btn-info btn-sm badge mt-1">Lihat</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="padding-top: 20px;"></div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -173,7 +189,7 @@
                 <div class="input-group">
                 <div class="form-group has-feedback">
                   <select class="form-control" name="note" required>
-                      <option value="Tidak diketahui" selected hidden>Kehadiran</option>
+                      <option value="" selected hidden>Kehadiran</option>
                       <option value="Hadir">Hadir</option>
                       <option value="Alpha">Alpha</option>
                       <option value="Sakit">Sakit</option>
@@ -213,7 +229,7 @@
               </div>
               <div class="form-group has-feedback">
                 <select class="form-control" name="note" required>
-                    <option value="Tidak diketahui" selected hidden>Kehadiran</option>
+                    <option value="" selected hidden>Kehadiran</option>
                     <option value="Hadir">Hadir</option>
                     <option value="Alpha">Alpha</option>
                      <option value="Sakit">Sakit</option>
@@ -295,6 +311,9 @@
 <!-- DataTables -->
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- date-range-picker -->
+<script src="<?php echo base_url() ?>assets/bower_components/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap time picker -->
 <script src="<?php echo base_url() ?>assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- bootstrap datepicker -->
@@ -312,6 +331,17 @@
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
+    })
+
+    //Date range picker
+    $('#reservation').daterangepicker({
+        locale: {
+            format: 'DD-MMM-YYYY'
+        },
+    })
+
+    $(".applyBtn").on('click', function() {
+        alert("Form submitted");
     })
 
     //Timepicker
