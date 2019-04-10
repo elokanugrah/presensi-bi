@@ -32,7 +32,7 @@
   .column-top-center {
     float: left;
     text-align: center;
-    font-size: 28px;
+    font-size: 26px;
     width: 60%;
     height: 100px;
     padding: 0px;

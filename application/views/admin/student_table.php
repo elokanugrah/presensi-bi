@@ -54,7 +54,6 @@
                   <th>Jenis Kelamin</th>
                   <th>Asal</th>
                   <th>Jurusan</th>
-                  <th>Nomor HP</th>
                   <th>Status Magang</th>
                   <th>Aksi</th>
                 </tr>
@@ -73,7 +72,6 @@
                     $label = 'label-danger';
                   } ?>
                   <td><?php echo $row->vocational; ?></td>
-                  <td><?php echo $row->phone; ?></td>
                   <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
@@ -116,7 +114,7 @@
               <!-- /.input group -->
               <br>
               <label>Hasil QR Code</label>
-              <div class="input-group">
+              <div class="input-group" id="bg-qrcode">
                 <span id="file-qr-result">None</span>
               </div>
               <!-- /.input group -->
@@ -138,14 +136,18 @@
                 const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
                 const fileSelector = document.getElementById('file-selector');
                 const fileQrResult = document.getElementById('file-qr-result');
+                const fileQrBg = document.getElementById('bg-qrcode');
                 const fileQrResultQr = document.getElementById('qrcode_id');
 
                 function setResult(label, result) {
                     label.textContent = result;
-                    label.style.color = 'teal';
+                    label.style.color = "white";
+                    fileQrBg.style.backgroundColor = "#00a65a";
                     fileQrResultQr.value = result;
                     clearTimeout(label.highlightTimeout);
-                    label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+                    label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 500);
+                    clearTimeout(fileQrBg.highlightTimeout);
+                    fileQrBg.highlightTimeout = setTimeout(() => fileQrBg.style.backgroundColor = 'inherit', 500);
                 }
 
                 // ####### File Scanning #######
@@ -319,9 +321,23 @@
     })
   })
 
+  $("#file-selector").change(function (e) {
+      var fileExtension = ['jpg', 'png', 'gif'];
+      if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+        e.preventDefault();
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Format QR Code yang diizinkan : '+fileExtension.join(', ')
+        })
+        $('#modal-add').modal('hide');
+      }
+  })
+
   function add_datetime()
   {
     $('#form_add')[0].reset(); // reset form on modals
+    $('[id="file-qr-result"]').html('None');
     $('[name="preview"]').attr('src', './upload/default.jpg');
     $('#form_add').attr('action', '<?php echo site_url('StudentIntern/add_action')?>');
     $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
