@@ -43,7 +43,7 @@
               <h3 class="box-title">Data Kehadiran Magang</h3>
               <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
               <a href="<?php echo site_url('Report/add_perdate') ?>" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
-              <a href="<?php echo site_url('Report/print') ?>" target="blank" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
+              <a href="javascript:void(0)" onclick="print()" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -412,6 +412,14 @@
       })
     })
   })
+
+  function print()
+  {
+    $('#date-form')[0].reset();
+    $('#date-form').attr('action', '<?php echo site_url('Report/print')?>');
+    $('#date-form').attr('target', '_blank');
+    $('#date-form').submit();
+  }
 
   function add_datetime(id)
   {

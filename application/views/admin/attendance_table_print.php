@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/font-awesome/css/font-awesome.min.css">
   <style type="text/css" media="all">
   @page {
     margin-top: 2cm;
@@ -13,6 +15,9 @@
     * {
       font-size: 10px;
     }
+    #print {
+      display: none;
+    }
   }
 
   * {
@@ -24,13 +29,41 @@
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   }
 
-  .column-center {
+  .column-top-center {
     float: left;
     text-align: center;
-    font-size: 20px;
-    width: 100%;
+    font-size: 28px;
+    width: 60%;
+    height: 100px;
     padding: 0px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    border-bottom: 1px solid #ddd;
+  }
+
+  .column-top-left {
+    float: left;
+    text-align: center;
+    width: 20%;
+    height: 100px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .column-top-right {
+    float: left;
+    text-align: center;
+    width: 20%;
+    height: 100px;
+    padding: 0px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    border-bottom: 1px solid #ddd;
   }
 
   .column-1 {
@@ -59,9 +92,9 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 30%;
-    min-height: 80px;
-    min-width: 80px;
+    width: 20%;
+    min-height: 60px;
+    min-width: 60px;
   }
 
   /* Clear floats after the columns */
@@ -115,9 +148,15 @@
 </head>
 <body onload="window.print()"> <!-- onload="window.print()" -->
   <div class="row">
-    <div class="column-center">
+    <div class="column-top-left">
+      <img src="<?php echo base_url() ?>assets/dist/img/LogoBI.png" alt="Logo Bank Indonesia">
+    </div>
+    <div class="column-top-center">
       Laporan Kehadiran<br>
       Siswa Magang Bank Indonesia Riau
+    </div>
+    <div class="column-top-right">
+      <a id="print" style="color:#3c8dbc;text-decoration:none;" href="javascript:window.print()"> <i class="fa fa-print"></i> Cetak</a>
     </div>
   </div>
   <div class="row">
@@ -133,7 +172,6 @@
     <div class="column-2">
     </div>
     <div class="column-3">
-      <img src="<?php echo base_url() ?>assets/dist/img/LogoBI.png" alt="Logo Bank Indonesia">
     </div>
   </div>
   <table id="students"> 

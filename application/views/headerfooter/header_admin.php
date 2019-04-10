@@ -125,7 +125,7 @@
             <i class="fa fa-files-o"></i> <span>Laporan Rekapitulasi</span>
           </a>
         </li>
-        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> <?php echo active_link('Workinghours'); ?> treeview">
+        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('Workinghours'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -135,6 +135,7 @@
           <ul class="treeview-menu">
             <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i> Siswa Magang</a></li>
             <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
+            <li class="<?php echo active_link('Mentor'); ?>"><a href="<?php echo site_url('Mentor') ?>"><i class="fa fa-circle-o"></i> Mentor</a></li>
             <li class="<?php echo active_link('Schedule'); ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-circle-o"></i> Jadwal Kerja*</a></li>
           </ul>
         </li>

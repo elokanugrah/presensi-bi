@@ -48,6 +48,67 @@
 <body>
   <div class="main-area-wrapper" style="background-image:url(assets/dist/img/background_bi.jpg);">
     <div class="main-area center-text" >
+      <div hidden>
+        <b>Device has camera: </b>
+        <span id="cam-has-camera"></span>
+        <br>
+        <video muted playsinline id="qr-video"></video>
+        <b>Detected QR code: </b>
+        <span id="cam-qr-result">None</span>
+        <br>
+        <b>Last detected at: </b>
+        <span id="cam-qr-result-timestamp"></span>
+        <div>
+          <select id="inversion-mode-select">
+              <option value="original">Scan original (dark QR code on bright background)</option>
+          </select>
+        </div>
+      </div>
+      
+      <script type="module">
+          import QrScanner from "<?php echo base_url() ?>assets/qr-scanner.min.js";
+          QrScanner.WORKER_PATH = '<?php echo base_url() ?>assets/qr-scanner-worker.min.js';
+
+          const video = document.getElementById('qr-video');
+          const camHasCamera = document.getElementById('cam-has-camera');
+          const camQrResult = document.getElementById('cam-qr-result');
+          const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+          /*const fileSelector = document.getElementById('file-selector');
+          const fileQrResult = document.getElementById('file-qr-result');*/
+
+          function setResult(label, result) {
+              label.textContent = result;
+              camQrResultTimestamp.textContent = new Date().toString();
+              label.style.color = 'teal';
+              clearTimeout(label.highlightTimeout);
+              label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+          }
+
+          // ####### Web Cam Scanning #######
+
+          QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
+
+          const scanner = new QrScanner(video, result => setResult(camQrResult, result));
+          scanner.start();
+
+          document.getElementById('inversion-mode-select').addEventListener('change', event => {
+              scanner.setInversionMode(event.target.value);
+          });
+
+          // ####### File Scanning #######
+
+          /*fileSelector.addEventListener('change', event => {
+              const file = fileSelector.files[0];
+              if (!file) {
+                  return;
+              }
+              QrScanner.scanImage(file)
+                  .then(result => setResult(fileQrResult, result))
+                  .catch(e => setResult(fileQrResult, e || 'No QR code found.'));
+          });*/
+
+      </script>
+      <!-- <span id="cam-qr-result-timestamp"></span> -->
       <div class="display-table">
         <div class="display-table-cell">
           <img src="<?php echo base_url() ?>assets/dist/img/magang.png" style="max-height: 15%; width: 30%; margin-bottom: 32px;">

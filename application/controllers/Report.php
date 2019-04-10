@@ -239,7 +239,7 @@ class Report extends CI_Controller
         $start=$earliest->date;
         $end=date("Y-m-d");
         $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
-        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        $date = date("d M Y", strtotime($start)).' - '.date("d M Y", strtotime($end));
         if(!$this->input->get())
         {
             $data=array(
@@ -257,7 +257,7 @@ class Report extends CI_Controller
         $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
         $active_student=$this->Student_model->get_data_activeonly();
         $earliest=$this->Attendance_model->get_earliest();
-        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        $date = date("d M Y", strtotime($start)).' - '.date("d M Y", strtotime($end));
         $data=array(
             'data_attendance'  => $attendance,
             'data_student'     => $active_student,

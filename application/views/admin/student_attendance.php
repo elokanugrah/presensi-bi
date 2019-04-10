@@ -60,18 +60,26 @@
                   </b> <?php echo $data_student->sex; ?><br>
                   <b>Asal:<br>
                   </b> <?php echo $data_student->collage; ?><br>
+                  <b>Jurusan:<br>
+                  </b> <?php echo $data_student->vocational; ?><br>
+                  <b>No Handphone:<br>
+                  </b> <?php echo $data_student->phone; ?><br>
                   <b>Alamat:<br>
                   </b> <?php echo $data_student->address; ?><br>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-3">
                   <b>Status Magang:<br>
                   <?php if ($data_student->active == 'Aktif') {
                     $label_active = 'label-success';
                   } else {
                     $label_active = 'label-danger';
                   } ?>
-                  </b> <span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-3">
+                  </b> <span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span><br>
+                  <b>QR Code:<br>
+                  </b> <img id="blah" name="preview" src="<?php echo base_url().'upload/'.$data_student->qrcode; ?>" alt="QR Code" style="max-width: 50px; max-height: 50px;" /><br>
+                  <b>Mentor:<br>
+                  </b> <?php echo $data_student->mentor_name; ?><br>
                   <b>Total Hari Kerja:<br>
                   </b> <?php echo $total; ?> hari<br>
                   <b>Persentase Kehadiran:<br>

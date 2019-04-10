@@ -49,11 +49,12 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>NIM</th>
                   <th>Nama</th>
+                  <th>Mentor</th>
                   <th>Jenis Kelamin</th>
                   <th>Asal</th>
-                  <th>Alamat</th>
+                  <th>Jurusan</th>
+                  <th>Nomor HP</th>
                   <th>Status Magang</th>
                   <th>Aksi</th>
                 </tr>
@@ -62,8 +63,8 @@
                 <?php foreach ($data_student as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
-                  <td><?php echo $row->id_number; ?></td>
                   <td><?php echo $row->name; ?></td>
+                  <td><?php echo $row->mentor_name; ?></td>
                   <td><?php echo $row->sex; ?></td>
                   <td><?php echo $row->collage; ?></td>
                   <?php if ($row->active == 'Aktif') {
@@ -71,7 +72,8 @@
                   } else {
                     $label = 'label-danger';
                   } ?>
-                  <td><?php echo $row->address; ?></td>
+                  <td><?php echo $row->vocational; ?></td>
+                  <td><?php echo $row->phone; ?></td>
                   <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
@@ -94,13 +96,70 @@
     <div class="modal fade" id="modal-add">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form role="form" id="form_add" action="#" method="post">
+          <form role="form" id="form_add" action="#" method="post" enctype="multipart/form-data">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title-add"></h4>
           </div>
           <div class="box-body">
+            <div class="form-group col-xs-9">
+              <label>QR Code</label>
+
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="glyphicon glyphicon-qrcode"></i>
+                </div>
+                <input type="file" class="form-control" name="qrcode" id="file-selector" required onchange="readURL(this);">
+                <input type="hidden" name="old_qrcode">
+              </div>
+              <!-- /.input group -->
+              <br>
+              <label>Hasil QR Code</label>
+              <div class="input-group">
+                <span id="file-qr-result">None</span>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-3">
+              <label>Preview</label>
+
+              <div class="input-group">
+                <img id="blah" name="preview" src="" alt="your image" style="max-width: 100px; max-height: 100px;" />
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <script type="module">
+                import QrScanner from "<?php echo base_url() ?>assets/qr-scanner.min.js";
+                QrScanner.WORKER_PATH = '<?php echo base_url() ?>assets/qr-scanner-worker.min.js';
+
+                const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+                const fileSelector = document.getElementById('file-selector');
+                const fileQrResult = document.getElementById('file-qr-result');
+                const fileQrResultQr = document.getElementById('qrcode_id');
+
+                function setResult(label, result) {
+                    label.textContent = result;
+                    label.style.color = 'teal';
+                    fileQrResultQr.value = result;
+                    clearTimeout(label.highlightTimeout);
+                    label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+                }
+
+                // ####### File Scanning #######
+
+                fileSelector.addEventListener('change', event => {
+                    const file = fileSelector.files[0];
+                    if (!file) {
+                        return;
+                    }
+                    QrScanner.scanImage(file)
+                        .then(result => setResult(fileQrResult, result))
+                        .catch(e => setResult(fileQrResult, e || 'No QR code found.'));
+                });
+            </script>
             <div class="form-group col-xs-12">
               <label>NIM</label>
 
@@ -108,13 +167,13 @@
                 <div class="input-group-addon">
                   <i class="glyphicon glyphicon-credit-card"></i>
                 </div>
-                <input type="text" class="form-control" name="id_number" required>
+                <input type="text" class="form-control" name="id_number" id="id_number" required>
               </div>
               <!-- /.input group -->
             </div>
             <!-- /.form group -->
             <div class="col-xs-6">
-              <label>Nama Pengunjung</label>
+              <label>Nama</label>
 
               <div class="input-group">
                 <div class="input-group-addon">
@@ -138,6 +197,37 @@
             </div>
             <!-- /.form group -->
             <div class="col-xs-6">
+              <label>Asal</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-university"></i>
+                </div>
+                <input type="text" class="form-control" name="collage" required>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <div class="form-group col-xs-6">
+              <label>Jurusan</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-gears"></i>
+                </div>
+                <input type="text" class="form-control" name="vocational" required>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-6">
+              <label>No Handphone</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-phone"></i>
+                </div>
+                <input type="text" class="form-control" name="phone" required>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <div class="col-xs-6">
               <label>Status</label>
               <div class="form-group has-feedback">
                 <select class="form-control" name="active" required>
@@ -148,18 +238,19 @@
               </div>
               <!-- /.input group -->
             </div>
-            <div class="form-group col-xs-6">
-              <label>Asal</label>
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-university"></i>
-                </div>
-                <input type="text" class="form-control" name="collage" required>
+            <!-- /.form group -->
+            <div class="col-xs-12">
+              <label>Mentor</label>
+              <div class="form-group has-feedback">
+                <select class="form-control select2" name="mentor_id" style="width: 100%;" required>
+                  <?php foreach ($mentor as $key => $row) {?>
+                    <option value="<?php echo $row->mentor_id; ?>"><?php echo $row->nip; ?> - <?php echo $row->name; ?></option>
+                  <?php } ?>
+                </select>
               </div>
               <!-- /.input group -->
             </div>
-            <!-- /.form group -->
-            <div class="form-group col-xs-12">
+            <div class="col-xs-12">
               <label>Alamat</label>
 
               <div class="input-group">
@@ -173,99 +264,7 @@
             <!-- /.form group -->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-          </div>
-          </form>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-
-    <div class="modal fade" id="modal-edit">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form role="form" id="form_edit" action="#" method="post">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title-edit"></h4>
-          </div>
-          <div class="box-body">
-            <div class="form-group col-xs-12">
-              <label>NIM</label>
-
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="glyphicon glyphicon-credit-card"></i>
-                </div>
-                <input type="text" class="form-control" name="id_number" required>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-            <div class="col-xs-6">
-              <label>Nama Pengunjung</label>
-
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="glyphicon glyphicon-user"></i>
-                </div>
-                <input type="text" class="form-control" name="name" required>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-            <div class="col-xs-6">
-              <label>Jenis Kelamin</label>
-              <div class="form-group has-feedback">
-                <select class="form-control" name="sex" required>
-                    <option value="Tidak diketahui" selected hidden>Jenis Kelamin</option>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
-                </select>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-            <div class="col-xs-6">
-              <label>Status</label>
-              <div class="form-group has-feedback">
-                <select class="form-control" name="active" required>
-                  <option value="Tidak diketahui" selected hidden>Status</option>
-                  <option value="Aktif">Aktif</option>
-                  <option value="Non Aktif">Non Aktif</option>
-                </select>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <div class="form-group col-xs-6">
-              <label>Asal</label>
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-university"></i>
-                </div>
-                <input type="text" class="form-control" name="collage" required>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-            <div class="form-group col-xs-12">
-              <label>Alamat</label>
-
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="glyphicon glyphicon-home"></i>
-                </div>
-                <textarea rows="2" class="form-control" name="address" required></textarea>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-          </div>
-          <div class="modal-footer">
+            <input name="qrcode_id" id="qrcode_id" hidden>
             <input name="student_id" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -283,8 +282,13 @@
 <!-- DataTables -->
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="<?php echo base_url() ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
   <script>
   $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
     $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
@@ -318,7 +322,7 @@
   function add_datetime()
   {
     $('#form_add')[0].reset(); // reset form on modals
- 
+    $('[name="preview"]').attr('src', './upload/default.jpg');
     $('#form_add').attr('action', '<?php echo site_url('StudentIntern/add_action')?>');
     $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
     $('.modal-title-add').text('Tambah Siswa Magang'); // Set title to Bootstrap modal title
@@ -326,7 +330,7 @@
 
   function edit_datetime(id)
   {
-    $('#form_edit')[0].reset(); // reset form on modals
+    $('#form_add')[0].reset(); // reset form on modals
  
     //Ajax Load data from ajax
     $.ajax({
@@ -336,15 +340,23 @@
         success: function(data)
         {
             $('[name="student_id"]').val(data.student_id);
+            $('[name="qrcode_id"]').val(data.qrcode_id);
+            $('[id="file-qr-result"]').html(data.qrcode_id);
+            $('[name="qrcode"]').prop('required',false);
+            $('[name="old_qrcode"]').val(data.qrcode);
+            $('[name="preview"]').attr('src', './upload/'+data.qrcode);
             $('[name="id_number"]').val(data.id_number);
             $('[name="name"]').val(data.name);
             $('[name="sex"]').val(data.sex);
             $('[name="active"]').val(data.active);
             $('[name="collage"]').val(data.collage);
+            $('[name="vocational"]').val(data.vocational);
+            $('[name="phone"]').val(data.phone);
+            $('[name="mentor_id"]').val(data.mentor_id);
             $('[name="address"]').val(data.address);
-            $('#form_edit').attr('action', '<?php echo site_url('StudentIntern/edit_action')?>');
-            $('#modal-edit').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title-edit').text('Ubah Data Siswa Magang'); // Set title to Bootstrap modal title
+            $('#form_add').attr('action', '<?php echo site_url('StudentIntern/edit_action')?>');
+            $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
+            $('.modal-title-add').text('Ubah Data Siswa Magang'); // Set title to Bootstrap modal title
  
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -352,6 +364,19 @@
             alert('Error get data from ajax');
         }
     })
+  }
+
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('#blah')
+                  .attr('src', e.target.result);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
   }
 </script>
 <script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
