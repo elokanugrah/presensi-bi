@@ -21,11 +21,37 @@ class Report extends CI_Controller
 	{
 		$attendance=$this->Attendance_model->getall_data_comp();
         $active_student=$this->Student_model->get_data_activeonly();
+        $earliest=$this->Attendance_model->get_earliest();
+        $start=$earliest->date;
+        $end=date("Y-m-d");
+        $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
+        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        if(!$this->input->get())
+        {
+            $data=array(
+                'data_attendance'  => $attendance,
+                'data_student'     => $active_student,
+                'date'             => $date
+
+            );
+    		$this->load->view('admin/attendance_table',$data);
+        }
+        else
+        {
+        $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
+        $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+        $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
+        $active_student=$this->Student_model->get_data_activeonly();
+        $earliest=$this->Attendance_model->get_earliest();
+        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $data=array(
             'data_attendance'  => $attendance,
-            'data_student'     => $active_student
+            'data_student'     => $active_student,
+            'date'             => $date
+
         );
-		$this->load->view('admin/attendance_table',$data);
+        $this->load->view('admin/attendance_table',$data);
+        }
     }
 
     public function add_perdate()
@@ -203,6 +229,43 @@ class Report extends CI_Controller
         $this->Attendance_model->delete_data($id);
         $this->session->set_flashdata('delete_success', 'Data kehadiran a/n '.$student->name.' pada hari '.$date.' berhasil dihapus!');
         redirect('Report');
+    }
+
+    function print()
+    {
+        $attendance=$this->Attendance_model->getall_data_comp();
+        $active_student=$this->Student_model->get_data_activeonly();
+        $earliest=$this->Attendance_model->get_earliest();
+        $start=$earliest->date;
+        $end=date("Y-m-d");
+        $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
+        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        if(!$this->input->get())
+        {
+            $data=array(
+                'data_attendance'  => $attendance,
+                'data_student'     => $active_student,
+                'date'             => $date
+
+            );
+            $this->load->view('admin/attendance_table_print',$data);
+        }
+        else
+        {
+        $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
+        $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+        $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
+        $active_student=$this->Student_model->get_data_activeonly();
+        $earliest=$this->Attendance_model->get_earliest();
+        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        $data=array(
+            'data_attendance'  => $attendance,
+            'data_student'     => $active_student,
+            'date'             => $date
+
+        );
+        $this->load->view('admin/attendance_table_print',$data);
+        }
     }
 }
 

@@ -43,22 +43,25 @@
               <h3 class="box-title">Data Kehadiran Magang</h3>
               <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
               <a href="<?php echo site_url('Report/add_perdate') ?>" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
-              <a href="#" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
+              <a href="<?php echo site_url('Report/print') ?>" target="blank" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="row">
                 <div class="form-group has-feedback">
                   <div class="col-md-12 pull-right">
+                    <form role="form" id="date-form" action="" method="get">
                     <div class="input-group date">
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input type="text" name="date" class="form-control pull-right" id="reservation" value="">
+                      <input type="text" name="date" class="form-control pull-right" id="reservation" value="<?php echo $date; ?>">
                       <div class="input-group-addon">
                         <button type="submit" class="btn btn-info btn-sm badge mt-1">Lihat</button>
+                        <a href="<?php echo site_url('Report') ?>" class="btn btn-default btn-sm badge mt-1">Reset</a>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -340,9 +343,11 @@
         },
     })
 
-    $(".applyBtn").on('click', function() {
-        alert("Form submitted");
-    })
+    /*$(".applyBtn").on('click', function() {
+        const name = $('[name="date"]').val();
+        alert("Form submitted " + name);
+        $("#date-form").submit();
+    })*/
 
     //Timepicker
     $('.timepicker').timepicker({

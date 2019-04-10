@@ -27,11 +27,27 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function getall_data_bydate($start, $end)
+		{
+			$this->db->select('student.student_id, student.name, student.id_number, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
+			$this->db->join('student', 'student.student_id=attendance.student_id');
+			$this->db->where('date >=', $start);
+			$this->db->where('date <=', $end);
+			$this->db->order_by($this->id,$this->order);
+			return $this->db->get($this->nama_table)->result();
+		}
+
 		function getall_by_student($id)
 		{
 			$this->db->where('student_id',$id);
 			$this->db->order_by($this->id,$this->order);
 			return $this->db->get($this->nama_table)->result();
+		}
+
+		function get_earliest()
+		{
+			$this->db->select_min('date');
+			return $this->db->get($this->nama_table)->row();
 		}
 
 		function getdata_by_id($id)
