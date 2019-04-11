@@ -19,6 +19,11 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function count_activeonly()
+		{
+			return $this->db->get($this->nama_table)->num_rows();
+		}
+
 		function getdata_by_id($id)
 		{
 			$this->db->where($this->id,$id);

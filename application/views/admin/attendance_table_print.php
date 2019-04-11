@@ -177,6 +177,7 @@
   <table id="students"> 
     <tr> 
       <th rowspan="2">No.</th> 
+      <th rowspan="2">PIN</th> 
       <th rowspan="2">Nama</th> 
       <th colspan="3">Kehadiran</th> 
       <th colspan="2" rowspan="2">Keterangan</th>
@@ -189,6 +190,7 @@
     <?php foreach ($data_attendance as $key => $row) {?>
     <tr> 
       <td><?php echo $key+1; ?></td> 
+      <td><?php echo $row->qrcode_id; ?></td>
       <td><?php echo $row->name; ?></td>
       <td>
         <?php 

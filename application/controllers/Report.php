@@ -19,7 +19,6 @@ class Report extends CI_Controller
 
 	public function index()
 	{
-		$attendance=$this->Attendance_model->getall_data_comp();
         $active_student=$this->Student_model->get_data_activeonly();
         $earliest=$this->Attendance_model->get_earliest();
         $start=$earliest->date;
@@ -42,7 +41,6 @@ class Report extends CI_Controller
         $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
         $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
         $active_student=$this->Student_model->get_data_activeonly();
-        $earliest=$this->Attendance_model->get_earliest();
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $data=array(
             'data_attendance'  => $attendance,

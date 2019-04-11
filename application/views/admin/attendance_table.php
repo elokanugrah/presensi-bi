@@ -8,9 +8,7 @@
         <small>kehadiran magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li class="<?php echo active_link('Report'); ?>"><a href="#"><i class="fa fa-files-o"></i> Laporan Rekapitulasi</a></li>
       </ol>
     </section>
 
@@ -70,9 +68,9 @@
                 <thead>
                 <tr>
                   <th>No</th>
+                  <th>PIN</th>
                   <th>Tanggal</th>
                   <th>Nama</th>
-                  <th>NIM</th>
                   <th>Waktu Masuk</th>
                   <th>Status Masuk</th>
                   <th>Waktu Keluar</th>
@@ -85,6 +83,7 @@
                 <?php foreach ($data_attendance as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
+                  <td><?php echo $row->qrcode_id; ?></td>
                   <td><?php 
                   date_default_timezone_set("Asia/Bangkok");
                   $hari = array ( 
@@ -99,7 +98,6 @@
                         $dateday=$hari[ date('N', strtotime($row->date)) ] .', '. date("d M Y", strtotime($row->date));
                         echo $dateday; ?></td>
                   <td><?php echo $row->name; ?></td>
-                  <td><?php echo $row->id_number; ?></td>
                   <td><?php echo $row->time_in; ?></td>
                   <?php if ($row->status_in == 'on time') {
                     $label_in = 'label-success';
@@ -149,7 +147,7 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title-edit"></h4>
+            <h4 class="modal-title-add"></h4>
           </div>
           <div class="box-body">
             <div class="form-group col-xs-12">

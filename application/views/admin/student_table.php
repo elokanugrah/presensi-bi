@@ -8,9 +8,7 @@
         <small>siswa magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li class="<?php echo active_link('StudentIntern'); ?>"><a href="#"><i class="fa fa-table"></i> Siswa magang</a></li>
       </ol>
     </section>
 
@@ -111,6 +109,7 @@
                 <input type="file" class="form-control" name="qrcode" id="file-selector" required onchange="readURL(this);">
                 <input type="hidden" name="old_qrcode">
               </div>
+              <span style="font-size: 13px; color: #999;">Tipe file yang diizinkan: jpg, png, gif (maks : 120 KB)</span>
               <!-- /.input group -->
               <br>
               <label>Hasil QR Code</label>
@@ -323,6 +322,15 @@
 
   $("#file-selector").change(function (e) {
       var fileExtension = ['jpg', 'png', 'gif'];
+      if (this.files[0].size >= 120000){
+        e.preventDefault();
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Ukuran maksimal QR Code yang diizinkan : 120 KB'
+        })
+        $('#modal-add').modal('hide');
+      }
       if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
         e.preventDefault();
         Swal.fire({

@@ -28,6 +28,15 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function get_data_origin()
+		{
+			$this->db->select("COUNT(student_id) AS total, collage");
+			$this->db->where('active','Aktif');
+			$this->db->group_by('collage');
+			$this->db->order_by($this->id,$this->order);
+			return $this->db->get($this->nama_table)->result();
+		}
+
 		function getdata_by_id($id)
 		{
 			$this->db->select('student.qrcode, student.qrcode_id, student.student_id, student.name, student.id_number, student.name, student.sex, student.collage, student.vocational, student.address, student.phone, student.active, mentor.mentor_id, mentor.name AS mentor_name, mentor.nip');

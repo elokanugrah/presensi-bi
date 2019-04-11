@@ -8,9 +8,8 @@
         <small>siswa magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-table"></i> Siswa magang</a></li>
+        <li class="<?php echo active_link('StudentIntern'); ?>"><a href="#">Detil</a></li>
       </ol>
     </section>
 

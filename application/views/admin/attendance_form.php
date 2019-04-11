@@ -8,9 +8,8 @@
         <small>kehadiran magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li><a href="<?php echo site_url('Report') ?>"><i class="fa fa-files-o"></i> Laporan Rekapitulasi</a></li>
+        <li class="<?php echo active_link('Report/add_perdate'); ?>"><a href="#">Form Pertanggal</a></li>
       </ol>
     </section>
 

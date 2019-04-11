@@ -10,9 +10,7 @@
         <small>magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li class="<?php echo active_link('Workinghours') ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-table"></i> Jam kerja</a></li>
       </ol>
     </section>
 

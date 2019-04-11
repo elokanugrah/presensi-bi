@@ -8,9 +8,7 @@
         <small>siswa magang</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li class="<?php echo active_link('Schedule') ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-table"></i> Jadwal kerja</a></li>
       </ol>
     </section>
 

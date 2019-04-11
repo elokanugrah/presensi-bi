@@ -21,7 +21,7 @@
 
 		function getall_data_comp()
 		{
-			$this->db->select('student.student_id, student.name, student.id_number, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
+			$this->db->select('student.student_id, student.name, student.qrcode_id, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
 			$this->db->join('student', 'student.student_id=attendance.student_id');
 			$this->db->order_by($this->id,$this->order);
 			return $this->db->get($this->nama_table)->result();
@@ -29,7 +29,7 @@
 
 		function getall_data_bydate($start, $end)
 		{
-			$this->db->select('student.student_id, student.name, student.id_number, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
+			$this->db->select('student.student_id, student.name, student.id_number, student.qrcode_id, attendance.attendance_id, attendance.date, attendance.time_in, attendance.time_out, attendance.status_in, attendance.status_out, attendance.note');
 			$this->db->join('student', 'student.student_id=attendance.student_id');
 			$this->db->where('date >=', $start);
 			$this->db->where('date <=', $end);
@@ -50,9 +50,66 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
+		function get_latest()
+		{
+			$this->db->select_max('date');
+			return $this->db->get($this->nama_table)->row();
+		}
+
 		function getdata_by_id($id)
 		{
 			$this->db->where($this->id,$id);
+			return $this->db->get($this->nama_table)->row();
+		}
+
+		function get_date($start,$end)
+		{
+			$this->db->select("date");
+			$this->db->where('date >=', $start);
+			$this->db->where('date <=', $end);
+			$this->db->group_by('date');
+			return $this->db->get($this->nama_table)->result();
+		}
+
+		function get_countperdate($date)
+		{
+			$telat = "telat";
+			$hadir = 'Hadir';
+			$alpha = 'Alpha';
+			$sakit = 'Sakit';
+			$izin = 'Izin';
+			$nan = '';
+			$this->db->select('	(SELECT COUNT(attendance_id) FROM attendance
+								WHERE status_in = "'.$telat.'"
+								AND date = "'.$date.'"
+								) AS late,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE note = "'.$hadir.'"
+								AND date = "'.$date.'"
+								) AS present,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE note = "'.$alpha.'"
+								AND date = "'.$date.'"
+								) AS alpha,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE note = "'.$sakit.'"
+								AND date = "'.$date.'"
+								) AS sick,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE note = "'.$izin.'"
+								AND date = "'.$date.'"
+								) AS permit,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE note = "'.$nan.'"
+								AND date = "'.$date.'"
+								) AS nan');
+			$this->db->where('date', $date);
+			$this->db->group_by('date');
 			return $this->db->get($this->nama_table)->row();
 		}
 
@@ -122,6 +179,36 @@
 							    AND status_in = "'.$nan.'"
 								)) AS nan');
 			$this->db->where('student_id', $s_id);
+			return $this->db->get($this->nama_table)->row();
+		}
+
+		function get_alreadynotyet(){
+			$already = 'on time';
+			$notyet = '';
+			$date = $this->get_latest()->date;
+			$this->db->select('((
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE date = "'.$date.'"
+								AND status_in = "'.$already.'"
+								)*100 / COUNT(attendance_id)) 
+								AS ontime_percentage,
+						        ((
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE date = "'.$date.'"
+								AND status_in = "'.$notyet.'"
+								)*100 / COUNT(attendance_id)) 
+								AS nan_percentage,
+						        (
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE date = "'.$date.'"
+								AND status_in = "'.$already.'"
+								) AS ontime,
+						        (
+						        SELECT COUNT(attendance_id) FROM attendance
+								WHERE date = "'.$date.'"
+								AND status_in = "'.$notyet.'"
+								) AS nan');
+			$this->db->where('date', $date);
 			return $this->db->get($this->nama_table)->row();
 		}
 
