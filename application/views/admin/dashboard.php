@@ -21,6 +21,20 @@
       <!-- Info boxes -->
       <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>150</h3>
+
+              <p>New Orders</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-clock-o"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-time"></i></span>
 
