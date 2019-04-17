@@ -12,7 +12,7 @@
         <small>Version 2.0</small>
       </h1>
       <ol class="breadcrumb">
-        <li class="<?php echo active_link('Dashboard'); ?>"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="<?php echo active_link('Dashboard'); ?>"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
       </ol>
     </section>
 
