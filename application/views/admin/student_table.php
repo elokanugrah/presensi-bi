@@ -49,7 +49,6 @@
                   <th>No</th>
                   <th>Nama</th>
                   <th>Mentor</th>
-                  <th>Jenis Kelamin</th>
                   <th>Asal</th>
                   <th>Jurusan</th>
                   <th>Status Magang</th>
@@ -62,7 +61,6 @@
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->name; ?></td>
                   <td><?php echo $row->mentor_name; ?></td>
-                  <td><?php echo $row->sex; ?></td>
                   <td><?php echo $row->collage; ?></td>
                   <?php if ($row->active == 'Aktif') {
                     $label = 'label-success';
