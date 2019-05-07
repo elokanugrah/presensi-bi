@@ -67,24 +67,12 @@
   }
 
   .column-1 {
-    float: left;
-    width: 25%;
-    padding: 0px;
-    margin-bottom: 20px;
-  }
-
-  .column-2 {
-    float: left;
-    width: 40%;
-    padding: 0px;
-    margin-bottom: 20px;
-  }
-
-  .column-3 {
     float: right;
     text-align: center;
-    width: 20%;
-    padding: 6px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    padding: 0px;
     margin-bottom: 20px;
   }
 
@@ -168,10 +156,6 @@
           <td><?php echo $date; ?></td> 
         </tr>
       </table>
-    </div>
-    <div class="column-2">
-    </div>
-    <div class="column-3">
     </div>
   </div>
   <table id="students"> 

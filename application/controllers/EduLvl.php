@@ -13,6 +13,7 @@ class EduLvl extends CI_Controller
             redirect('Login');
         }
         $this->load->model('EduLvl_model');
+        $this->load->model('Student_model');
 	}
 
 	public function index()

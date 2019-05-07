@@ -65,12 +65,55 @@
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
+      <?php 
+      $student=$this->Student_model->ambil_data(); 
+      $a = 0;
+      $total = 0;
+      for ($i=0; $i < count($student) ; $i++) { 
+        $date_now = date("Y-m-d");
+        // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
+        if (($date_now >= $student[$i]->date_in) && ($date_now <= $student[$i]->date_out)) {
+          ($student[$i]->active == 'Aktif')? $a++ : $total++ ;
+          $menu = ($student[$i]->active == 'Aktif')? '' : $student[$i]->name.'<li><a href="#"><i class="fa fa-user text-green"></i> '.$student[$i]->active.'</a></li>';
+        } else {
+          ($student[$i]->active == 'Non Aktif')? $a++ : $total++ ;
+          $menu = ($student[$i]->active == 'Aktif')? '' : $student[$i]->name.'<li><a href="#"><i class="fa fa-user text-red"></i> '.$student[$i]->active.'</a></li>';
+        }
+      }
+      ?>
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning"><?php echo $total; ?></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Ada <?php echo $total; ?> status siswa magang belum diubah</li>
+              <li>
+                
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <?php 
+                    for ($i=0; $i < count($student) ; $i++) { 
+                      $date_now = date("Y-m-d");
+                      // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
+                      if (($date_now >= $student[$i]->date_in) && ($date_now <= $student[$i]->date_out)) {
+                        $menu = ($student[$i]->active == 'Aktif')? '' : '<li><a href="#"><i class="fa fa-user text-red"></i> '.$student[$i]->name.' saatnya <span class="label label-success">Aktif</span></a></li>';
+                      } else {
+                        $menu = ($student[$i]->active == 'Non Aktif')? '' : '<li><a href="#"><i class="fa fa-user text-green"></i> '.$student[$i]->name.' saatnya <span class="label label-danger">Non Aktif</span></a></li>';
+                      }
+                      echo $menu;
+                    }
+                    ?>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <!-- Tasks: style can be found in dropdown.less -->
           <li>
             <a href="<?php echo site_url('Attendance') ?>">
               <span>Halaman scanner presensi magang</span>
-              <span class="label label-success">!</span>
             </a>
           </li>
           <!-- User Account: style can be found in dropdown.less -->

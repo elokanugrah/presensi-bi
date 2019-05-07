@@ -63,7 +63,8 @@ class Dashboard extends CI_Controller
             'mentor'        => count($mentor),
             'working_hours' => $working,
             'already_notyet' => $alreadynotyet,
-            'origin'        => $origin,
+            'active_level'        => $active_level,
+            'level'        => $level,
             'latest'        => $latest->date
         );
         $this->load->view('admin/dashboard',$data);

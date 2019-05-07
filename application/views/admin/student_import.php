@@ -130,10 +130,10 @@
                     $mentor_id = (empty($cek_mentor))? null : $cek_mentor->mentor_id;
                     $mentor_name = (empty($cek_mentor))? null : $cek_mentor->name;
 
-                    $start_ts = date('Y-m-d',strtotime($row['J']));
-                    $end_ts = date('Y-m-d',strtotime($row['K']));
-                    $date_now = date("Y-m-d");
-                    $status = (($date_now >= $date_now) && ($date_now <= $end_ts))? 'Aktif' : 'Non Aktif';
+                    $start_ts = date('d-m-Y',strtotime($row['J']));
+                    $end_ts = date('d-m-Y',strtotime($row['K']));
+                    $date_now = date("d-m-Y");
+                    $status = (($date_now >= $start_ts) && ($date_now <= $end_ts))? 'Aktif' : 'Non Aktif';
 
                     // Cek jika semua data tidak diisi
                     if(empty($qrcode) && empty($name) && empty($id_number) && empty($sex) && empty($phone) && empty($address) && empty($edulvl_name) && empty($collage) && empty($vocational) && empty($date_in) && empty($date_out) && empty($unit_name) && empty($nip))

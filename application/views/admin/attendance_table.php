@@ -41,9 +41,9 @@
               <h3 class="box-title">Data Kehadiran Magang</h3>
               <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
               <a href="<?php echo site_url('Report/add_perdate') ?>" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
-              <a href="<?php echo site_url('Report/import_data') ?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
-              <a href="javascript:void(0)" onclick="exp()" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a>
-              <a href="javascript:void(0)" onclick="print()" class="btn btn-success btn-sm badge mt-1 pull-right"><span class="fa fa-print"></span> Print</a>
+              <a href="<?php echo site_url('Report/import_data') ?>" class="btn bg-teal btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
+              <a href="javascript:void(0)" onclick="exp()" class="btn bg-teal btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a>
+              <a href="javascript:void(0)" onclick="print()" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="fa fa-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

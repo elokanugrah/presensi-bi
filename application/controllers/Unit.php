@@ -13,6 +13,7 @@ class Unit extends CI_Controller
             redirect('Login');
         }
         $this->load->model('Unit_model');
+        $this->load->model('Student_model');
 	}
 
 	public function index()

@@ -14,6 +14,7 @@ class Profile extends CI_Controller
         }
 		$this->load->model('Login_model');
         $this->load->model('Token_model');
+        $this->load->model('Student_model');
 	}
 
 	public function index()

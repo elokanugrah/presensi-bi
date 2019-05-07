@@ -45,8 +45,8 @@
             <div class="box-header">
               <h3 class="box-title">Data Siswa Magang</h3>
               <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus"></i>
-              <a href="<?php echo site_url('StudentIntern/import_data') ?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
-              <a href="<?php echo site_url('StudentIntern/export')?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a></a>
+              <a href="<?php echo site_url('StudentIntern/import_data') ?>" class="btn bg-teal btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
+              <a href="<?php echo site_url('StudentIntern/export')?>" class="btn bg-teal btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -60,11 +60,28 @@
                   <th>Mentor</th>
                   <th>Asal</th>
                   <th>Status Magang</th>
+                  <th>Actual Status Magang</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($data_student as $key => $row) {?>
+                <?php 
+                $a = 0;
+                $aa = 0;
+                $na = 0;
+                for ($i=0; $i < count($data_student) ; $i++) { 
+                  $date_now = date("Y-m-d");
+                  // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
+                  if (($date_now >= $data_student[$i]->date_in) && ($date_now <= $data_student[$i]->date_out)) {
+                     ($data_student[$i]->active == 'Aktif')? $a++ : $aa++ ;
+                     $name = ($data_student[$i]->active == 'Aktif')? '' : $data_student[$i]->name.' '.$data_student[$i]->active.' harusnya aktif <br>';
+                  } else {
+                    ($data_student[$i]->active == 'Non Aktif')? $a++ : $na++ ;
+                    $name = ($data_student[$i]->active == 'Non Aktif')? '' : $data_student[$i]->name.' '.$data_student[$i]->active.' harusnya non aktif <br>';
+                  }
+                echo $name;
+                }
+                foreach ($data_student as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->name; ?></td>
@@ -78,15 +95,26 @@
                     $label = 'label-danger';
                   } ?>
                   <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
+                  <td><?php 
+                  $date_now = date("Y-m-d");
+                  // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
+                  if (($date_now >= $row->date_in) && ($date_now <= $row->date_out)) {
+                     $status = ($row->active == 'Aktif')? 'Sesuai' : 'Tidak Sesuai';
+                  } else {
+                  $status = ($row->active == 'Non Aktif')? 'Sesuai' : 'Tidak Sesuai';
+                  }
+                  echo $status;
+                  ?></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
                     <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->student_id; ?>')"><i class="fa fa-pencil"></i></a>
                     <a href="<?php echo site_url('StudentIntern/delete/'.$row->student_id) ?>" data-name="<?php echo $row->name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
-                <?php }?>
+                <?php } ?>
                 </tbody>
               </table>
+              <?php echo "harusnya aktif = ".$aa." and harusnya tidak aktif = ".$na; ?>
             </div>
             <!-- /.box-body -->
           </div>

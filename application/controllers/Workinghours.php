@@ -13,6 +13,7 @@ class Workinghours extends CI_Controller
             redirect('Login');
         }
 		$this->load->model('Workinghours_model');
+		$this->load->model('Student_model');
 	}
 
 	public function index()

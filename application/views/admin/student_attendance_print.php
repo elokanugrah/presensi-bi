@@ -180,7 +180,7 @@
           <td><?php echo $data_student->name; ?></td> 
         </tr>
         <tr> 
-          <td>NIM</td> 
+          <td>NIM/NIS</td> 
           <td>:</td> 
           <td><?php echo $data_student->id_number; ?></td> 
         </tr>
@@ -199,6 +199,18 @@
           <td>:</td> 
           <td><?php echo $data_student->phone; ?></td> 
         </tr>
+        <tr>
+          <td>Status Magang</td> 
+          <td>:</td>
+          <?php 
+          if ($data_student->active == 'Aktif') {
+              $label_active = 'success';
+            } else {
+              $label_active = 'danger';
+            } 
+          ?> 
+          <td><span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span></td> 
+        </tr>
       </table>
     </div>
     <div class="column-2">
@@ -212,16 +224,9 @@
           <td><?php echo $date_in.' - '.$date_out; ?></td>
         </tr>
         <tr>
-          <td>Status Magang</td> 
+          <td>Unit</td> 
           <td>:</td>
-          <?php 
-          if ($data_student->active == 'Aktif') {
-              $label_active = 'success';
-            } else {
-              $label_active = 'danger';
-            } 
-          ?> 
-          <td><span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span></td> 
+          <td><?php echo $data_student->unit_name; ?></td> 
         </tr>
         <tr> 
           <td>Mentor</td> 
