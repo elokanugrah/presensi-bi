@@ -1,4 +1,9 @@
 <?php $this->load->view('headerfooter/header_admin'); ?>
+<!-- <style type="text/css">
+  body {
+    padding-right: 0 !important;
+  }
+</style> -->
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -39,7 +44,9 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Siswa Magang</h3>
-              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus"></i></a>
+              <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus"></i>
+              <a href="<?php echo site_url('StudentIntern/import_data') ?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
+              <a href="<?php echo site_url('StudentIntern/export')?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a></a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -48,9 +55,10 @@
                 <tr>
                   <th>No</th>
                   <th>Nama</th>
+                  <th>No. Induk Magang</th>
+                  <th>Unit</th>
                   <th>Mentor</th>
                   <th>Asal</th>
-                  <th>Jurusan</th>
                   <th>Status Magang</th>
                   <th>Aksi</th>
                 </tr>
@@ -60,6 +68,8 @@
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->name; ?></td>
+                  <td><?php echo $row->qrcode_id; ?> <a href="javascript:void(0)"  id="download" onclick="download_qr('<?php echo $row->qrcode_id; ?>', '<?php echo $row->name; ?>')" class="btn btn-default btn-sm badge mt-1 pull-right"><i class="fa fa-qrcode"></i></a></td>
+                  <td><?php echo $row->unit_name; ?></td>
                   <td><?php echo $row->mentor_name; ?></td>
                   <td><?php echo $row->collage; ?></td>
                   <?php if ($row->active == 'Aktif') {
@@ -67,7 +77,6 @@
                   } else {
                     $label = 'label-danger';
                   } ?>
-                  <td><?php echo $row->vocational; ?></td>
                   <td><span class="label <?php echo $label; ?>"><?php echo $row->active; ?></span></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
@@ -76,7 +85,7 @@
                   </td>
                 </tr>
                 <?php }?>
-                </tfoot>
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -87,6 +96,23 @@
       </div>
       <!-- /.row -->
     </section>
+    <div class="modal fade" id="modal-qr">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title-qr"></h4>
+          </div>
+          <div class="box-body">
+            <div id="qrCanvas" align="center"></div>
+          </div>
+          <div class="modal-footer">
+            <p align="center" style="font-size: 13px; color: #999; font-weight: lighter;">Klik kanan untuk menyimpan gambar</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="modal-add">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -98,21 +124,20 @@
           </div>
           <div class="box-body">
             <div class="form-group col-xs-9">
-              <label>QR Code</label>
+              <label>Nomor Induk Magang (QR Code)</label>
 
               <div class="input-group">
                 <div class="input-group-addon">
                   <i class="glyphicon glyphicon-qrcode"></i>
                 </div>
-                <input type="file" class="form-control" name="qrcode" id="file-selector" required onchange="readURL(this);">
-                <input type="hidden" name="old_qrcode">
+                <input type="text" class="form-control" name="qrcode_id" name="qrcode_id" placeholder="format: M-XX-XXXX" maxlength="9" required>
               </div>
-              <span style="font-size: 13px; color: #999;">Tipe file yang diizinkan: jpg, png, gif (maks : 120 KB)</span>
+              <label style="font-size: 13px; color: #999; font-weight: lighter;">Nomor Induk Magang (NIM) dihasilkan secara automatis.</label>
               <!-- /.input group -->
               <br>
-              <label>Hasil QR Code</label>
+              <label>Format</label>
               <div class="input-group" id="bg-qrcode">
-                <span id="file-qr-result">None</span>
+                <span>M-(Tahun Buku)-XXXX</span>
               </div>
               <!-- /.input group -->
             </div>
@@ -121,46 +146,13 @@
               <label>Preview</label>
 
               <div class="input-group">
-                <img id="blah" name="preview" src="" alt="your image" style="max-width: 100px; max-height: 100px;" />
+                <div id="canvasQR"></div>
               </div>
               <!-- /.input group -->
             </div>
             <!-- /.form group -->
-            <script type="module">
-                import QrScanner from "<?php echo base_url() ?>assets/qr-scanner.min.js";
-                QrScanner.WORKER_PATH = '<?php echo base_url() ?>assets/qr-scanner-worker.min.js';
-
-                const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
-                const fileSelector = document.getElementById('file-selector');
-                const fileQrResult = document.getElementById('file-qr-result');
-                const fileQrBg = document.getElementById('bg-qrcode');
-                const fileQrResultQr = document.getElementById('qrcode_id');
-
-                function setResult(label, result) {
-                    label.textContent = result;
-                    label.style.color = "white";
-                    fileQrBg.style.backgroundColor = "#00a65a";
-                    fileQrResultQr.value = result;
-                    clearTimeout(label.highlightTimeout);
-                    label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 500);
-                    clearTimeout(fileQrBg.highlightTimeout);
-                    fileQrBg.highlightTimeout = setTimeout(() => fileQrBg.style.backgroundColor = 'inherit', 500);
-                }
-
-                // ####### File Scanning #######
-
-                fileSelector.addEventListener('change', event => {
-                    const file = fileSelector.files[0];
-                    if (!file) {
-                        return;
-                    }
-                    QrScanner.scanImage(file)
-                        .then(result => setResult(fileQrResult, result))
-                        .catch(e => setResult(fileQrResult, e || 'No QR code found.'));
-                });
-            </script>
             <div class="form-group col-xs-12">
-              <label>NIM</label>
+              <label>NIM / NIS</label>
 
               <div class="input-group">
                 <div class="input-group-addon">
@@ -195,8 +187,20 @@
               <!-- /.input group -->
             </div>
             <!-- /.form group -->
+            <div class="col-xs-12">
+              <label>Tingkat Pendidikan</label>
+              <div class="form-group has-feedback">
+                <select class="form-control select2" name="edulvl_id" style="width: 100%;" required>
+                  <?php foreach ($level as $key => $row) {?>
+                    <option value="<?php echo $row->edulvl_id; ?>"><?php echo $row->edulvl_name; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
             <div class="col-xs-6">
-              <label>Asal</label>
+              <label>Asal Sekolah / Lembaga</label>
               <div class="input-group">
                 <div class="input-group-addon">
                   <i class="fa fa-university"></i>
@@ -226,6 +230,7 @@
               </div>
               <!-- /.input group -->
             </div>
+            <!-- /.form group -->
             <div class="col-xs-6">
               <label>Status</label>
               <div class="form-group has-feedback">
@@ -238,7 +243,40 @@
               <!-- /.input group -->
             </div>
             <!-- /.form group -->
-            <div class="col-xs-12">
+            <div class="col-xs-6">
+              <label>Tanggal Mulai</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" name="date_in" class="form-control" id="datepicker" value="">
+              </div>
+              <!-- /.input group -->
+            </div>
+            <div class="form-group col-xs-6">
+              <label>Tanggal Selesai</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" name="date_out" class="form-control" id="datepicker2" value="">
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-6">
+              <label>Unit</label>
+              <div class="form-group has-feedback">
+                <select class="form-control select2" name="unit_id" style="width: 100%;" required>
+                  <?php foreach ($unit as $key => $row) {?>
+                    <option value="<?php echo $row->unit_id; ?>"><?php echo $row->unit_name; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-6">
               <label>Mentor</label>
               <div class="form-group has-feedback">
                 <select class="form-control select2" name="mentor_id" style="width: 100%;" required>
@@ -263,7 +301,6 @@
             <!-- /.form group -->
           </div>
           <div class="modal-footer">
-            <input name="qrcode_id" id="qrcode_id" hidden>
             <input name="student_id" hidden>
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -283,8 +320,54 @@
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url() ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
-  <script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/jquery.qrcode.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/qrcode.js"></script>
+<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
+<script>
   $(function () {
+    $('[name="qrcode_id"]').on('keyup', function () {
+      $('#canvasQR').empty();
+      var value = $('[name="qrcode_id"]').val();
+      $('#canvasQR').qrcode({width: 100, height: 100, text  : value});
+    })
+
+    $('[name="qrcode_id"]').on( "keydown", function( event ) {
+      
+      
+      // When user select text in the document, also abort.
+      var selection = window.getSelection().toString();
+      if ( selection !== '' ) {
+        return;
+      }
+      
+      // When the arrow keys are pressed, abort.
+      if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+        return;
+      }
+      
+      var $this = $(this);
+      var input = $this.val();
+          input = input.replace(/[\W\s\._\-]+/g, '');
+        
+        var split = 1;
+        var chunk = [];
+
+        for (var i = 0, len = input.length; i < len; i += split) {
+          if (i < 1) {
+            split = 1;
+          } else {
+            split = ( i >= 2 ) ? 4 : 2;
+          }
+          chunk.push( input.substr( i, split ) );
+        }
+
+        $this.val(function() {
+          return chunk.join("-").toUpperCase();
+        });
+    
+    });
     //Initialize Select2 Elements
     $('.select2').select2()
 
@@ -297,6 +380,22 @@
       'info'        : true,
       'autoWidth'   : false
     })
+
+    //Date picker
+    $('#datepicker').datepicker({
+      format: 'dd-M-yyyy',
+      autoclose: true,
+      orientation: "top auto",
+      todayHighlight: true,  
+    })
+
+    $('#datepicker2').datepicker({
+      format: 'dd-M-yyyy',
+      autoclose: true,
+      orientation: "top auto",
+      todayHighlight: true,  
+    })
+
     $('.delete-data').on('click', function(e) {
       e.preventDefault();
       const href = $(this).attr('href');
@@ -316,44 +415,43 @@
         }
       })
     })
-  })
 
-  $("#file-selector").change(function (e) {
-      var fileExtension = ['jpg', 'png', 'gif'];
-      if (this.files[0].size >= 120000){
-        e.preventDefault();
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Ukuran maksimal QR Code yang diizinkan : 120 KB'
-        })
-        $('#modal-add').modal('hide');
-      }
-      if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-        e.preventDefault();
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Format QR Code yang diizinkan : '+fileExtension.join(', ')
-        })
-        $('#modal-add').modal('hide');
-      }
+    $('#canvasQR').empty();
   })
 
   function add_datetime()
   {
     $('#form_add')[0].reset(); // reset form on modals
-    $('[id="file-qr-result"]').html('None');
-    $('[name="preview"]').attr('src', './upload/default.jpg');
-    $('#form_add').attr('action', '<?php echo site_url('StudentIntern/add_action')?>');
-    $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
-    $('.modal-title-add').text('Tambah Siswa Magang'); // Set title to Bootstrap modal title
+    $('#canvasQR').empty();
+    
+    //Ajax Load data from ajax
+    $.ajax({
+        url : "<?php echo site_url('StudentIntern/max/')?>",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data)
+        {
+          var d = new Date();
+          var ybook = d.getFullYear();
+          var qr = (parseInt(data.qrcode_id)+1);
+          var newqr = 'M-'+(ybook - 1998)+'-'+qr.toString().padStart(4, "0");
+          $('[name="qrcode_id"]').val(newqr);
+          $('#canvasQR').qrcode({width: 100, height: 100, text  : newqr});
+          $('#form_add').attr('action', '<?php echo site_url('StudentIntern/add_action')?>');
+          $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
+          $('.modal-title-add').text('Tambah Siswa Magang'); // Set title to Bootstrap modal title
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    })
   }
 
   function edit_datetime(id)
   {
     $('#form_add')[0].reset(); // reset form on modals
- 
+    $('#canvasQR').empty();
     //Ajax Load data from ajax
     $.ajax({
         url : "<?php echo site_url('StudentIntern/edit/')?>/" + id,
@@ -361,20 +459,39 @@
         dataType: "JSON",
         success: function(data)
         {
+          var namabulan = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var st_in = data.date_in;
+            var dt_in = new Date(st_in);
+            var tanggal_in = dt_in.getDate();
+            if(tanggal_in <10 ){tanggal_in='0'+tanggal_in;}
+            var bulan_in = dt_in.getMonth();
+            var tahun_in = dt_in.getFullYear();
+            var date_in = (data.date_in != '') ? tanggal_in+'-'+namabulan[bulan_in]+'-'+tahun_in : '';
+
+            var st_out = data.date_out;
+            var dt_out = new Date(st_out);
+            var tanggal_out = dt_out.getDate();
+            if(tanggal_out <10 ){tanggal_out='0'+tanggal_out;}
+            var bulan_out = dt_out.getMonth();
+            var tahun_out = dt_out.getFullYear();
+            var date_out = (data.date_out != '') ? tanggal_out+'-'+namabulan[bulan_out]+'-'+tahun_out : '';
+
             $('[name="student_id"]').val(data.student_id);
             $('[name="qrcode_id"]').val(data.qrcode_id);
-            $('[id="file-qr-result"]').html(data.qrcode_id);
-            $('[name="qrcode"]').prop('required',false);
-            $('[name="old_qrcode"]').val(data.qrcode);
-            $('[name="preview"]').attr('src', './upload/'+data.qrcode);
+            $('#canvasQR').qrcode({width: 100, height: 100, text  : data.qrcode_id});
+            // $('[name="preview"]').attr('src', './upload/'+data.qrcode);
             $('[name="id_number"]').val(data.id_number);
             $('[name="name"]').val(data.name);
             $('[name="sex"]').val(data.sex);
             $('[name="active"]').val(data.active);
+            $('[name="date_in"]').datepicker('update',date_in);
+            $('[name="date_out"]').datepicker('update',date_out);
             $('[name="collage"]').val(data.collage);
             $('[name="vocational"]').val(data.vocational);
             $('[name="phone"]').val(data.phone);
-            $('[name="mentor_id"]').val(data.mentor_id);
+            $('[name="mentor_id"]').val(data.mentor_id).trigger('change');
+            $('[name="unit_id"]').val(data.unit_id).trigger('change');
+            $('[name="edulvl_id"]').val(data.edulvl_id).trigger('change');
             $('[name="address"]').val(data.address);
             $('#form_add').attr('action', '<?php echo site_url('StudentIntern/edit_action')?>');
             $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
@@ -388,19 +505,26 @@
     })
   }
 
-  function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-              $('#blah')
-                  .attr('src', e.target.result);
-          };
-
-          reader.readAsDataURL(input.files[0]);
-      }
+  function download_qr($qrcode_id, $name)
+  {
+    $('#modal-qr').modal('show');
+    $('.modal-title-qr').text('Kode QR a/n '+$name);
+    $('#qrCanvas').empty();
+    $('#qrCanvas').qrcode({width: 240, height: 240, text  : $qrcode_id});
   }
+
+  /*function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah')
+                .attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+  }*/
 </script>
-<script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>
 </body>
 </html>

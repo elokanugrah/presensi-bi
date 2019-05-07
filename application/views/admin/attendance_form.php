@@ -48,13 +48,11 @@
               <div class="box-body no-padding">
                 <?php foreach ($data_student as $key => $row) {?>
                 <input name="student_id<?php echo $key; ?>" value="<?php echo $row->student_id; ?>" hidden>
-                <div class="form-group col-xs-3">
+                <div class="form-group col-xs-2">
                   <label>Nomor Identitas</label>
                   <div class="input-group">
-                    <div class="input-group-addon">
-                      <i class="glyphicon glyphicon-credit-card"></i>
-                    </div>
-                    <input type="text" class="form-control" value="<?php echo $row->id_number; ?>">
+                    <?php echo $row->id_number; ?>
+                    <input type="text" value="<?php echo $row->id_number; ?>" hidden>
                   </div>
                   <!-- /.input group -->
                 </div>
@@ -62,10 +60,8 @@
                 <div class="form-group col-xs-3">
                   <label>Nama</label>
                   <div class="input-group">
-                    <div class="input-group-addon">
-                      <i class="glyphicon glyphicon-user"></i>
-                    </div>
-                    <input type="text" class="form-control" value="<?php echo $row->name; ?>">
+                    <?php echo $row->name; ?>
+                    <input type="text" value="<?php echo $row->name; ?>" hidden>
                   </div>
                   <!-- /.input group -->
                 </div>
@@ -90,7 +86,7 @@
                     </div>
                 </div>
                 <!-- /.form group -->
-                <div class="form-group col-xs-2">
+                <div class="form-group col-xs-3">
                   <label class="control-label">Kehadiran</label>
                     <div class="input-group">
                     <div class="input-group-addon">

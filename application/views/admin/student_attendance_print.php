@@ -204,6 +204,14 @@
     <div class="column-2">
       <table>
         <tr> 
+          <td>Periode Magang</td> 
+          <td>:</td>
+          <?php 
+            $date_in = ($data_student->date_in == '0000-00-00') ? '?' : date("d M Y", strtotime($data_student->date_in));
+            $date_out = ($data_student->date_out == '0000-00-00') ? '?' : date("d M Y", strtotime($data_student->date_out)); ?>
+          <td><?php echo $date_in.' - '.$date_out; ?></td>
+        </tr>
+        <tr>
           <td>Status Magang</td> 
           <td>:</td>
           <?php 
@@ -247,7 +255,7 @@
       </table>
     </div>
     <div class="column-3">
-      <img id="qr" name="preview" src="<?php echo base_url().'upload/'.$data_student->qrcode; ?>" alt="QR Code" />
+      <div id="canvasQR">
     </div>
   </div>
   <table id="students"> 
@@ -295,4 +303,13 @@
     <?php }?>
   </table>
 </body>
+<!-- jQuery 3 -->
+<script src="http://localhost/presensi-bi/assets/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/jquery.qrcode.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/qrcode.js"></script>
+<script>
+  $(function () {
+    $('#canvasQR').qrcode({width: 100, height: 100, text  :'<?php echo $data_student->qrcode_id; ?>'})
+    })
+</script>
 </html>

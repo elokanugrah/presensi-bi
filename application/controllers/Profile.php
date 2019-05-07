@@ -8,7 +8,7 @@ class Profile extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-        if(!$this->session->userdata('logined') || $this->session->userdata('logined') != true)
+        if(!$this->session->userdata('logined_att') || $this->session->userdata('logined_att') != true)
         {
             redirect('Login');
         }
@@ -18,7 +18,7 @@ class Profile extends CI_Controller
 
 	public function index()
 	{
-        $uname = $this->session->userdata('uname');
+        $uname = $this->session->userdata('uname_att');
         $admin=$this->Login_model->getUserByUname($uname);
         $data=array(
             'resetpassword' => false,
@@ -38,14 +38,14 @@ class Profile extends CI_Controller
         $id=$this->input->post('admin_id');
         $this->Login_model->edit_data($id,$data);
         $this->session->set_flashdata('edit_success', 'Profil berhasil diubah, silahkan login kembali dengan username baru');
-        $this->session->unset_userdata('logined');
-        $this->session->unset_userdata('uname');
+        $this->session->unset_userdata('logined_att');
+        $this->session->unset_userdata('uname_att');
         redirect(site_url('Login'));
     }
 
     function reset_password()
     {
-        $uname = $this->session->userdata('uname');
+        $uname = $this->session->userdata('uname_att');
         $cek_uname=$this->Login_model->getUserByUname($uname);
         $salt = $cek_uname->salt;
         $encrypted_password = $cek_uname->encrypted_password;
@@ -62,8 +62,8 @@ class Profile extends CI_Controller
             $id=$this->input->post('admin_id');
             $this->Login_model->edit_data($id,$data);
             $this->session->set_flashdata('edit_success', 'Passsword berhasil direset, silahkan login kembali dengan username baru');
-            $this->session->unset_userdata('logined');
-            $this->session->unset_userdata('uname');
+            $this->session->unset_userdata('logined_att');
+            $this->session->unset_userdata('uname_att');
             redirect(site_url('Login'));
         } else {
             $this->session->set_flashdata('failed_message','Password lama salah!');
@@ -79,7 +79,7 @@ class Profile extends CI_Controller
         } else {
             $resetpassword=true;
         }
-        $uname = $this->session->userdata('uname');
+        $uname = $this->session->userdata('uname_att');
         $admin=$this->Login_model->getUserByUname($uname);
         $data=array(
             'resetpassword' => $resetpassword,
@@ -93,7 +93,7 @@ class Profile extends CI_Controller
 
     function action_resetpassword()
     {
-        $uname = $this->session->userdata('uname');
+        $uname = $this->session->userdata('uname_att');
 
         // autentikasi user berhasil
         $salt = sha1(rand());
@@ -105,8 +105,8 @@ class Profile extends CI_Controller
         $id=$this->input->post('admin_id');
         $this->Login_model->edit_data($id,$data);
         $this->session->set_flashdata('edit_success', 'Passsword berhasil direset, silahkan login kembali dengan username baru');
-        $this->session->unset_userdata('logined');
-        $this->session->unset_userdata('uname');
+        $this->session->unset_userdata('logined_att');
+        $this->session->unset_userdata('uname_att');
         redirect(site_url('Login'));
     }
 }

@@ -18,7 +18,7 @@
       <div class="alert alert-success alert-dismissible" style="margin-top:30px;">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
           <i class="icon fa fa-check-circle"></i><?php echo $this->session->flashdata('input_success'); ?>
-        </div>
+      </div>
       <?php } ?>
       <?php if ($this->session->has_userdata('edit_success')) { ?>
       <div class="alert alert-info alert-dismissible" style="margin-top:30px;">
@@ -41,7 +41,9 @@
               <h3 class="box-title">Data Kehadiran Magang</h3>
               <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per nama</a>
               <a href="<?php echo site_url('Report/add_perdate') ?>" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus" style="margin-right: 5px;"></i> Per tanggal</a>
-              <a href="javascript:void(0)" onclick="print()" class="btn btn-info btn-sm badge mt-1 pull-right"><span class="glyphicon glyphicon-print"></span> Print</a>
+              <a href="<?php echo site_url('Report/import_data') ?>" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span>Import</a>
+              <a href="javascript:void(0)" onclick="exp()" class="btn btn-info btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</a>
+              <a href="javascript:void(0)" onclick="print()" class="btn btn-success btn-sm badge mt-1 pull-right"><span class="fa fa-print"></span> Print</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -95,8 +97,8 @@
                           'Sabtu',
                           'Minggu'
                         ); 
-                        $dateday=$hari[ date('N', strtotime($row->date)) ] .', '. date("d M Y", strtotime($row->date));
-                        echo $dateday; ?></td>
+                  $dateday=$hari[ date('N', strtotime($row->date)) ] .', '. date("d M Y", strtotime($row->date));
+                  echo $dateday; ?></td>
                   <td><?php echo $row->name; ?></td>
                   <td><?php echo $row->time_in; ?></td>
                   <?php if ($row->status_in == 'on time') {
@@ -419,7 +421,14 @@
     $('#date-form').submit();
   }
 
-  function add_datetime(id)
+  function exp()
+  {
+    $('#date-form')[0].reset();
+    $('#date-form').attr('action', '<?php echo site_url('Report/export')?>');
+    $('#date-form').submit();
+  }
+
+  function add_datetime()
   {
     $('#form_add')[0].reset(); // reset form on modals
  

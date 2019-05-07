@@ -177,15 +177,17 @@
   <table id="students"> 
     <tr> 
       <th rowspan="2">No.</th> 
-      <th rowspan="2">PIN</th> 
+      <th rowspan="2">Nomor Induk Magang</th> 
       <th rowspan="2">Nama</th> 
-      <th colspan="3">Kehadiran</th> 
+      <th colspan="5">Kehadiran</th> 
       <th colspan="2" rowspan="2">Keterangan</th>
     </tr> 
     <tr> 
       <th>Tanggal</th> 
       <th>Jam Masuk</th> 
+      <th>Status Masuk</th> 
       <th>Jam Pulang</th>
+      <th>Status Pulang</th> 
     </tr> 
     <?php foreach ($data_attendance as $key => $row) {?>
     <tr> 
@@ -208,7 +210,19 @@
       echo $dateday; ?>
       </td> 
       <td><?php echo $row->time_in; ?></td> 
+      <?php if ($row->status_in == 'on time') {
+              $label_in = 'success';
+            } else {
+              $label_in = 'warning';
+            } ?>
+      <td><span class="label <?php echo $label_in; ?>"><?php echo $row->status_in; ?></span></td>
       <td><?php echo $row->time_out; ?></td>
+            <?php if ($row->status_out == 'on time') {
+              $label_out = 'success';
+            } else {
+              $label_out = 'warning';
+            } ?>
+      <td><span class="label <?php echo $label_out; ?>"><?php echo $row->status_out; ?></span></td>
       <?php if ($row->note == 'Hadir') {
           $label_note = 'success';
         } elseif ($row->note == 'Sakit') {

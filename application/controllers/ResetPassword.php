@@ -66,8 +66,8 @@ class ResetPassword extends CI_Controller
             if ($qstring == $token){
                 if (date("H.i") <= date("H.i", strtotime($time)+300)) {
                     $admin=$this->Login_model->getUserByEmail($email);
-                    $this->session->set_userdata('logined', true);
-                    $this->session->set_userdata('uname', $admin->username);
+                    $this->session->set_userdata('logined_att', true);
+                    $this->session->set_userdata('uname_att', $admin->username);
                     $this->Token_model->delete_data($gettoken->token_id);
                     $this->session->set_flashdata('reset_password', true);
                     redirect(site_url('Profile/password_reset/'));

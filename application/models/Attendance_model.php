@@ -37,6 +37,58 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function check_date($date)
+		{
+			$this->db->where('date',$date);
+			$num_rows = $this->db->count_all_results('attendance');
+			if ($num_rows > 0){
+		        return true;
+		    }
+		    else{
+		        return false;
+		    }
+		}
+
+		function check_stddate($student_id, $date)
+		{
+			$this->db->where('student_id',$student_id);
+			$this->db->where('date',$date);
+			$num_rows = $this->db->count_all_results('attendance');
+			if ($num_rows > 0){
+		        return true;
+		    }
+		    else{
+		        return false;
+		    }
+		}
+
+		function check_studentdate($student_id, $date)
+		{
+			$this->db->where('student_id',$student_id);
+			$this->db->where('date',$date);
+			return $this->db->get($this->nama_table)->row();
+		}
+
+		function add_all($date, $student_id, $data)
+		{
+			$query = $this->db->query("INSERT INTO attendance(student_id, date) 
+				      	SELECT student.student_id,'$date'
+				      	FROM student
+				      	WHERE student.active = 'Aktif'");
+			if ($query) {
+				$this->db->where('student_id',$student_id);
+				$this->db->where('date',$date);
+				$this->db->update($this->nama_table,$data);
+			}
+		}
+
+		/*function getdata_by_studentdate($id, $date)
+		{
+			$this->db->where('student_id',$id);
+			$this->db->where('date',$date);
+			return $this->db->get($this->nama_table)->row();
+		}*/
+
 		function getall_by_student($id)
 		{
 			$this->db->where('student_id',$id);
@@ -59,6 +111,12 @@
 		function getdata_by_id($id)
 		{
 			$this->db->where($this->id,$id);
+			return $this->db->get($this->nama_table)->row();
+		}
+
+		function getdata_by_date($date)
+		{
+			$this->db->where('date',$date);
 			return $this->db->get($this->nama_table)->row();
 		}
 
@@ -184,12 +242,14 @@
 
 		function get_alreadynotyet(){
 			$already = 'on time';
+			$late = 'telat';
 			$notyet = '';
 			$date = $this->get_latest()->date;
 			$this->db->select('((
 								SELECT COUNT(attendance_id) FROM attendance
 								WHERE date = "'.$date.'"
-								AND status_in = "'.$already.'"
+								AND (status_in = "'.$already.'"
+							    OR status_in = "'.$late.'")
 								)*100 / COUNT(attendance_id)) 
 								AS ontime_percentage,
 						        ((
@@ -203,6 +263,11 @@
 								WHERE date = "'.$date.'"
 								AND status_in = "'.$already.'"
 								) AS ontime,
+								(
+								SELECT COUNT(attendance_id) FROM attendance
+								WHERE date = "'.$date.'"
+								AND status_in = "'.$late.'"
+								) AS late,
 						        (
 						        SELECT COUNT(attendance_id) FROM attendance
 								WHERE date = "'.$date.'"
@@ -228,5 +293,33 @@
         	$this->db->where($this->id,$id);
         	$this->db->delete($this->nama_table);
     	}
+
+    	// Fungsi untuk melakukan proses upload file
+		public function upload_file($filename)
+		{
+			$this->load->library('upload'); // Load librari upload
+
+			$config['upload_path'] = './excel/';
+			$config['allowed_types'] = 'xlsx';
+			$config['max_size']  = '1024';
+			$config['overwrite'] = true;
+			$config['file_name'] = $filename;
+
+			$this->upload->initialize($config); // Load konfigurasi uploadnya
+			if($this->upload->do_upload('file')){ // Lakukan upload dan Cek jika proses upload berhasil
+			  // Jika berhasil :
+			  $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+			  return $return;
+			}else{
+			  // Jika gagal :
+			  $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+			  return $return;
+			}
+		}
+
+		// Buat sebuah fungsi untuk melakukan insert lebih dari 1 data
+		public function insert_multiple($data){
+			$this->db->insert_batch($this->nama_table, $data);
+		}
 	}
 	?>

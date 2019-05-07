@@ -30,6 +30,12 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
+		function getdata_by_nip($nip)
+		{
+			$this->db->where('nip',$nip);
+			return $this->db->get($this->nama_table)->row();
+		}
+
 		function data_adding($data)
 		{
 			return $this->db->insert($this->nama_table,$data);

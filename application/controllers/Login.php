@@ -13,7 +13,7 @@ class Login extends CI_Controller
 
 	public function index()
 	{
-		if($this->session->userdata('logined') && $this->session->userdata('logined') == true)
+		if($this->session->userdata('logined_att') && $this->session->userdata('uname_att') == true)
 		{
 			redirect('Dashboard');
 		}
@@ -35,8 +35,8 @@ class Login extends CI_Controller
 				//$this->session->set_userdata('logined', true);
 				if ($encrypted_password == $hash) {
                 // autentikasi user berhasil
-					$this->session->set_userdata('logined', true);
-					$this->session->set_userdata('uname', $cek_uname->username);
+					$this->session->set_userdata('logined_att', true);
+					$this->session->set_userdata('uname_att', $cek_uname->username);
 					redirect("Dashboard");
             	} else {
             		$this->session->set_flashdata('login_message','Password salah!');
@@ -53,8 +53,8 @@ class Login extends CI_Controller
 
 	public function logout()
     {
-		$this->session->unset_userdata('logined');
-		$this->session->unset_userdata('uname');
+		$this->session->unset_userdata('logined_att');
+		$this->session->unset_userdata('uname_att');
 		redirect("Login");
     }
 }

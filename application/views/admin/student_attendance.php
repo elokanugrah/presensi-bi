@@ -53,14 +53,14 @@
                 <div class="col-xs-3">
                   <b>Nama Siswa:<br>
                   </b> <?php echo $data_student->name; ?><br>
-                  <b>NIM:<br>
+                  <b>Nomor Induk Magang:<br>
+                  </b> <?php echo $data_student->qrcode_id; ?><br>
+                  <b>QR Code:<br>
+                  </b> <div id="canvasQR"></div>
+                  <b>NIM / NIS:<br>
                   </b> <?php echo $data_student->id_number; ?><br>
                   <b>Jenis Kelamin:<br>
                   </b> <?php echo $data_student->sex; ?><br>
-                  <b>Asal:<br>
-                  </b> <?php echo $data_student->collage; ?><br>
-                  <b>Jurusan:<br>
-                  </b> <?php echo $data_student->vocational; ?><br>
                   <b>No Handphone:<br>
                   </b> <?php echo $data_student->phone; ?><br>
                   <b>Alamat:<br>
@@ -68,46 +68,63 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-3">
-                  <b>Status Magang:<br>
-                  <?php if ($data_student->active == 'Aktif') {
-                    $label_active = 'label-success';
-                  } else {
-                    $label_active = 'label-danger';
-                  } ?>
-                  </b> <span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span><br>
-                  <b>QR Code:<br>
-                  </b> <img id="blah" name="preview" src="<?php echo base_url().'upload/'.$data_student->qrcode; ?>" alt="QR Code" style="max-width: 50px; max-height: 50px;" /><br>
+                  <b>Tingkat Pendidikan:<br>
+                  </b> <?php echo $data_student->edulvl_name; ?><br>
+                  <b>Asal:<br>
+                  </b> <?php echo $data_student->collage; ?><br>
+                  <b>Jurusan:<br>
+                  </b> <?php echo $data_student->vocational; ?><br>
+                  <b>Mulai-Selesai Magang:<br>
+                  </b>
+                  <?php 
+                  $date_in = ($data_student->date_in == '0000-00-00') ? '?' : date("d M Y", strtotime($data_student->date_in));
+                  $date_out = ($data_student->date_out == '0000-00-00') ? '?' : date("d M Y", strtotime($data_student->date_out));
+                  echo $date_in.' - '.$date_out; ?> <br>
                   <b>Mentor:<br>
                   </b> <?php echo $data_student->mentor_name; ?><br>
-                  <b>Total Hari Kerja:<br>
-                  </b> <?php echo $total; ?> hari<br>
-                  <b>Persentase Kehadiran:<br>
-                  <?php if ($data_percent >= 80) {
-                    $label_percent = 'label-success';
-                  } elseif ($data_percent >= 70 && $data_percent < 80) {
-                    $label_percent = 'label-warning';
-                  } else {
-                    $label_percent = 'label-danger';
-                  } ?>
-                  </b> <span class="label <?php echo $label_percent; ?>"><?php echo number_format($data_percent, 2, '.', ''); ?> %</span><br>
-                  <b>Kehadiran:<br>
-                  </b> <?php echo $present.' hadir'; ?> <?php echo '/ '.$alpha.' alpha'; ?> <?php echo '/ '.$sick.' sakit'; ?> <?php echo '/ '.$permit.' izin'; ?>
+                  <b>Ditempatkan di unit:<br>
+                  </b> <?php echo $data_student->unit_name; ?><br>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-3">
-                  <b>Kehadiran:<br>
-                  </b>
-                  <br><div class="chart">
+                  <div class="row">
+                    <b>Total Hari Kerja:<br>
+                    </b> <?php echo $total; ?> hari<br>
+                    <b>Kehadiran:<br>
+                    </b> <?php echo $present.' hadir'; ?> <?php echo '/ '.$alpha.' alpha'; ?> <?php echo '/ '.$sick.' sakit'; ?> <?php echo '/ '.$permit.' izin'; ?><br>
+                    <b>Status kehadiran:</b>
+                  </div>
+                  <br>
+                  <div class="chart">
                     <canvas id="pie-chart2" class="pull-right" style="max-height: 180px; max-width: 180px;"></canvas>
                   </div>
                 </div>
                 <!-- /.col -->
-                <div class="col-xs-3">
-                  <b>Ketepatan waktu:<br>
-                  </b>
-                  <br><div class="chart">
-                    <canvas id="pie-chart" class="pull-right" style="max-height: 180px; max-width: 180px;"></canvas>
+                <div class="col-md-3">
+                  <div class="row">
+                    <b>Status Magang:<br>
+                    <?php if ($data_student->active == 'Aktif') {
+                      $label_active = 'label-success';
+                    } else {
+                      $label_active = 'label-danger';
+                    } ?>
+                    </b> <span class="label <?php echo $label_active; ?>"><?php echo $data_student->active; ?></span><br>
+                    <b>Persentase Kehadiran:<br>
+                    <?php if ($data_percent >= 80) {
+                      $label_percent = 'label-success';
+                    } elseif ($data_percent >= 70 && $data_percent < 80) {
+                      $label_percent = 'label-warning';
+                    } else {
+                      $label_percent = 'label-danger';
+                    } ?>
+                    </b> <span class="label <?php echo $label_percent; ?>"><?php echo number_format($data_percent, 2, '.', ''); ?> %</span><br>
+                    <b>Ketepatan waktu:
+                    </b>
                   </div>
+                  <br>
+                    <div class="chart">
+                      <canvas id="pie-chart" class="pull-right" style="max-height: 180px; max-width: 180px;"></canvas>
+                    </div>
                 </div>
                 <!-- /.col -->
               </div>
@@ -356,8 +373,12 @@
 <script src="<?php echo base_url() ?>assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/jquery.qrcode.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/qrcode.js"></script>
 <script>
   $(function () {
+    $('#canvasQR').qrcode({width: 50, height: 50, text  :'<?php echo $data_student->qrcode_id; ?>'})
+
     $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
@@ -436,7 +457,7 @@
           datasets: [{
             label: "Population (millions)",
             backgroundColor: ["#00a65a", "#f39c12", "#dddddd"],
-            data: [<?php echo $in_stats->ontime; ?>, <?php echo $in_stats->late; ?>, <?php echo $in_stats->nan; ?>]
+            data: [<?php echo (!empty($in_stats->ontime)) ? $in_stats->ontime : 0 ; ?>, <?php echo (!empty($in_stats->late)) ? $in_stats->late : 0 ; ?>, <?php echo (!empty($in_stats->nan)) ? $in_stats->nan : 0 ; ?>]
           }]
         },
         options: {
@@ -457,7 +478,7 @@
           datasets: [{
             label: "Population (millions)",
             backgroundColor: ["#00a65a", "#f56954", "#f39c12", "#00c0ef"],
-            data: [<?php echo $present; ?>, <?php echo $alpha; ?>, <?php echo $sick; ?>, <?php echo $permit; ?>, <?php echo $nan; ?>]
+            data: [<?php echo (!empty($present)) ? $present : 0 ; ?>, <?php echo $alpha; ?>, <?php echo (!empty($sick)) ? $sick : 0 ; ?>, <?php echo (!empty($permit)) ? $permit : 0 ; ?>, <?php echo (!empty($nan)) ? $nan : 0 ; ?>]
           }]
         },
         options: {

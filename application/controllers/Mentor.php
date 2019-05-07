@@ -8,10 +8,10 @@ class Mentor extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-        /*if(!$this->session->userdata('logined') || $this->session->userdata('logined') != true)
+        if(!$this->session->userdata('logined_att') || $this->session->userdata('logined_att') != true)
         {
-            redirect('/');
-        }*/
+            redirect('Login');
+        }
         $this->load->model('Mentor_model');
 	}
 

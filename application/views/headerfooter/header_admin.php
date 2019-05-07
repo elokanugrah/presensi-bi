@@ -14,14 +14,14 @@
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/Ionicons/css/ionicons.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/iCheck/all.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/jvectormap/jquery-jvectormap.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/iCheck/all.css">
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
   <!-- Bootstrap time Picker -->
@@ -67,16 +67,22 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <li>
+            <a href="<?php echo site_url('Attendance') ?>">
+              <span>Halaman scanner presensi magang</span>
+              <span class="label label-success">!</span>
+            </a>
+          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs"><?php echo $this->session->userdata('uname'); ?></span>
+              <span class="hidden-xs"><?php echo $this->session->userdata('uname_att'); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header" style="max-height: 60px;">
                 <p>
-                  <?php echo $this->session->userdata('uname'); ?>
+                  <?php echo $this->session->userdata('uname_att'); ?>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -109,7 +115,7 @@
           <img src="<?php echo base_url() ?>assets/dist/img/LogoBI.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?php echo $this->session->userdata('uname'); ?></p>
+          <p><?php echo $this->session->userdata('uname_att'); ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -125,7 +131,7 @@
             <i class="fa fa-files-o"></i> <span>Laporan Rekapitulasi</span>
           </a>
         </li>
-        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Schedule'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('Workinghours'); ?> treeview">
+        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Workinghours'); ?> <?php echo active_link('Unit'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('EduLvl'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -135,8 +141,9 @@
           <ul class="treeview-menu">
             <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i> Siswa Magang</a></li>
             <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
+            <li class="<?php echo active_link('Unit'); ?>"><a href="<?php echo site_url('Unit') ?>"><i class="fa fa-circle-o"></i> Unit</a></li>
             <li class="<?php echo active_link('Mentor'); ?>"><a href="<?php echo site_url('Mentor') ?>"><i class="fa fa-circle-o"></i> Mentor</a></li>
-            <li class="<?php echo active_link('Schedule'); ?>"><a href="<?php echo site_url('Schedule') ?>"><i class="fa fa-circle-o"></i> Jadwal Kerja*</a></li>
+            <li class="<?php echo active_link('EduLvl'); ?>"><a href="<?php echo site_url('EduLvl') ?>"><i class="fa fa-circle-o"></i> Tingkat Pendidikan</a></li>
           </ul>
         </li>
       </ul>

@@ -8,6 +8,10 @@ class Workinghours extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		if(!$this->session->userdata('logined_att') || $this->session->userdata('logined_att') != true)
+        {
+            redirect('Login');
+        }
 		$this->load->model('Workinghours_model');
 	}
 
