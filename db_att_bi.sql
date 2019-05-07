@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 10 Apr 2019 pada 15.18
+-- Generation Time: 05 Mei 2019 pada 11.03
 -- Versi Server: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `encrypted_password`, `salt`, `name`, `email`) VALUES
-(1, 'admin', 'uANbWIF3iE/pyO1F2cdh9aYXZ2xjNWFhOGM1ZjIx', 'c5aa8c5f21', 'Elok Anugrah', 'elok15ti@mahasiswa.pcr.ac.id');
+(1, 'admin', 'DmJQTfL/NJuGFAOlmfTV+qf2Wz8xZGQzODg4NTll', '1dd388859e', 'Elok Anugrah', 'elok15ti@mahasiswa.pcr.ac.id');
 
 -- --------------------------------------------------------
 
@@ -66,14 +66,35 @@ CREATE TABLE `attendance` (
 INSERT INTO `attendance` (`attendance_id`, `student_id`, `date`, `time_in`, `time_out`, `status_in`, `status_out`, `note`) VALUES
 (1, 1, '2019-03-26', '07:40:00', '17:00:00', 'on time', 'on time', 'Hadir'),
 (3, 2, '2019-03-26', '07:40:00', '17:00:00', 'on time', 'on time', 'Hadir'),
-(4, 1, '2019-03-27', '07:40:00', '', 'on time', '', 'Hadir'),
+(4, 1, '2019-03-27', '07:40:00', '11:00:00', 'on time', 'lebih awal', 'Izin'),
 (5, 2, '2019-03-27', '07:40:00', '17:00:00', 'on time', 'on time', 'Hadir'),
-(6, 1, '2019-03-28', '07:50:00', '17:00:00', 'telat', 'on time', 'Izin'),
+(6, 1, '2019-03-28', '07:40:00', '17:00:00', 'on time', 'on time', 'Izin'),
 (7, 2, '2019-03-28', '07:40:00', '17:00:00', 'on time', 'on time', 'Hadir'),
-(8, 1, '2019-03-29', '07:40:00', '17:00:00', 'on time', 'on time', 'Alpha'),
+(8, 1, '2019-03-29', '07:45:00', '11:00:00', 'on time', 'lebih awal', 'Izin'),
 (9, 2, '2019-03-29', '07:40:00', '17:00:00', 'on time', 'on time', 'Hadir'),
-(10, 1, '2019-04-01', '07:40:00', '17:10:10', 'on time', 'on time', 'Hadir'),
-(11, 2, '2019-04-01', '07:45:10', '17:05:00', 'telat', 'on time', 'Hadir');
+(176, 1, '2019-04-18', '15:21:10', '15:22:30', 'telat', 'lebih awal', 'Hadir'),
+(177, 2, '2019-04-18', '15:21:31', '15:22:06', 'telat', 'lebih awal', 'Alpha'),
+(178, 1, '2019-04-23', '10:08:16', '17:12:37', 'telat', 'on time', 'Hadir'),
+(179, 2, '2019-04-23', '16:15:17', '16:40:14', 'telat', 'lebih awal', 'Sakit');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `edulvl`
+--
+
+CREATE TABLE `edulvl` (
+  `edulvl_id` int(11) NOT NULL,
+  `edulvl_name` varchar(145) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `edulvl`
+--
+
+INSERT INTO `edulvl` (`edulvl_id`, `edulvl_name`) VALUES
+(1, 'SMA/SMK Sederajat'),
+(2, 'Perguruan Tinggi');
 
 -- --------------------------------------------------------
 
@@ -92,7 +113,7 @@ CREATE TABLE `mentor` (
 --
 
 INSERT INTO `mentor` (`mentor_id`, `nip`, `name`) VALUES
-(1, '123', 'asdf'),
+(1, '123', 'asdfggg'),
 (2, '567666', 'Asasdfajh ajshd kljhfl');
 
 -- --------------------------------------------------------
@@ -104,6 +125,8 @@ INSERT INTO `mentor` (`mentor_id`, `nip`, `name`) VALUES
 CREATE TABLE `student` (
   `student_id` int(11) NOT NULL,
   `mentor_id` int(11) NOT NULL,
+  `edulvl_id` int(11) NOT NULL,
+  `unit_id` int(11) NOT NULL,
   `qrcode_id` varchar(11) NOT NULL,
   `qrcode` varchar(100) NOT NULL DEFAULT 'default.jpg',
   `id_number` varchar(35) NOT NULL,
@@ -113,6 +136,8 @@ CREATE TABLE `student` (
   `vocational` varchar(100) NOT NULL,
   `address` varchar(145) NOT NULL,
   `phone` varchar(15) NOT NULL,
+  `date_in` date NOT NULL,
+  `date_out` date NOT NULL,
   `active` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -120,12 +145,32 @@ CREATE TABLE `student` (
 -- Dumping data untuk tabel `student`
 --
 
-INSERT INTO `student` (`student_id`, `mentor_id`, `qrcode_id`, `qrcode`, `id_number`, `name`, `sex`, `collage`, `vocational`, `address`, `phone`, `active`) VALUES
-(1, 2, '19SIMABI005', '5cadbd1edd43f.png', '1555301022', 'Elok Anugrah Alkhaliq', 'Laki-laki', 'Politeknik Caltex Riau', 'Teknik Informatika', 'Jl. Jalan', '08127', 'Aktif'),
-(2, 1, '19SIMABI002', '5cadbce369cbb.png', '1455301082', 'Wahyu Adhi Setiantoro', 'Laki-laki', 'Politeknik Caltex RIau', '123', 'test', '123', 'Aktif'),
-(3, 1, '19SIMABI003', '5cadbcec337ea.png', '1555301078', 'Selfia Firdaus', 'Perempuan', 'Politeknik Caltex Riau', 'ttt', 'ttt', '999', 'Non Aktif'),
-(5, 1, '19SIMABI004', '5cadbcf830bb2.png', '155544203', 'Joko Widodo', 'Laki-laki', 'Universitas Gadjah Mada', 'Militer', 'g', '9999', 'Non Aktif'),
-(6, 2, '19SIMABI005', '5cadbd007a8a5.png', '1555331290', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer Magelang', 'Militer', 'as', '9999', 'Aktif');
+INSERT INTO `student` (`student_id`, `mentor_id`, `edulvl_id`, `unit_id`, `qrcode_id`, `qrcode`, `id_number`, `name`, `sex`, `collage`, `vocational`, `address`, `phone`, `date_in`, `date_out`, `active`) VALUES
+(1, 2, 2, 5, 'M-21-0001', '5cb05325b61b3.png', '1555301022', 'Elok Anugrah Alkhaliq', 'Laki-laki', 'Politeknik Caltex Riau', 'Teknik Informatika', 'Jl. Jalan', '08127', '2019-03-11', '2019-07-11', 'Aktif'),
+(2, 1, 2, 7, 'M-21-0002', '5cb05330060f9.png', '1455301082', 'Wahyu Adhi Setiantoro', 'Laki-laki', 'Politeknik Caltex RIau', '123', 'test', '123', '2019-03-11', '2019-07-11', 'Aktif'),
+(3, 1, 1, 7, 'M-21-0003', '5cb053392f8ba.png', '1555301078', 'Selfia Firdaus', 'Perempuan', 'SMA 666', 'ttt', 'ttt', '999', '2019-03-11', '2019-07-11', 'Non Aktif'),
+(5, 1, 2, 7, 'M-21-0004', '5cb0533fea098.png', '155544203', 'Joko Widodo', 'Laki-laki', 'Universitas Gadjah Mada', 'Kehutanan', 'g', '9999', '2018-11-01', '2019-04-30', 'Non Aktif'),
+(17, 1, 1, 6, 'M-21-0005', 'default.jpg', '666', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer', 'Strategi Perang', 'sadf', '88888', '2019-05-01', '2019-07-01', 'Aktif');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `unit`
+--
+
+CREATE TABLE `unit` (
+  `unit_id` int(11) NOT NULL,
+  `unit_name` varchar(145) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `unit`
+--
+
+INSERT INTO `unit` (`unit_id`, `unit_name`) VALUES
+(5, 'Kasir'),
+(6, 'Akuntansi'),
+(7, 'Humas');
 
 -- --------------------------------------------------------
 
@@ -164,6 +209,12 @@ ALTER TABLE `attendance`
   ADD KEY `student_id` (`student_id`);
 
 --
+-- Indexes for table `edulvl`
+--
+ALTER TABLE `edulvl`
+  ADD PRIMARY KEY (`edulvl_id`);
+
+--
 -- Indexes for table `mentor`
 --
 ALTER TABLE `mentor`
@@ -174,7 +225,16 @@ ALTER TABLE `mentor`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`student_id`),
-  ADD KEY `mentor_id` (`mentor_id`);
+  ADD UNIQUE KEY `qrcode_id` (`qrcode_id`),
+  ADD KEY `mentor_id` (`mentor_id`),
+  ADD KEY `unit_id` (`unit_id`),
+  ADD KEY `edulvl_id` (`edulvl_id`);
+
+--
+-- Indexes for table `unit`
+--
+ALTER TABLE `unit`
+  ADD PRIMARY KEY (`unit_id`);
 
 --
 -- Indexes for table `working_hours`
@@ -195,7 +255,12 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+--
+-- AUTO_INCREMENT for table `edulvl`
+--
+ALTER TABLE `edulvl`
+  MODIFY `edulvl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `mentor`
 --
@@ -205,7 +270,12 @@ ALTER TABLE `mentor`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `unit`
+--
+ALTER TABLE `unit`
+  MODIFY `unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `working_hours`
 --
@@ -225,7 +295,9 @@ ALTER TABLE `attendance`
 -- Ketidakleluasaan untuk tabel `student`
 --
 ALTER TABLE `student`
-  ADD CONSTRAINT `fk_mentor` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`mentor_id`);
+  ADD CONSTRAINT `fk_level` FOREIGN KEY (`edulvl_id`) REFERENCES `edulvl` (`edulvl_id`),
+  ADD CONSTRAINT `fk_mentor` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`mentor_id`),
+  ADD CONSTRAINT `fk_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`unit_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
