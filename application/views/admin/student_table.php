@@ -60,28 +60,12 @@
                   <th>Mentor</th>
                   <th>Asal</th>
                   <th>Status Magang</th>
-                  <th>Actual Status Magang</th>
+                  <th>Periode Magang</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php 
-                $a = 0;
-                $aa = 0;
-                $na = 0;
-                for ($i=0; $i < count($data_student) ; $i++) { 
-                  $date_now = date("Y-m-d");
-                  // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
-                  if (($date_now >= $data_student[$i]->date_in) && ($date_now <= $data_student[$i]->date_out)) {
-                     ($data_student[$i]->active == 'Aktif')? $a++ : $aa++ ;
-                     $name = ($data_student[$i]->active == 'Aktif')? '' : $data_student[$i]->name.' '.$data_student[$i]->active.' harusnya aktif <br>';
-                  } else {
-                    ($data_student[$i]->active == 'Non Aktif')? $a++ : $na++ ;
-                    $name = ($data_student[$i]->active == 'Non Aktif')? '' : $data_student[$i]->name.' '.$data_student[$i]->active.' harusnya non aktif <br>';
-                  }
-                echo $name;
-                }
-                foreach ($data_student as $key => $row) {?>
+                <?php foreach ($data_student as $key => $row) {?>
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->name; ?></td>
@@ -99,12 +83,13 @@
                   $date_now = date("Y-m-d");
                   // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
                   if (($date_now >= $row->date_in) && ($date_now <= $row->date_out)) {
-                     $status = ($row->active == 'Aktif')? 'Sesuai' : 'Tidak Sesuai';
+                     $status = ($row->active == 'Aktif')? 'bg-purple' : 'bg-orange';
                   } else {
-                  $status = ($row->active == 'Non Aktif')? 'Sesuai' : 'Tidak Sesuai';
+                  $status = ($row->active == 'Non Aktif')? 'bg-purple' : 'bg-orange';
                   }
-                  echo $status;
-                  ?></td>
+                  echo date("d-m-Y", strtotime($row->date_in)).' ~ '. date("d-m-Y", strtotime($row->date_out));
+                  ?>
+                  <div class="pull-right"><span class="label <?php echo $status; ?>"><li class="fa <?php echo $icon = ($status == 'bg-purple')? 'fa-check' : 'fa-close'; ?>"></li></span></div><div class="hidden"><?php echo $forsearch = ($status == 'bg-purple')? 'benar' : 'salah'; ?></div></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
                     <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->student_id; ?>')"><i class="fa fa-pencil"></i></a>
@@ -114,7 +99,6 @@
                 <?php } ?>
                 </tbody>
               </table>
-              <?php echo "harusnya aktif = ".$aa." and harusnya tidak aktif = ".$na; ?>
             </div>
             <!-- /.box-body -->
           </div>
@@ -400,14 +384,7 @@
     $('.select2').select2()
 
     $('#example1').DataTable()
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
+
 
     //Date picker
     $('#datepicker').datepicker({

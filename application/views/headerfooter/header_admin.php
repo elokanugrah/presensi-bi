@@ -85,11 +85,11 @@
         <ul class="nav navbar-nav">
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning"><?php echo $total; ?></span>
+              <i class="fa fa-flag-o"></i>
+              <?php echo ($total != 0)? '<span class="label label-warning">'.$total.'</span>' : '' ; ?>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">Ada <?php echo $total; ?> status siswa magang belum diubah</li>
+              <?php echo ($total != 0)? '<li class="header">Ada '.$total.' status siswa magang belum diubah</li>' : '<li class="header">Status seluruh peserta magang sesuai</li>' ; ?>
               <li>
                 
                 <!-- inner menu: contains the actual data -->
@@ -99,13 +99,25 @@
                       $date_now = date("Y-m-d");
                       // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
                       if (($date_now >= $student[$i]->date_in) && ($date_now <= $student[$i]->date_out)) {
-                        $menu = ($student[$i]->active == 'Aktif')? '' : '<li><a href="#"><i class="fa fa-user text-red"></i> '.$student[$i]->name.' saatnya <span class="label label-success">Aktif</span></a></li>';
+                        // $menu = ($student[$i]->active == 'Aktif')? '' : '<li><a href='.site_url('StudentIntern').'><i class="fa fa-user text-red"></i> '.$student[$i]->name.' saatnya <span class="label label-success">Aktif</span></a></li>';
+                        // $this->session->set_flashdata('std_change_date', $student[$i]->name);
+                        if ($student[$i]->active == 'Aktif') {
+                          $menu = '';
+                        } else {
+                          $menu = '<li><a href='.site_url('StudentIntern').'><i class="fa fa-user text-red"></i> '.$student[$i]->name.' ubah <span class="label label-success">Aktif</span></a></li>';
+                        }
                       } else {
-                        $menu = ($student[$i]->active == 'Non Aktif')? '' : '<li><a href="#"><i class="fa fa-user text-green"></i> '.$student[$i]->name.' saatnya <span class="label label-danger">Non Aktif</span></a></li>';
+                        // $menu = ($student[$i]->active == 'Non Aktif')? '' : '<li><a href='.site_url('StudentIntern').'><i class="fa fa-user text-green"></i> '.$student[$i]->name.' saatnya <span class="label label-danger">Non Aktif</span></a></li>';
+                        // $this->session->set_flashdata('std_change_date', $student[$i]->name);
+                        if ($student[$i]->active == 'Non Aktif') {
+                          $menu = '';
+                        } else {
+                          $menu = '<li><a href='.site_url('StudentIntern').'><i class="fa fa-user text-green"></i> '.$student[$i]->name.' ubah <span class="label label-danger">Non Aktif</span></a></li>';
+                        }
                       }
-                      echo $menu;
+                    echo $menu;
                     }
-                    ?>
+                  ?>
                 </ul>
               </li>
             </ul>
