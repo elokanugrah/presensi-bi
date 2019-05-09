@@ -122,7 +122,7 @@
 			$this->db->delete($this->nama_table);
 		}
 
-		function _deleteImage($id)
+		/*function _deleteImage($id)
 		{
 		    $student = $this->getdata_by_id($id);
 		    if ($student->qrcode != "default.jpg") {
@@ -137,7 +137,7 @@
 			    $filename = explode(".", $old)[0];
 				return array_map('unlink', glob(FCPATH."./upload/$filename.*"));
 		    }
-		}
+		}*/
 
 		// Buat sebuah fungsi untuk melakukan insert lebih dari 1 data
 		public function insert_multiple($data){

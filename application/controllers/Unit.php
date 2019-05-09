@@ -8,6 +8,7 @@ class Unit extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+        $this->load->helper(array('form', 'url'));
         if(!$this->session->userdata('logined_att') || $this->session->userdata('logined_att') != true)
         {
             redirect('Login');
@@ -28,6 +29,7 @@ class Unit extends CI_Controller
     function add_action()
     {
         $data=array(
+            'unit_icon'    => $this->_uploadImage(),
             'unit_name'  => $this->input->post('unit')
         );
         $this->Unit_model->data_adding($data);
@@ -43,7 +45,15 @@ class Unit extends CI_Controller
 
     function edit_action()
     {
+        $old=$this->input->post('old_icon');
+        if($_FILES['unit_icon']['name'] != "") {
+            $this->Unit_model->_deleteImage($old);
+            $img = $this->_uploadImage();
+        } else {
+            $img = $old;
+        }
         $data=array(
+            'unit_icon'    => $img,
             'unit_name'  => $this->input->post('unit'),
         );
         $id=$this->input->post('unit_id');
@@ -56,9 +66,29 @@ class Unit extends CI_Controller
     function delete($id)
     {
         $unit = $this->Unit_model->getdata_by_id($id);
+        $this->Unit_model->_deleteImage($unit->unit_icon);
         $this->Unit_model->delete_data($id);
         $this->session->set_flashdata('delete_success', 'Data dengan nama unit <u>'.$unit->unit_name.'</u> berhasil dihapus!');
         redirect(site_url('Unit'));
+    }
+
+    private function _uploadImage()
+    {
+        $config['upload_path']          = './upload';
+        $config['allowed_types']        = 'png';
+        $config['file_name']            = uniqid();
+        $config['overwrite']            = true;
+        $config['max_size']             = 200; // 200KB
+        // $config['max_width']            = 1024;
+        // $config['max_height']           = 768;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('unit_icon')) {
+            return $this->upload->data("file_name");
+        }
+        
+        return "default.jpg";
     }
 }
 

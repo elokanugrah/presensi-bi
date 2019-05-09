@@ -153,7 +153,7 @@ class StudentIntern extends CI_Controller
     function delete($id)
     {
         $student = $this->Student_model->getdata_by_id($id);
-        $this->Student_model->_deleteImage($id);
+        // $this->Student_model->_deleteImage($id);
         $this->Student_model->delete_data($id);
         $this->session->set_flashdata('delete_success', 'Data dengan NIM '.$student->id_number.' a/n '.$student->name.' berhasil dihapus!');
         redirect(site_url('StudentIntern'));

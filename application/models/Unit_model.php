@@ -47,5 +47,13 @@
 			$this->db->where($this->id,$id);
 			$this->db->delete($this->nama_table);
 		}
+
+		function _deleteImage($img)
+		{
+		    if ($img != "default.jpg") {
+			    $filename = explode(".", $img)[0];
+				return array_map('unlink', glob(FCPATH."./upload/$filename.*"));
+		    }
+		}
 	}
 	?>

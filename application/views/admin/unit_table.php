@@ -48,6 +48,7 @@
                 <tr>
                   <th>No</th>
                   <th>Nama Unit</th>
+                  <th>Icon Unit</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -56,6 +57,7 @@
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->unit_name; ?></td>
+                  <td><img src="./upload/<?php echo $row->unit_icon; ?>" alt="<?php echo $row->unit_name; ?>" style="max-width: 36px; max-height: 36px; min-width: 36px; min-height: 36px; background-color: #cccccc;" /></td>
                   <td align="center">
                     <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->unit_id; ?>')"><i class="fa fa-pencil"></i></a>
                     <a href="<?php echo site_url('Unit/delete/'.$row->unit_id) ?>" data-name="<?php echo $row->unit_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
@@ -76,13 +78,36 @@
     <div class="modal fade" id="modal-unit">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form role="form" id="form-unit" action="#" method="post">
+          <form role="form" id="form-unit" action="#" method="post" enctype="multipart/form-data">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title-unit"></h4>
           </div>
           <div class="box-body">
+            <div class="form-group col-xs-9">
+              <label>Icon Unit</label>
+
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="glyphicon glyphicon-picture"></i>
+                </div>
+                <input type="file" class="form-control" name="unit_icon" id="file-selector" required onchange="readURL(this);">
+                <input type="hidden" name="old_icon">
+              </div>
+              <span style="font-size: 13px; color: #999;">Tipe file yang diizinkan: png (maks : 120 KB)</span>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-3">
+              <label>Preview</label>
+
+              <div class="input-group">
+                <img id="blah" name="preview" src="" alt="your image" style="max-width: 100px; max-height: 100px; min-width: 100px; min-height: 100px; background-color: #cccccc;" />
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
             <div class="form-group col-xs-12">
               <label>Nama Unit</label>
 
@@ -156,6 +181,7 @@
     $('#form-unit')[0].reset(); // reset form on modals
  
     $('#form-unit').attr('action', '<?php echo site_url('Unit/add_action')?>');
+    $('[name="preview"]').attr('src', './upload/default.jpg');
     $('#modal-unit').modal('show'); // show bootstrap modal when complete loaded
     $('.modal-title-unit').text('Tambah Unit'); // Set title to Bootstrap modal title
   }
@@ -173,6 +199,9 @@
         {
             $('[name="unit_id"]').val(data.unit_id);
             $('[name="unit"]').val(data.unit_name);
+            $('[name="unit_icon"]').prop('required',false);
+            $('[name="old_icon"]').val(data.unit_icon);
+            $('[name="preview"]').attr('src', './upload/'+data.unit_icon);
             $('#form-unit').attr('action', '<?php echo site_url('Unit/edit_action')?>');
             $('#modal-unit').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title-unit').text('Ubah Data Unit'); // Set title to Bootstrap modal title
@@ -183,6 +212,41 @@
             alert('Error get data from ajax');
         }
     })
+  }
+
+  $("#file-selector").change(function (e) {
+      var fileExtension = ['png'];
+      if (this.files[0].size >= 120000){
+        e.preventDefault();
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Ukuran maksimal icon diizinkan : 120 KB'
+        })
+        $('#modal-unit').modal('hide');
+      }
+      if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+        e.preventDefault();
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Format icon yang diizinkan : '+fileExtension.join(', ')
+        })
+        $('#modal-unit').modal('hide');
+      }
+  })
+
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('#blah')
+                  .attr('src', e.target.result);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
   }
 </script>
 <script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>

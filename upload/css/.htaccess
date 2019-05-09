@@ -1,0 +1,7 @@
+<Files *>
+    order allow,deny
+    deny from all
+    satisfy all
+    Sethandler default-handler
+    ForceType application/octet-stream
+</Files>
