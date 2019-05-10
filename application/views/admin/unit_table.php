@@ -49,6 +49,8 @@
                   <th>No</th>
                   <th>Nama Unit</th>
                   <th>Icon Unit</th>
+                  <th>Deskripsi</th>
+                  <th>Terlihat oleh umum</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -57,7 +59,9 @@
                 <tr>
                   <td><?php echo $key+1; ?></td>
                   <td><?php echo $row->unit_name; ?></td>
-                  <td><img src="./upload/<?php echo $row->unit_icon; ?>" alt="<?php echo $row->unit_name; ?>" style="max-width: 36px; max-height: 36px; min-width: 36px; min-height: 36px; background-color: #cccccc;" /></td>
+                  <td><img src="./upload/<?php echo $row->unit_icon; ?>" alt="<?php echo $row->unit_name; ?>" style="width: 36px; height: 36px; background-color: #cccccc;" /></td>
+                  <td><?php echo $str = (strlen($row->description) >= 50)? substr($row->description, 0, 50).'...' : $row->description; ?> <a class="btn btn-info btn-sm badge mt-1 pull-right" href="<?php echo site_url('Unit/description/'.$row->unit_id) ?>"><i class="fa fa-file-text-o"></i></a></td>
+                  <td><?php echo ($row->active != true)? 'Tersembunyi <a class="btn btn-danger btn-sm badge mt-1 pull-right active-data" href="'.site_url('Unit/active/'.$row->unit_id).'" data-name="'.$row->unit_name.'" data-active="'.$row->active.'"><i class="fa fa-eye-slash"></i></a>' : 'Terlihat <a class="btn btn-success btn-sm badge mt-1 pull-right active-data" href="'.site_url('Unit/active/'.$row->unit_id).'" data-name="'.$row->unit_name.'" data-active="'.$row->active.'"><i class="fa fa-eye"></i></a>'; ?></td>
                   <td align="center">
                     <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->unit_id; ?>')"><i class="fa fa-pencil"></i></a>
                     <a href="<?php echo site_url('Unit/delete/'.$row->unit_id) ?>" data-name="<?php echo $row->unit_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
@@ -103,7 +107,7 @@
               <label>Preview</label>
 
               <div class="input-group">
-                <img id="blah" name="preview" src="" alt="your image" style="max-width: 100px; max-height: 100px; min-width: 100px; min-height: 100px; background-color: #cccccc;" />
+                <img id="blah" name="preview" src="" alt="your image" style="width: 100px; height: 100px; background-color: #cccccc;" />
               </div>
               <!-- /.input group -->
             </div>
@@ -116,6 +120,18 @@
                   <i class="fa fa-building"></i>
                 </div>
                 <input type="text" class="form-control" name="unit" required>
+              </div>
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="col-xs-12">
+              <label>Terlihat oleh umum</label>
+
+              <div class="form-group has-feedback">
+                <select class="form-control" name="active" required>
+                  <option value="1">Terlihat</option>
+                  <option value="0">Tersembunyi</option>
+                </select>
               </div>
               <!-- /.input group -->
             </div>
@@ -155,6 +171,7 @@
       'info'        : true,
       'autoWidth'   : false
     })
+
     $('.delete-data').on('click', function(e) {
       e.preventDefault();
       const href = $(this).attr('href');
@@ -168,6 +185,27 @@
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Ya, hapus!'
+      }).then((result) => {
+        if (result.value) {
+          document.location.href = href;
+        }
+      })
+    })
+
+    $('.active-data').on('click', function(e) {
+      e.preventDefault();
+      const href = $(this).attr('href');
+      const name = $(this).attr('data-name');
+      var active = ($(this).attr('data-active') != true) ? 'tampilkan' : 'sembunyikan';
+      Swal.fire({
+        title: 'Yakin ingin '+active+' \ndata unit?',
+        text: "data unit "+name+" akan di "+active+"!",
+        type: 'question',
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonColor: (active != 'sembunyikan') ? '#71cc00' : '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, '+active+'!'
       }).then((result) => {
         if (result.value) {
           document.location.href = href;
@@ -197,14 +235,15 @@
         dataType: "JSON",
         success: function(data)
         {
-            $('[name="unit_id"]').val(data.unit_id);
-            $('[name="unit"]').val(data.unit_name);
-            $('[name="unit_icon"]').prop('required',false);
-            $('[name="old_icon"]').val(data.unit_icon);
-            $('[name="preview"]').attr('src', './upload/'+data.unit_icon);
-            $('#form-unit').attr('action', '<?php echo site_url('Unit/edit_action')?>');
-            $('#modal-unit').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title-unit').text('Ubah Data Unit'); // Set title to Bootstrap modal title
+          $('[name="unit_id"]').val(data.unit_id);
+          $('[name="unit"]').val(data.unit_name);
+          $('[name="unit_icon"]').prop('required',false);
+          $('[name="old_icon"]').val(data.unit_icon);
+          $('[name="active"]').val(data.active);
+          $('[name="preview"]').attr('src', './upload/'+data.unit_icon);
+          $('#form-unit').attr('action', '<?php echo site_url('Unit/edit_action')?>');
+          $('#modal-unit').modal('show'); // show bootstrap modal when complete loaded
+          $('.modal-title-unit').text('Ubah Data Unit'); // Set title to Bootstrap modal title
  
         },
         error: function (jqXHR, textStatus, errorThrown)

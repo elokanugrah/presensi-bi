@@ -30,10 +30,46 @@ class Unit extends CI_Controller
     {
         $data=array(
             'unit_icon'    => $this->_uploadImage(),
-            'unit_name'  => $this->input->post('unit')
+            'unit_name'  => $this->input->post('unit'),
+            'description'  => 'Belum ada deskripsi',
+            'active'  => $this->input->post('active')
         );
         $this->Unit_model->data_adding($data);
-        $this->session->set_flashdata('input_success', 'Data dengan nama unit <u>'.$this->input->post('unit').'</u> berhasil ditambahkan!');
+        $this->session->set_flashdata('input_success', 'Data dengan nama unit <u>'.$this->input->post('unit').'</u> berhasil ditambahkan!. Selahkan tambahkan deskripsi pada tabel.');
+        redirect(site_url('Unit'));
+    }
+
+    function active($id)
+    {
+        $unit=$this->Unit_model->getdata_by_id($id);
+        $active=($unit->active != true)? 1 : 0;
+        $data=array(
+            'active'    => $active
+        );
+        $this->Unit_model->edit_data($id,$data);
+        $this->session->set_flashdata('edit_success', 'Data dengan nama Unit <u>'.$unit->unit_name.'</u> berhasil <u>di'.(($unit->active != true)? 'tampilkan' : 'sembunyikan').'</u>!');
+        redirect(site_url('Unit'));
+    }
+
+    function description($id)
+    {
+        $unit=$this->Unit_model->getdata_by_id($id);
+        $data=array(
+            'id'    => $id,
+            'description'    => $unit->description,
+            'action'    => site_url('Unit/description_action')
+        );
+        $this->load->view('admin/unit_desc',$data);
+    }
+
+    function description_action()
+    {
+        $id=$this->input->post('unit_id');
+        $data=array(
+            'description'    => $this->input->post('description')
+        );
+        $this->Unit_model->edit_data($id,$data);
+        $this->session->set_flashdata('edit_success', 'Deskripsi data dengan nama Unit <u>'.$id->unit_name.'</u> berhasil diubah!');
         redirect(site_url('Unit'));
     }
 
@@ -55,6 +91,7 @@ class Unit extends CI_Controller
         $data=array(
             'unit_icon'    => $img,
             'unit_name'  => $this->input->post('unit'),
+            'active'  => $this->input->post('active'),
         );
         $id=$this->input->post('unit_id');
         $old_name=$this->Unit_model->getdata_by_id($id)->unit_name;
