@@ -186,7 +186,7 @@
             <i class="fa fa-files-o"></i> <span>Laporan Rekapitulasi</span>
           </a>
         </li>
-        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Workinghours'); ?> <?php echo active_link('Unit'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('EduLvl'); ?> treeview">
+        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Workinghours'); ?> <?php echo active_link('Unit'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('EduLvl'); ?> <?php echo active_link('InternshipRegistration'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -198,7 +198,8 @@
             <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
             <li class="<?php echo active_link('Unit'); ?>"><a href="<?php echo site_url('Unit') ?>"><i class="fa fa-circle-o"></i> Unit</a></li>
             <li class="<?php echo active_link('Mentor'); ?>"><a href="<?php echo site_url('Mentor') ?>"><i class="fa fa-circle-o"></i> Mentor</a></li>
-            <li class="<?php echo active_link('EduLvl'); ?>"><a href="<?php echo site_url('EduLvl') ?>"><i class="fa fa-circle-o"></i> Tingkat Pendidikan</a></li>
+            <li class="<?php echo active_link('EduLvl'); ?>"><a href="<?php echo site_url('EduLvl') ?>"><i class="fa fa-circle-o"></i> Tingkat Pendidikan</a>
+              <li class="<?php echo active_link('InternshipRegistration'); ?>"><a href="<?php echo site_url('InternshipRegistration') ?>"><i class="fa fa-circle-o"></i> Registrasi Magang</a></li>
           </ul>
         </li>
       </ul>

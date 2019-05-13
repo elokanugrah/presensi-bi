@@ -1,7 +1,9 @@
-<Files *>
+<FilesMatch ".(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
     order allow,deny
     deny from all
     satisfy all
     Sethandler default-handler
     ForceType application/octet-stream
-</Files>
+</FilesMatch>
+
+Options All -Indexes

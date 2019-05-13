@@ -203,6 +203,7 @@
               <label>Tingkat Pendidikan</label>
               <div class="form-group has-feedback">
                 <select class="form-control select2" name="edulvl_id" style="width: 100%;" required>
+                  <option></option>
                   <?php foreach ($level as $key => $row) {?>
                     <option value="<?php echo $row->edulvl_id; ?>"><?php echo $row->edulvl_name; ?></option>
                   <?php } ?>
@@ -280,6 +281,7 @@
               <label>Unit</label>
               <div class="form-group has-feedback">
                 <select class="form-control select2" name="unit_id" style="width: 100%;" required>
+                  <option></option>
                   <?php foreach ($unit as $key => $row) {?>
                     <option value="<?php echo $row->unit_id; ?>"><?php echo $row->unit_name; ?></option>
                   <?php } ?>
@@ -292,6 +294,7 @@
               <label>Mentor</label>
               <div class="form-group has-feedback">
                 <select class="form-control select2" name="mentor_id" style="width: 100%;" required>
+                  <option></option>
                   <?php foreach ($mentor as $key => $row) {?>
                     <option value="<?php echo $row->mentor_id; ?>"><?php echo $row->nip; ?> - <?php echo $row->name; ?></option>
                   <?php } ?>
@@ -381,7 +384,17 @@
     
     });
     //Initialize Select2 Elements
-    $('.select2').select2()
+    $('[name="edulvl_id"]').select2({
+        placeholder: "Pilih tingkat pendidikan..."
+    })
+
+    $('[name="unit_id"]').select2({
+        placeholder: "Pilih unit..."
+    })
+
+    $('[name="mentor_id"]').select2({
+        placeholder: "Pilih mentor..."
+    })
 
     $('#example1').DataTable()
 
