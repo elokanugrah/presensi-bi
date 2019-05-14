@@ -53,6 +53,12 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
+		function get_max_mth()
+		{
+			$this->db->select_max('date_out');
+			return $this->db->get($this->nama_table)->row();
+		}
+
 		function get_data_activeorigin($edulvl_id)
 		{
 			$this->db->select("COUNT(student.student_id) AS total, student.collage");

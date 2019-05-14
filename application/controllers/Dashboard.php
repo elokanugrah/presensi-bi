@@ -21,7 +21,7 @@ class Dashboard extends CI_Controller
 
     public function index()
     {
-        $start=date("Y-m-d", strtotime('-30 days'));
+        $start=date("Y-m-d", strtotime('-1 month'));
         $end=date("Y-m-d");
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $attendance=$this->Attendance_model->get_date($start,$end);

@@ -52,21 +52,93 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Aktifkan:</label>
-
+                  <?php
+                    $month = array ( 
+                        1 => 'Januari',
+                        'Februari',
+                        'Maret',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Agustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'Desember'
+                      );
+                    ?>
+                  <label><u><?php echo $slot; ?></u> Slot tersedia (<u><?php echo $month[$nextmonth] .'-'. $month[$lastmonth]; ?></u>):</label>
                   <div class="input-group">
-                    <input id="" type="checkbox" checked data-toggle="toggle" data-size="medium" data-on="Aktif" data-off="Mati" data-onstyle="success">
+                    <?php
+                    foreach ($data_student as $key => $row){
+                      if (date('Y-m', strtotime('+1 Month')) <= date('Y-m', strtotime($row->date_out))){
+                      }
+                    }
+
+                    echo $lastmonthh;
+                    ?>
                   </div>
                   <!-- /.input group -->
                 </div>
                 <!-- /.form group -->
               </div>
               <!-- /.col -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Buka pendaftaran:</label>
+                  <div class="input-group">
+                    <div class="row">
+                      <div class="col-xs-4">
+                        <h5><?php echo date('d-m-Y'); ?></h5>
+                      </div>
+                      <div class="col-xs-2">
+                        <h5>~</h5>
+                      </div>
+                      <div class="col-xs-5">
+                        <input type="text" name="last_date" class="form-control" id="datepicker">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Buka pendaftaran:</label>
+                  <div class="input-group">
+                    <?php echo($slot>0)? '<input id="cb_active" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success">' : '<input id="" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" disabled>'; ?>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+              <?php if ($slot>0): ?>
+              <div id="actived">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Slot dibuka:</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-user"></i>
+                    </div>
+                    <input type="number" class="form-control" name="" name="qrcode_id" placeholder="Slot" max="<?php echo $slot; ?>" min="1" value="<?php echo $slot; ?>" required>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+              </div>
+              <?php endif ?>
             </div>
             <!-- /.row -->
           </div>
           <div class="box-footer">
-            <button type="submit" class="btn btn-info pull-right">Simpan</button>
+            <button id="submit" type="submit" class="btn btn-info pull-right">Posting</button>
           </div>
         </div>
       </div>
@@ -210,6 +282,8 @@
 <!-- DataTables -->
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url() ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -227,6 +301,7 @@ $(function () {
     'info'        : true,
     'autoWidth'   : false
   })
+
   $('.delete-data').on('click', function(e) {
     e.preventDefault();
     const href = $(this).attr('href');
@@ -246,6 +321,29 @@ $(function () {
       }
     })
   })
+  //Date picker
+  $('#datepicker').datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    orientation: "bottom auto",
+    todayHighlight: true, 
+    startDate: new Date(),
+    endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+  })
+
+  $("#submit").addClass("disabled")
+  <?php if ($slot>0): ?>
+    $("#actived").hide()
+    $('#cb_active').change(function() {
+      if ($(this).prop('checked')){
+        $("#actived").show() 
+        $("#submit").removeClass("disabled")
+      } else {
+        $("#actived").hide()
+        $("#submit").addClass("disabled")
+      }
+    })
+  <?php endif ?>
 })
 
 function add_datetime()

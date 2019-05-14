@@ -142,7 +142,7 @@
                 <div class="input-group-addon">
                   <i class="glyphicon glyphicon-qrcode"></i>
                 </div>
-                <input type="text" class="form-control" name="qrcode_id" name="qrcode_id" placeholder="format: M-XX-XXXX" maxlength="9" required>
+                <input type="text" class="form-control" name="qrcode_id" placeholder="format: M-XX-XXXX" maxlength="9" required>
               </div>
               <label style="font-size: 13px; color: #999; font-weight: lighter;">Nomor Induk Magang (NIM) dihasilkan secara automatis.</label>
               <!-- /.input group -->
