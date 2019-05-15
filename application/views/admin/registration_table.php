@@ -48,9 +48,10 @@
             </div>
           </div>
           <!-- /.box-header -->
+          <form role="form" id="posting" action="#" method="post">
           <div class="box-body">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-6">
                 <div class="form-group">
                   <?php
                     $month = array ( 
@@ -67,82 +68,98 @@
                         'November',
                         'Desember'
                       );
-                    ?>
-                  <label><u><?php echo $slot; ?></u> Slot tersedia (<u><?php echo $month[$nextmonth] .'-'. $month[$lastmonth]; ?></u>):</label>
-                  <div class="input-group">
-                    <?php
-                    foreach ($data_student as $key => $row){
-                      if (date('Y-m', strtotime('+1 Month')) <= date('Y-m', strtotime($row->date_out))){
-                      }
-                    }
-
-                    echo $lastmonthh;
-                    ?>
-                  </div>
-                  <!-- /.input group -->
+                  ?>
+                  <dt><u><?php echo $realslot; ?></u> Slot tersedia untuk bulan depan (<u><?php echo $month[$nextmonth]; ?></u>)</dt>
                 </div>
                 <!-- /.form group -->
               </div>
               <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
+                  <div class="input-group">
+                    <dt>Daftar pemagang keluar:</dt>
+                    <ul>
+                    <?php
+                    $s1 = date('d-m-Y'); // Added one day to start from 03-05-2018
+                    $s2 = date('d-m-Y', strtotime($lastmonth.' +1 month')); //Added one day to end with 08-05-2018
+                    $start = new DateTime($s1);
+                    $end   = new DateTime($s2);
+                    $interval = DateInterval::createFromDateString('1 month');
+                    $period   = new DatePeriod($start, $interval, $end);
+                    $amonthafter=0;
+                    foreach ($period as $dt) {
+                      $counter = $this->Student_model->count_by_date($dt->format("Y-m"));
+                      echo '<li>'.$dt->format('Y').','.PHP_EOL, $month[$dt->format('n')], PHP_EOL, $counter.' orang <br></li>';
+                    }  
+                    ?>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.form group -->
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Automatis:</label>
+                <div class="input-group">
+                  <input id="cb_auto" name="regis_auto" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Automatis" data-off="Manual" data-onstyle="success" value="1">
+                  <label style="font-size: 13px; color: #999; font-weight: lighter;">Automatis: dibuka selama masih ada slot kosong.</label>
+                </div>
+                <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Buka pendaftaran:</label>
+                <div class="input-group">
+                  <?php echo($realslot>0)? '<input id="cb_active" name="regis_open" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" data-offstyle="danger">' : '<input id="" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" data-offstyle="danger" disabled>'; ?>
+                </div>
+                <?php if ($realslot==0): ?>
+                <label style="font-size: 13px; color: #999; font-weight: lighter;">Slot tidak tersedia.</label>
+                <?php endif ?>
+                <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+              <?php if ($realslot>0): ?>
+              <div id="actived">
+              <div class="col-md-4">
+                <div class="form-group pull-right">
                   <label>Buka pendaftaran:</label>
                   <div class="input-group">
                     <div class="row">
-                      <div class="col-xs-4">
-                        <h5><?php echo date('d-m-Y'); ?></h5>
+                      <div class="col-xs-5">
+                        <input type="text" name="first_date" class="form-control datepicker">
                       </div>
-                      <div class="col-xs-2">
-                        <h5>~</h5>
+                      <div class="col-xs-2" style="text-align: center;">
+                        <h5>-----</h5>
                       </div>
                       <div class="col-xs-5">
-                        <input type="text" name="last_date" class="form-control" id="datepicker">
+                        <input type="text" name="last_date" class="form-control datepicker">
                       </div>
                     </div>
                   </div>
                   <!-- /.input group -->
                 </div>
                 <!-- /.form group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Buka pendaftaran:</label>
-                  <div class="input-group">
-                    <?php echo($slot>0)? '<input id="cb_active" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success">' : '<input id="" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" disabled>'; ?>
-                  </div>
-                  <!-- /.input group -->
                 </div>
-                <!-- /.form group -->
-              </div>
-              <!-- /.col -->
-              <?php if ($slot>0): ?>
-              <div id="actived">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>Slot dibuka:</label>
-                  <div class="input-group">
-                    <div class="input-group-addon">
-                      <i class="glyphicon glyphicon-user"></i>
-                    </div>
-                    <input type="number" class="form-control" name="" name="qrcode_id" placeholder="Slot" max="<?php echo $slot; ?>" min="1" value="<?php echo $slot; ?>" required>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-              </div>
-              <!-- /.col -->
               </div>
               <?php endif ?>
-            </div>
-            <!-- /.row -->
           </div>
+          <!-- /.row -->
           <div class="box-footer">
             <button id="submit" type="submit" class="btn btn-info pull-right">Posting</button>
           </div>
         </div>
+      </form>
       </div>
     </div>
+  </div>
     <div class="row">
       <div class="col-xs-12">
         <div class="box">
@@ -184,52 +201,6 @@
     </div>
     <!-- /.row -->
   </section>
-  <div class="modal fade" id="modal-add">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form role="form" id="form_add" action="#" method="post">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title-add"></h4>
-        </div>
-        <div class="box-body">
-          <div class="form-group col-xs-12">
-            <label>NIP</label>
-
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="glyphicon glyphicon-credit-card"></i>
-              </div>
-              <input type="text" class="form-control" name="nip" required>
-            </div>
-            <!-- /.input group -->
-          </div>
-          <!-- /.form group -->
-          <div class="form-group col-xs-12">
-            <label>Nama</label>
-
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="glyphicon glyphicon-user"></i>
-              </div>
-              <input type="text" class="form-control" name="name" required>
-            </div>
-            <!-- /.input group -->
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
-
   <div class="modal fade" id="modal-edit">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -289,6 +260,9 @@
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
 $(function () {
+  $('#submit').on('click', function(e) {
+    alert($("#cb_active").prop('checked'));
+  })
   //Initialize Select2 Elements
   $('.select2').select2()
 
@@ -322,28 +296,57 @@ $(function () {
     })
   })
   //Date picker
-  $('#datepicker').datepicker({
+  $('.datepicker').datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
     orientation: "bottom auto",
-    todayHighlight: true, 
-    startDate: new Date(),
-    endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+    todayHighlight: true
   })
 
-  $("#submit").addClass("disabled")
-  <?php if ($slot>0): ?>
-    $("#actived").hide()
+  <?php if ($regis->regis_auto != true) { ?>
+    $("#cb_auto").prop('checked', false).change()
+      <?php if ($regis->regis_open != true) { ?>
+      $("#cb_active").prop('checked', false).change()
+      $("#actived").hide() 
+      <?php } else { ?>
+      $('[name="first_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->start)) ?>');
+      $('[name="last_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->end)) ?>');
+      $("#cb_active").prop('checked', true).change()
+      $("#actived").show() 
+      <?php } ?>
+    // $("#submit").removeClass("disabled")
+  <?php } else { ?>
+    $("#cb_auto").prop('checked', true).change()
+    $("#cb_active").prop('checked', false).change()
+    $("#cb_active").prop('disabled', true).change()
+    // $("#submit").removeClass("disabled")
+  <?php } ?>
+  $('#cb_auto').change(function() {
+      if ($(this).prop('checked')){
+        $("#cb_active").prop('checked', false).change()
+        $("#cb_active").prop('disabled', true).change()
+        // $("#submit").removeClass("disabled")
+      } else {
+        $("#cb_active").prop('disabled', false).change()
+        // $("#submit").addClass("disabled")
+      }
+    })
+
+  //$("#submit").addClass("disabled")
+  <?php if ($realslot>0): ?>
+    //$("#actived").hide()
     $('#cb_active').change(function() {
       if ($(this).prop('checked')){
         $("#actived").show() 
-        $("#submit").removeClass("disabled")
+        // $("#submit").removeClass("disabled")
       } else {
         $("#actived").hide()
-        $("#submit").addClass("disabled")
+        // $("#submit").addClass("disabled")
       }
     })
   <?php endif ?>
+
+  $('#posting').attr('action', '<?php echo site_url('InternshipRegistration/post_action')?>');
 })
 
 function add_datetime()

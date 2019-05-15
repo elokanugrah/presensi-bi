@@ -59,6 +59,13 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
+		function count_by_date($date_out)
+		{
+			$this->db->like('date_out',$date_out);
+			$this->db->from($this->nama_table);
+			return $this->db->count_all_results();
+		}
+
 		function get_data_activeorigin($edulvl_id)
 		{
 			$this->db->select("COUNT(student.student_id) AS total, student.collage");
