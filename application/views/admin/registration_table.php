@@ -319,6 +319,7 @@ $(function () {
     $("#cb_auto").prop('checked', true).change()
     $("#cb_active").prop('checked', false).change()
     $("#cb_active").prop('disabled', true).change()
+    $("#actived").hide() 
     // $("#submit").removeClass("disabled")
   <?php } ?>
   $('#cb_auto').change(function() {
@@ -332,9 +333,9 @@ $(function () {
       }
     })
 
-  //$("#submit").addClass("disabled")
   <?php if ($realslot>0): ?>
-    //$("#actived").hide()
+    // $("#submit").addClass("disabled")
+    
     $('#cb_active').change(function() {
       if ($(this).prop('checked')){
         $("#actived").show() 
@@ -344,6 +345,10 @@ $(function () {
         // $("#submit").addClass("disabled")
       }
     })
+  <?php endif ?>
+    
+  <?php if ($realslot==0): ?>
+    $("#actived").hide()
   <?php endif ?>
 
   $('#posting').attr('action', '<?php echo site_url('InternshipRegistration/post_action')?>');
