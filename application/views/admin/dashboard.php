@@ -444,7 +444,9 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" name="date" class="form-control pull-right" id="reservation" value="<?php echo $date; ?>">
+                  <input type="text" class="form-control pull-right" id="reservation" value="<?php echo $date; ?>">
+                  <input type="hidden" name="start" value="<?php echo $start; ?>">
+                  <input type="hidden" name="end" value="<?php echo $end; ?>">
                   <div class="input-group-addon">
                     <button type="submit" class="btn btn-warning btn-sm badge mt-1">Lihat</button>
                     <a href="<?php echo site_url('Dashboard') ?>" class="btn btn-default btn-sm badge mt-1">Reset</a>
@@ -615,11 +617,24 @@
 $(function () {
 
   //Date range picker
+  function cb(start, end) {
+      $('[name="start"]').val(start.format('DD-MM-YYYY'));
+      $('[name="end"]').val(end.format('DD-MM-YYYY'));
+  }
+
   $('#reservation').daterangepicker({
       locale: {
           format: 'DD-MMM-YYYY'
+      },
+      ranges: {
+         'Hari ini': [moment(), moment()],
+         'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+         '7 Hari terakhir': [moment().subtract(6, 'days'), moment()],
+         '30 Hari terakhir': [moment().subtract(30, 'days'), moment()],
+         'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+         'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       }
-  })
+  }, cb)
 
   $('#cbx_active').bootstrapToggle('on')
   $("#container_origin").hide()

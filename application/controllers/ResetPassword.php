@@ -22,7 +22,7 @@ class ResetPassword extends CI_Controller
         $salt = substr($salt, 0, 30);
         $date = date("Y-m-d");
         $time = date("H.i");
-        $token = base64_encode(sha1($date, true) . $salt);
+        $token = base64_encode($date . $salt);
         $data=array(
                 'token' => $token,
                 'salt' => $salt,
@@ -41,7 +41,7 @@ class ResetPassword extends CI_Controller
         $email = $gettoken->email;
         $date = date("Y-m-d");
         $time = $gettoken->time;
-        $qstring = base64_encode(sha1($date, true) . $salt);
+        $qstring = base64_encode($date . $salt);
         if ($qstring == $token){
             $admin=$this->Login_model->getUserByEmail($email);
             $user=$admin->name;
@@ -62,7 +62,7 @@ class ResetPassword extends CI_Controller
             $email = $gettoken->email;
             $date = date("Y-m-d");
             $time = $gettoken->time;
-            $qstring = base64_encode(sha1($date, true) . $salt);
+            $qstring = base64_encode($date . $salt);
             if ($qstring == $token){
                 if (date("H.i") <= date("H.i", strtotime($time)+300)) {
                     $admin=$this->Login_model->getUserByEmail($email);

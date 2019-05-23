@@ -1,13 +1,15 @@
 <?php $this->load->view('headerfooter/header_admin'); ?>
 <!-- bootstrap toggle -->
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<!-- daterange picker -->
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Data
-      <small>registrasi</small>
+      Registrasi
+      <small>magang</small>
     </h1>
     <ol class="breadcrumb">
       <li class="<?php echo active_link('InternshipRegistration'); ?>"><a href="<?php echo site_url('InternshipRegistration') ?>"><i class="fa fa-table"></i> Registrasi Magang</a></li>
@@ -69,7 +71,14 @@
                         'Desember'
                       );
                   ?>
-                  <dt><u><?php echo $realslot; ?></u> Slot tersedia untuk bulan depan (<u><?php echo $month[$nextmonth]; ?></u>)</dt>
+                  <dt><u><?php echo $realslot; ?></u> Kuota tersedia untuk bulan depan (<u><?php echo $month[$nextmonth]; ?></u>)</dt>
+                </div>
+                <!-- /.form group -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-6">
+                <div class="form-group pull-right">
+                  <a href="javascript:void(0)" onclick="edit_slot('<?php echo $regis->regisauto_id; ?>')">Ubah kuota</a>
                 </div>
                 <!-- /.form group -->
               </div>
@@ -77,7 +86,7 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <div class="input-group">
                     <dt>Daftar pemagang keluar:</dt>
@@ -105,7 +114,7 @@
                 <label>Automatis:</label>
                 <div class="input-group">
                   <input id="cb_auto" name="regis_auto" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Automatis" data-off="Manual" data-onstyle="success" value="1">
-                  <label style="font-size: 13px; color: #999; font-weight: lighter;">Automatis: dibuka selama masih ada slot kosong.</label>
+                  <label style="font-size: 13px; color: #999; font-weight: lighter;">Automatis: dibuka selama masih ada kuota tersedia.</label>
                 </div>
                 <!-- /.input group -->
                 </div>
@@ -119,7 +128,7 @@
                   <?php echo($realslot>0)? '<input id="cb_active" name="regis_open" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" data-offstyle="danger">' : '<input id="" type="checkbox" data-toggle="toggle" data-size="medium" data-on="Buka" data-off="Tutup" data-onstyle="success" data-offstyle="danger" disabled>'; ?>
                 </div>
                 <?php if ($realslot==0): ?>
-                <label style="font-size: 13px; color: #999; font-weight: lighter;">Slot tidak tersedia.</label>
+                <label style="font-size: 13px; color: #999; font-weight: lighter;">Kuota tidak tersedia.</label>
                 <?php endif ?>
                 <!-- /.input group -->
                 </div>
@@ -128,21 +137,16 @@
               <!-- /.col -->
               <?php if ($realslot>0): ?>
               <div id="actived">
-              <div class="col-md-4">
-                <div class="form-group pull-right">
+              <div class="col-md-5">
+                <div class="form-group col-xs-12">
                   <label>Buka pendaftaran:</label>
                   <div class="input-group">
-                    <div class="row">
-                      <div class="col-xs-5">
-                        <input type="text" name="first_date" class="form-control datepicker">
-                      </div>
-                      <div class="col-xs-2" style="text-align: center;">
-                        <h5>-----</h5>
-                      </div>
-                      <div class="col-xs-5">
-                        <input type="text" name="last_date" class="form-control datepicker">
-                      </div>
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-calendar"></i>
                     </div>
+                    <input type="text" class="form-control" id="reservation" value="<?php echo date('d-M-Y', strtotime($open)).' - '.date('d-M-Y', strtotime($close)); ?>">
+                    <input type="hidden" name="start" value="<?php echo $open; ?>">
+                    <input type="hidden" name="end" value="<?php echo $close; ?>">
                   </div>
                   <!-- /.input group -->
                 </div>
@@ -152,10 +156,10 @@
               <?php endif ?>
           </div>
           <!-- /.row -->
+        </div>
           <div class="box-footer">
             <button id="submit" type="submit" class="btn btn-info pull-right">Posting</button>
           </div>
-        </div>
       </form>
       </div>
     </div>
@@ -165,7 +169,6 @@
         <div class="box">
           <div class="box-header">
             <h3 class="box-title">Data Registrasi Magang</h3>
-            <a href="javascript:void(0)" onclick="add_datetime()" class="btn btn-primary btn-sm badge mt-1 pull-right" style="margin-left: 20px;"><i class="fa fa-plus"></i></a>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -173,20 +176,43 @@
               <thead>
               <tr>
                 <th>No</th>
-                <th>NIP</th>
                 <th>Nama</th>
+                <th>Jenis Kelamin</th>
+                <th>Email</th>
+                <th>Asal</th>
+                <th>Pengajuan Periode Magang</th> 
+                <th>Durasi</th>
+                <th>Status</th>
                 <th>Aksi</th>
               </tr>
               </thead>
               <tbody>
-              <?php foreach ($data_mentor as $key => $row) {?>
+              <?php foreach ($data_regis as $key => $row) {?>
               <tr>
                 <td><?php echo $key+1; ?></td>
-                <td><?php echo $row->nip; ?></td>
-                <td><?php echo $row->name; ?></td>
+                <td><?php echo $row->registered_name; ?></td>
+                <td><?php echo $row->sex; ?></td>
+                <td><?php echo $row->email; ?></td>
+                <td><?php echo $row->origin; ?></td>
+                <td><?php echo date('d/m/Y', strtotime($row->start)); ?> ~ <?php echo date('d/m/Y', strtotime($row->end)); ?></td>
+                <td><?php
+                $start = new DateTime($row->start);
+                $end = new DateTime($row->end);
+                $interval = $start->diff($end);
+                echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
+                ?></td>
+                <td><?php if ($row->approve != true) {
+                      $label_active = 'label-danger';
+                      $label_text = 'Belum Diterima';
+                    } else {
+                      $label_active = 'label-success';
+                      $label_text = 'Diterima';
+                    } ?>
+                  <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
+                </td>
                 <td align="center">
-                  <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->mentor_id; ?>')"><i class="fa fa-pencil"></i></a>
-                  <a href="<?php echo site_url('Mentor/delete/'.$row->mentor_id) ?>" data-name="<?php echo $row->name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
+                  <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                  
                 </td>
               </tr>
               <?php }?>
@@ -201,60 +227,48 @@
     </div>
     <!-- /.row -->
   </section>
-  <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form role="form" id="form_edit" action="#" method="post">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title-edit"></h4>
-        </div>
-        <div class="box-body">
-          <div class="form-group col-xs-12">
-            <label>NIP</label>
-
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="glyphicon glyphicon-credit-card"></i>
-              </div>
-              <input type="text" class="form-control" name="nip" required>
-            </div>
-            <!-- /.input group -->
+  <div class="modal fade" id="modal-slot">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form role="form" id="form-slot" action="#" method="post">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title-slot"></h4>
           </div>
-          <!-- /.form group -->
-          <div class="form-group col-xs-12">
-            <label>Nama</label>
+          <div class="box-body">
+            <div class="form-group col-xs-12">
+              <label>Maksimum kuota</label>
 
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="glyphicon glyphicon-user"></i>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-group"></i>
+                </div>
+                <input type="number" class="form-control" name="slot" min="0" required>
               </div>
-              <input type="text" class="form-control" name="name" required>
+              <!-- /.input group -->
             </div>
-            <!-- /.input group -->
+            <!-- /.form group -->
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+          </form>
         </div>
-        <div class="modal-footer">
-          <input name="mentor_id" hidden>
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-        </form>
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-content -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 <?php $this->load->view('headerfooter/footer_admin'); ?>
 <!-- DataTables -->
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- date-range-picker -->
+<script src="<?php echo base_url() ?>assets/bower_components/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url() ?>assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url() ?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -276,32 +290,24 @@ $(function () {
     'autoWidth'   : false
   })
 
-  $('.delete-data').on('click', function(e) {
-    e.preventDefault();
-    const href = $(this).attr('href');
-    const name = $(this).attr('data-name');
-    Swal.fire({
-      title: 'Yakin ingin menghapus data \nmentor?',
-      text: "data mentor a/n "+name+" akan dihapus!",
-      type: 'warning',
-      showCancelButton: true,
-      reverseButtons: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, hapus!'
-    }).then((result) => {
-      if (result.value) {
-        document.location.href = href;
+  function cb(start, end) {
+      $('[name="start"]').val(start.format('DD-MM-YYYY'));
+      $('[name="end"]').val(end.format('DD-MM-YYYY'));
+  }
+  //Date range picker
+  $('#reservation').daterangepicker({
+      locale: {
+          format: 'DD-MMM-YYYY',
+      },
+      ranges: {
+         'Hari ini': [moment(), moment()],
+         'Besok': [moment().add(1, 'days'), moment().add(1, 'days')],
+         '7 hari kedepan': [moment(), moment().add(6, 'days')],
+         '30 hari kedepan': [moment(), moment().add(30, 'days')],
+         'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+         'Bulan depan': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
       }
-    })
-  })
-  //Date picker
-  $('.datepicker').datepicker({
-    format: 'dd-mm-yyyy',
-    autoclose: true,
-    orientation: "bottom auto",
-    todayHighlight: true
-  })
+  }, cb);
 
   <?php if ($regis->regis_auto != true) { ?>
     $("#cb_auto").prop('checked', false).change()
@@ -309,8 +315,8 @@ $(function () {
       $("#cb_active").prop('checked', false).change()
       $("#actived").hide() 
       <?php } else { ?>
-      $('[name="first_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->start)) ?>');
-      $('[name="last_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->end)) ?>');
+      // $('[name="first_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->start)) ?>');
+      // $('[name="last_date"]').datepicker('update','<?php echo date('d-m-Y', strtotime($regis->end)) ?>');
       $("#cb_active").prop('checked', true).change()
       $("#actived").show() 
       <?php } ?>
@@ -354,39 +360,14 @@ $(function () {
   $('#posting').attr('action', '<?php echo site_url('InternshipRegistration/post_action')?>');
 })
 
-function add_datetime()
+function edit_slot(id)
 {
-  $('#form_add')[0].reset(); // reset form on modals
+  $('#form-slot')[0].reset(); // reset form on modals
 
-  $('#form_add').attr('action', '<?php echo site_url('Mentor/add_action')?>');
-  $('#modal-add').modal('show'); // show bootstrap modal when complete loaded
-  $('.modal-title-add').text('Tambah Mentor'); // Set title to Bootstrap modal title
-}
-
-function edit_datetime(id)
-{
-  $('#form_edit')[0].reset(); // reset form on modals
-
-  //Ajax Load data from ajax
-  $.ajax({
-      url : "<?php echo site_url('Mentor/edit/')?>/" + id,
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-          $('[name="mentor_id"]').val(data.mentor_id);
-          $('[name="name"]').val(data.name);
-          $('[name="nip"]').val(data.nip);
-          $('#form_edit').attr('action', '<?php echo site_url('Mentor/edit_action')?>');
-          $('#modal-edit').modal('show'); // show bootstrap modal when complete loaded
-          $('.modal-title-edit').text('Ubah Data Mentor'); // Set title to Bootstrap modal title
-
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-  })
+  $('[name="slot"]').val(<?php echo $regis->slot; ?>);
+  $('#form-slot').attr('action', '<?php echo site_url('InternshipRegistration/slot_action')?>');
+  $('#modal-slot').modal('show'); // show bootstrap modal when complete loaded
+  $('.modal-title-slot').text('Ubah Kuota'); // Set title to Bootstrap modal title
 }
 </script>
 <script src="<?php echo base_url() ?>assets/dist/js/sweetalert2.all.min.js"></script>

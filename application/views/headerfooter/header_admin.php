@@ -80,9 +80,71 @@
           $menu = ($student[$i]->active == 'Aktif')? '' : $student[$i]->name.'<li><a href="#"><i class="fa fa-user text-red"></i> '.$student[$i]->active.'</a></li>';
         }
       }
+
+      $regis=$this->Regisauto_model->getdata(); 
+      if ($regis->regis_auto != true) {
+        if ($regis->regis_open == true) {
+          if (($date_now >= $regis->start) && ($date_now <= $regis->end)) {
+            $status = true;
+          } else {
+            $status = false;
+            $status1 = 'Periode pendaftaran ditutup sesuai jadwal';
+          }
+        } else {
+          $status = false;
+          $status1 = 'Pendaftaran ditutup secara manual';
+        }
+      } else {
+        $amonthafter = 0;
+        $twomonthbafter = 0;
+        foreach ($student as $key => $row){
+            if (date('Y-m', strtotime('+1 Month')) == date('Y-m', strtotime($row->date_out))){
+                $amonthafter++;
+            }
+            if (date('Y-m', strtotime('+2 Month')) <= date('Y-m', strtotime($row->date_out))) {
+                $twomonthbafter++;
+            }
+            $status = ((($regis->slot-$twomonthbafter)-$amonthafter)!=0)?true:false;
+            $status1 = ((($regis->slot-$twomonthbafter)-$amonthafter)!=0)?'':'Pendaftaran ditutup karena kuota sudah penuh';
+        }
+      }
+
+      $regis_unread=$this->Regis_model->get_unread(); 
+      $unread=count($regis_unread);
+
+      $new_regis=($unread != 0)? '<li><a href="'.site_url('InternshipRegistration').'"><i class="fa fa-users text-aqua"></i>Ada '.$unread.' orang mendaftar magang</a></li>' : '' ;
+
+      $status_false=($status != true)? '<li><a href="'.site_url('InternshipRegistration').'"><i class="fa fa-warning text-yellow"></i>'.$status1.'</a></li>' : '' ;
+
+      if ($status != true && count($regis_unread)!=0) {
+        $notif=2;
+      } else if ($status != true) {
+        $notif=1;
+      } else if ($unread!=0) {
+        $notif=1;
+      } else {
+        $notif=0;
+      }
       ?>
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <?php echo ($notif != 0)? '<span class="label label-success">'.$notif.'</span>' : '' ; ?>
+            </a>
+            <ul class="dropdown-menu">
+              <?php echo ($notif != 0)? '<li class="header">Kamu punya '.$notif.' notifikasi</li>' : 'Tidak ada notifikasi' ; ?>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <?php echo $new_regis ?>
+                  <?php echo $status_false ?>
+                </ul>
+              </li>
+            </ul>
+          </li>
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
@@ -186,7 +248,12 @@
             <i class="fa fa-files-o"></i> <span>Laporan Rekapitulasi</span>
           </a>
         </li>
-        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Workinghours'); ?> <?php echo active_link('Unit'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('EduLvl'); ?> <?php echo active_link('InternshipRegistration'); ?> treeview">
+        <li class="<?php echo active_link('InternshipRegistration'); ?>">
+          <a href="<?php echo site_url('InternshipRegistration') ?>">
+            <i class="fa fa-edit"></i> <span>Registrasi Magang</span><span class="pull-right-container"><?php echo ($unread != 0)? '<span class="label label-success pull-right">Baru</span>' : '' ; ?></span>
+          </a>
+        </li>
+        <li class="<?php echo active_link('StudentIntern'); ?> <?php echo active_link('Workinghours'); ?> <?php echo active_link('Unit'); ?> <?php echo active_link('Mentor'); ?> <?php echo active_link('EduLvl'); ?> treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Data</span>
             <span class="pull-right-container">
@@ -194,12 +261,11 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i> Siswa Magang</a></li>
+            <li class="<?php echo active_link('StudentIntern'); ?>"><a href="<?php echo site_url('StudentIntern') ?>"><i class="fa fa-circle-o"></i><span>Siswa Magang</span><span class="pull-right-container"><?php echo ($total != 0)? '<span class="label label-warning pull-right">'.$total.'</span>' : '' ; ?></span></a></li>
             <li class="<?php echo active_link('Workinghours'); ?>"><a href="<?php echo site_url('Workinghours') ?>"><i class="fa fa-circle-o"></i> Jam Kerja</a></li>
             <li class="<?php echo active_link('Unit'); ?>"><a href="<?php echo site_url('Unit') ?>"><i class="fa fa-circle-o"></i> Unit</a></li>
             <li class="<?php echo active_link('Mentor'); ?>"><a href="<?php echo site_url('Mentor') ?>"><i class="fa fa-circle-o"></i> Mentor</a></li>
             <li class="<?php echo active_link('EduLvl'); ?>"><a href="<?php echo site_url('EduLvl') ?>"><i class="fa fa-circle-o"></i> Tingkat Pendidikan</a>
-              <li class="<?php echo active_link('InternshipRegistration'); ?>"><a href="<?php echo site_url('InternshipRegistration') ?>"><i class="fa fa-circle-o"></i> Registrasi Magang</a></li>
           </ul>
         </li>
       </ul>

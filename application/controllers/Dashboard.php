@@ -17,14 +17,15 @@ class Dashboard extends CI_Controller
         $this->load->model('Workinghours_model');
         $this->load->model('Mentor_model');
         $this->load->model('Workinghours_model');
+        $this->load->model('Regis_model');
     }
 
     public function index()
     {
-        $start=date("Y-m-d", strtotime('-1 month'));
-        $end=date("Y-m-d");
+        $start=date("d-m-Y", strtotime('-1 month'));
+        $end=date("d-m-Y");
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
-        $attendance=$this->Attendance_model->get_date($start,$end);
+        $attendance=$this->Attendance_model->get_date(date("Y-m-d", strtotime($start)),date("Y-m-d", strtotime($end)));
         $activestudent=$this->Student_model->get_data_activeonly();
         $year_student=$this->Student_model->data_yearandcount();
         $active_level=$this->Student_model->get_data_activelevel();
@@ -45,14 +46,16 @@ class Dashboard extends CI_Controller
                 'already_notyet' => $alreadynotyet,
                 'active_level'        => $active_level,
                 'level'        => $level,
-                'latest'        => $latest->date
+                'latest'        => $latest->date,
+                'start'        => $start,
+                'end'        => $end
             );
             $this->load->view('admin/dashboard',$data);
         }
         else
         {
-        $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
-        $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+        $start = date("Y-m-d", strtotime($this->input->get('start')));
+        $end = date("Y-m-d", strtotime($this->input->get('end')));
         $attendance=$this->Attendance_model->get_date($start,$end);
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $data=array(
@@ -65,7 +68,9 @@ class Dashboard extends CI_Controller
             'already_notyet' => $alreadynotyet,
             'active_level'        => $active_level,
             'level'        => $level,
-            'latest'        => $latest->date
+            'latest'        => $latest->date,
+            'start'        => $start,
+            'end'        => $end
         );
         $this->load->view('admin/dashboard',$data);
         } 

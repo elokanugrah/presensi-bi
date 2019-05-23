@@ -14,6 +14,7 @@ class Mentor extends CI_Controller
         }
         $this->load->model('Mentor_model');
         $this->load->model('Student_model');
+        $this->load->model('Regis_model');
 	}
 
 	public function index()

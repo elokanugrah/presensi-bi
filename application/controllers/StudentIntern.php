@@ -19,6 +19,7 @@ class StudentIntern extends CI_Controller
         $this->load->model('Mentor_model');
         $this->load->model('Unit_model');
         $this->load->model('EduLvl_model');
+        $this->load->model('Regis_model');
 	}
 
 	public function index()

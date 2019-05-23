@@ -4,17 +4,30 @@
 	*/
 	class Regis_model extends CI_Model
 	{
-		public $nama_table	='regis_auto';
+		public $nama_table	='regis';
 		public $id			='regis_id';
+		public $order		='DESC';
 
 		function __construct()
 		{
 			parent::__construct();
 		}
 
-		function getdata()
+		function ambil_data()
 		{
-			$this->db->where($this->id,'1');
+			$this->db->order_by($this->id,$this->order);
+			return $this->db->get($this->nama_table)->result();
+		}
+
+		function get_unread()
+		{
+			$this->db->where('already_read',0);
+			return $this->db->get($this->nama_table)->result();
+		}
+
+		function getdata_by_id($id)
+		{
+			$this->db->where($this->id,$id);
 			return $this->db->get($this->nama_table)->row();
 		}
 
@@ -22,6 +35,12 @@
 		{
 			$this->db->where($this->id,$id);
 			$this->db->update($this->nama_table,$data);
+		}
+
+		function delete_data($id)
+		{
+			$this->db->where($this->id,$id);
+			$this->db->delete($this->nama_table);
 		}
 	}
 	?>

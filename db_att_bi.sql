@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 15 Mei 2019 pada 16.20
+-- Generation Time: 23 Mei 2019 pada 15.26
 -- Versi Server: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `encrypted_password`, `salt`, `name`, `email`) VALUES
-(1, 'admin', 'DmJQTfL/NJuGFAOlmfTV+qf2Wz8xZGQzODg4NTll', '1dd388859e', 'Elok Anugrah', 'elok15ti@mahasiswa.pcr.ac');
+(1, 'admin', 'DmJQTfL/NJuGFAOlmfTV+qf2Wz8xZGQzODg4NTll', '1dd388859e', 'Elok Anugrah', 'elok15ti@mahasiswa.pcr.ac.id');
 
 -- --------------------------------------------------------
 
@@ -119,11 +119,66 @@ INSERT INTO `mentor` (`mentor_id`, `nip`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `regis`
+--
+
+CREATE TABLE `regis` (
+  `regis_id` int(11) NOT NULL,
+  `edulvl_id` int(11) NOT NULL,
+  `registered_name` varchar(45) NOT NULL,
+  `idsch_num` varchar(25) NOT NULL,
+  `sex` varchar(10) NOT NULL,
+  `pob` varchar(45) NOT NULL,
+  `dob` date NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `origin` varchar(45) NOT NULL,
+  `vocational` varchar(45) NOT NULL,
+  `address` text NOT NULL,
+  `story` text NOT NULL,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
+  `resume` text NOT NULL,
+  `approve` tinyint(1) NOT NULL,
+  `already_read` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `regis`
+--
+
+INSERT INTO `regis` (`regis_id`, `edulvl_id`, `registered_name`, `idsch_num`, `sex`, `pob`, `dob`, `email`, `phone`, `origin`, `vocational`, `address`, `story`, `start`, `end`, `resume`, `approve`, `already_read`) VALUES
+(22, 2, 'Elok Anugrah', '1555666777888', 'Laki-laki', 'pekalongan', '1997-11-24', 'elok15ti@mahasiswa.pcr.ac.id', '08123412341234', 'Politeknik Caltex Riau', 'Teknik Informatika', 'Jl. Nuansa', 'Hahahaha', '2019-06-01', '2019-08-01', 'ba6e7a62995a2c9fdf252174a1eb2df4.pdf', 1, 1),
+(25, 2, 'elok', '', 'Laki-laki', '', '1970-01-01', '', '', 'PCR', '', '', '', '1970-01-01', '1970-01-01', 'elok_PCR.pdf', 0, 1),
+(26, 2, 't', '666', 'Laki-laki', '', '1970-01-01', '', '', '', '', '', '', '1970-01-01', '1970-01-01', 't_2019-05-22_14:55.pdf', 0, 1),
+(27, 2, 'tt', '555', 'Laki-laki', '', '1970-01-01', '', '', '', '', '', '', '1970-01-01', '1970-01-01', 'tt__2019-05-22_14:57.pdf', 0, 1),
+(28, 2, 'hhh', '55', 'Laki-laki', '', '1970-01-01', '', '', 'sdff', '', '', '', '1970-01-01', '1970-01-01', 'hhh_sdff_2019-05-22.pdf', 0, 1),
+(29, 2, 'gg', '333', 'Laki-laki', '', '1970-01-01', '', '', 'gg', '', '', '', '1970-01-01', '1970-01-01', 'gg_gg5ce501d8e9d79.pdf', 0, 1),
+(30, 2, 'hh', 'r', 'Laki-laki', '', '1970-01-01', '', '', 'gg', '', '', '', '1970-01-01', '1970-01-01', 'hh_gg_5ce5029469ec5.pdf', 1, 1),
+(31, 2, 'Elok Anugrah', '1223123', 'Laki-laki', 'pekalongan', '2019-05-07', 'elok.anugrah45@gmail.com', '88888', 'Politeknik Caltex Riau', 'Strategi Perang', 'asdfsadf', 'asdfsadfaf asdfasdf adsfas d', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(32, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(33, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(34, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(35, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(36, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(37, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(38, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(39, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'sdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(40, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'sdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
+(41, 2, 'as', 'dd', 'Laki-laki', 'asdf', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'Strategi Perang', 'dfa', 'asdf', '2019-07-01', '2019-07-11', 'as_asdf_5ce60db8821eb.pdf', 0, 0),
+(42, 2, 'sdf', '666', 'Laki-laki', 'asdf', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'Strategi Perang', 'sdf', 'dfdf', '2019-07-01', '2019-09-01', 'sdf_asdf_5ce60e6e03302.pdf', 0, 0),
+(43, 2, 'd', '2', 'Laki-laki', 's', '2019-05-23', 'elok15ti@mahasiswa.pcr.ac.id', '3', 'd', 'd', 'd', 'd', '2019-07-01', '2019-09-01', 'd_d_5ce624b3ee666.pdf', 0, 1),
+(44, 2, 'hs', '666', 'Laki-laki', 'asdf', '2019-05-21', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'asdf', 'sdf', 'asdf', '2019-07-01', '2019-09-01', 'hs_asdf_5ce62506e05db.pdf', 0, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `regis_auto`
 --
 
 CREATE TABLE `regis_auto` (
-  `regis_id` int(11) NOT NULL,
+  `regisauto_id` int(11) NOT NULL,
+  `slot` int(11) NOT NULL,
   `regis_auto` tinyint(1) NOT NULL,
   `regis_open` tinyint(1) NOT NULL,
   `start` date NOT NULL,
@@ -134,8 +189,8 @@ CREATE TABLE `regis_auto` (
 -- Dumping data untuk tabel `regis_auto`
 --
 
-INSERT INTO `regis_auto` (`regis_id`, `regis_auto`, `regis_open`, `start`, `end`) VALUES
-(1, 1, 0, '2019-05-01', '2019-05-31');
+INSERT INTO `regis_auto` (`regisauto_id`, `slot`, `regis_auto`, `regis_open`, `start`, `end`) VALUES
+(1, 4, 0, 1, '2019-05-23', '2019-06-22');
 
 -- --------------------------------------------------------
 
@@ -171,7 +226,7 @@ INSERT INTO `student` (`student_id`, `mentor_id`, `edulvl_id`, `unit_id`, `qrcod
 (2, 1, 2, 7, 'M-21-0002', '5cb05330060f9.png', '1455301082', 'Wahyu Adhi Setiantoro', 'Laki-laki', 'Politeknik Caltex RIau', '123', 'test', '123', '2019-03-11', '2019-07-11', 'Aktif'),
 (3, 1, 1, 7, 'M-21-0003', '5cb053392f8ba.png', '1555301078', 'Selfia Firdaus', 'Perempuan', 'SMA 666', 'ttt', 'ttt', '999', '2019-03-11', '2019-07-11', 'Aktif'),
 (5, 1, 2, 7, 'M-21-0004', '5cb0533fea098.png', '155544203', 'Joko Widodo', 'Laki-laki', 'Universitas Gadjah Mada', 'Kehutanan', 'g', '9999', '2018-11-01', '2019-04-30', 'Non Aktif'),
-(17, 1, 1, 6, 'M-21-0005', 'default.jpg', '666', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer', 'Strategi Perang', 'sadf', '88888', '2019-05-01', '2019-05-31', 'Aktif');
+(17, 1, 1, 6, 'M-21-0005', 'default.jpg', '666', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer', 'Strategi Perang', 'sadf', '88888', '2019-05-01', '2019-05-18', 'Non Aktif');
 
 -- --------------------------------------------------------
 
@@ -192,7 +247,21 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`token_id`, `token`, `salt`, `email`, `time`) VALUES
-(2, 'QdcJH1yYFXKx31dKAYhpeBMsYBIyNThiYWM4MDM2ODAzN2Y5YjM2ODg0ODRiYWI0YTE=', '258bac80368037f9b3688484bab4a1', 'elok15ti@mahasiswa.pcr.ac', '15.00');
+(2, 'QdcJH1yYFXKx31dKAYhpeBMsYBIyNThiYWM4MDM2ODAzN2Y5YjM2ODg0ODRiYWI0YTE=', '258bac80368037f9b3688484bab4a1', 'elok15ti@mahasiswa.pcr.ac', '15.00'),
+(3, 's3/svi7AsRpR/K84xCDPEDtZSGIwYWE0YmJjNmJlZWMzNzAwNmM5NjE3NTA2M2YyODU=', '0aa4bbc6beec37006c96175063f285', 'elok15ti@mahasiswa.pcr.ac', '09.45'),
+(4, 's3/svi7AsRpR/K84xCDPEDtZSGJjZGFiODk2M2EwZTE4YjI5YmEwZGE3N2RmYmMwYTM=', 'cdab8963a0e18b29ba0da77dfbc0a3', 'elok15ti@mahasiswa.pcr.ac', '09.45'),
+(5, 's3/svi7AsRpR/K84xCDPEDtZSGI3ZjgxMWI2YzEwZDRmMjhlMDY0ODYyNzc3YjFlYzU=', '7f811b6c10d4f28e064862777b1ec5', 'elok15ti@mahasiswa.pcr.ac', '09.47'),
+(6, 's3/svi7AsRpR/K84xCDPEDtZSGJiN2RhYWNmZTkxNDJhM2MzN2JlMmUyZjUzZDI3YjA=', 'b7daacfe9142a3c37be2e2f53d27b0', 'elok15ti@mahasiswa.pcr.ac', '09.49'),
+(7, 's3/svi7AsRpR/K84xCDPEDtZSGIwYTk1OThjZGFkOGM2NTgwNWI3ODg2MzA1YzZjYjc=', '0a9598cdad8c65805b7886305c6cb7', 'elok15ti@mahasiswa.pcr.ac', '09.50'),
+(8, 's3/svi7AsRpR/K84xCDPEDtZSGIzY2Q3YTM4YTQzNmY4YzIxMzk2NjhiNDc0M2YyMGE=', '3cd7a38a436f8c2139668b4743f20a', 'elok15ti@mahasiswa.pcr.ac', '09.50'),
+(9, 's3/svi7AsRpR/K84xCDPEDtZSGI0YTcxODg0ZWI5M2Q5YzEyZTlkNTYzOWM2MjgxYTM=', '4a71884eb93d9c12e9d5639c6281a3', 'elok15ti@mahasiswa.pcr.ac', '09.51'),
+(10, 's3/svi7AsRpR/K84xCDPEDtZSGIxOTJiYjZkMjhkYWUwZDBmMjM0YjU2OTQzYTg1NTY=', '192bb6d28dae0d0f234b56943a8556', 'elok15ti@mahasiswa.pcr.ac', '09.51'),
+(11, 's3/svi7AsRpR/K84xCDPEDtZSGI2ZDY4MmU5MGQ2MTExZTZhMmU4ZWZjZTRkZTEwNjg=', '6d682e90d6111e6a2e8efce4de1068', 'elok15ti@mahasiswa.pcr.ac', '09.53'),
+(12, 's3/svi7AsRpR/K84xCDPEDtZSGJmOThhOTBiNDQ3NjgzZjg0NzEyNzYyMGRjODM4YTA=', 'f98a90b447683f847127620dc838a0', 'elok15ti@mahasiswa.pcr.ac', '09.53'),
+(13, 's3/svi7AsRpR/K84xCDPEDtZSGI3ODVhNzkyNTM2M2JmMTMzYTdjNTQxM2M1NjNmMzM=', '785a7925363bf133a7c5413c563f33', 'elok15ti@mahasiswa.pcr.ac', '09.53'),
+(14, 'MjAxOS0wNS0xN2UzZjcxZGFmM2E2ZmRiNWJkZTM5NmQ4Mzk4YzgyMQ==', 'e3f71daf3a6fdb5bde396d8398c821', 'elok15ti@mahasiswa.pcr.ac', '09.56'),
+(16, 's3/svi7AsRpR/K84xCDPEDtZSGI1NmU2NGUyNmNhNDM5MjBkNTNjZjdjY2EyN2VjNzM=', '56e64e26ca43920d53cf7cca27ec73', 'elok15ti@mahasiswa.pcr.ac.id', '09.59'),
+(17, 's3/svi7AsRpR/K84xCDPEDtZSGJkNTA3NGMyOGIxYjliNTZkY2I4MDNjODE5OTczYmE=', 'd5074c28b1b9b56dcb803c819973ba', 'elok15ti@mahasiswa.pcr.ac.id', '09.59');
 
 -- --------------------------------------------------------
 
@@ -266,10 +335,17 @@ ALTER TABLE `mentor`
   ADD PRIMARY KEY (`mentor_id`);
 
 --
+-- Indexes for table `regis`
+--
+ALTER TABLE `regis`
+  ADD PRIMARY KEY (`regis_id`),
+  ADD KEY `edulvl_id` (`edulvl_id`);
+
+--
 -- Indexes for table `regis_auto`
 --
 ALTER TABLE `regis_auto`
-  ADD PRIMARY KEY (`regis_id`);
+  ADD PRIMARY KEY (`regisauto_id`);
 
 --
 -- Indexes for table `student`
@@ -324,10 +400,15 @@ ALTER TABLE `edulvl`
 ALTER TABLE `mentor`
   MODIFY `mentor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `regis`
+--
+ALTER TABLE `regis`
+  MODIFY `regis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+--
 -- AUTO_INCREMENT for table `regis_auto`
 --
 ALTER TABLE `regis_auto`
-  MODIFY `regis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `regisauto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `student`
 --
@@ -337,7 +418,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `unit`
 --
@@ -357,6 +438,12 @@ ALTER TABLE `working_hours`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `fk_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `regis`
+--
+ALTER TABLE `regis`
+  ADD CONSTRAINT `fk_edulvl` FOREIGN KEY (`edulvl_id`) REFERENCES `edulvl` (`edulvl_id`);
 
 --
 -- Ketidakleluasaan untuk tabel `student`

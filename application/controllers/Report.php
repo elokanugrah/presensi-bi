@@ -16,6 +16,7 @@ class Report extends CI_Controller
         $this->load->model('Attendance_model');
         $this->load->model('Student_model');
         $this->load->model('Workinghours_model');
+        $this->load->model('Regis_model');
 	}
 
 	public function index()
@@ -23,31 +24,37 @@ class Report extends CI_Controller
         $active_student=$this->Student_model->get_data_activeonly();
         $earliest=$this->Attendance_model->get_earliest();
         $latest=$this->Attendance_model->get_latest();
-        $start=$earliest->date;
-        $end=$latest->date;
-        $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
-        $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
+        $start=date("d-m-Y", strtotime($earliest->date));
+        $end=date("d-m-Y", strtotime($latest->date));
+        $startdb=$earliest->date;
+        $enddb=$latest->date;
+        $attendance=$this->Attendance_model->getall_data_bydate($startdb,$enddb);
+        $date = date("d-M-Y", strtotime($startdb)).' - '.date("d-M-Y", strtotime($enddb));
         if(!$this->input->get())
         {
             $data=array(
                 'data_attendance'  => $attendance,
                 'data_student'     => $active_student,
-                'date'             => $date
+                'date'             => $date,
+                'start'            => $start,
+                'end'              => $end
 
             );
     		$this->load->view('admin/attendance_table',$data);
         }
         else
         {
-        $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
-        $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+        $start = date("Y-m-d", strtotime($this->input->get('start')));
+        $end = date("Y-m-d", strtotime($this->input->get('end')));
         $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
         $active_student=$this->Student_model->get_data_activeonly();
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $data=array(
             'data_attendance'  => $attendance,
             'data_student'     => $active_student,
-            'date'             => $date
+            'date'             => $date,
+            'start'        => $start,
+            'end'        => $end
 
         );
         $this->load->view('admin/attendance_table',$data);
@@ -272,8 +279,8 @@ class Report extends CI_Controller
         }
         else
         {
-        $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
-        $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+        $start = date("Y-m-d", strtotime($this->input->get('start')));
+        $end = date("Y-m-d", strtotime($this->input->get('end')));
         $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
         $active_student=$this->Student_model->get_data_activeonly();
         $earliest=$this->Attendance_model->get_earliest();
@@ -491,8 +498,8 @@ class Report extends CI_Controller
             $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
             $date = date("d M Y", strtotime($start)).' - '.date("d M Y", strtotime($end));
         } else {
-            $start = date("Y-m-d", strtotime(substr($this->input->get('date'), 0, 11)));
-            $end = date("Y-m-d", strtotime(substr($this->input->get('date'), 14, 11)));
+            $start = date("Y-m-d", strtotime($this->input->get('start')));
+            $end = date("Y-m-d", strtotime($this->input->get('end')));
             $attendance=$this->Attendance_model->getall_data_bydate($start,$end);
             $earliest=$this->Attendance_model->get_earliest();
             $date = date("d M Y", strtotime($start)).' - '.date("d M Y", strtotime($end));
