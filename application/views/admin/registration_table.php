@@ -166,98 +166,258 @@
   </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">Data Registrasi Magang</h3>
+        <!-- Custom Tabs (Pulled to the right) -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs pull-right">
+              <li <?php echo (count($regis_new) != 0)?'class="active"':''; ?>><a href="#tab_1" data-toggle="tab">Terbaru</a></li>
+              <li><a href="#tab_2" data-toggle="tab">Belum Diterima</a></li>
+              <li><a href="#tab_3" data-toggle="tab">Diterima</a></li>
+              <li <?php echo (count($regis_new) != 0)?'':'class="active"'; ?>><a href="#tab_4" data-toggle="tab">Semua</a></li>
+              <li class="pull-left header"><i class="fa fa-th"></i> Data Registrasi Magang</li>
+              <li class="pull-right" style="margin-right: 20px;">
+                <button type="button" onclick="window.location.href = '<?php echo site_url('InternshipRegistration/export')?>';" class="btn bg-teal btn-sm badge mt-1 pull-right" style="margin-top: 12px;"><span class="fa fa-file-excel-o" style="padding-right: 5px;"></span> Export</button>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane <?php echo (count($regis_new) != 0)?'active':''; ?>" id="tab_1">
+                <table class="table table-bordered table-striped example1">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Email</th>
+                    <th>Asal</th>
+                    <th>Tanggal Daftar</th> 
+                    <th>Durasi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach ($regis_new as $key => $row) {?>
+                  <tr>
+                    <td><?php echo $key+1; ?></td>
+                    <td><?php echo $row->registered_name; ?></td>
+                    <td><?php echo $row->sex; ?></td>
+                    <td><?php echo $row->email; ?></td>
+                    <td><?php echo $row->origin; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($row->date_received)); ?></td>
+                    <td><?php
+                    $start = new DateTime($row->start);
+                    $end = new DateTime($row->end);
+                    $interval = $start->diff($end);
+                    echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
+                    ?></td>
+                    <td><?php if ($row->approve != true) {
+                          $label_active = 'label-danger';
+                          $label_text = 'Belum Diterima';
+                        } else {
+                          $label_active = 'label-success';
+                          $label_text = 'Diterima';
+                        } ?>
+                      <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
+                    </td>
+                    <td align="center">
+                      <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                      
+                    </td>
+                  </tr>
+                  <?php }?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                <table class="table table-bordered table-striped example1">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Email</th>
+                    <th>Asal</th>
+                    <th>Tanggal Daftar</th> 
+                    <th>Durasi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach ($regis_notapp as $key => $row) {?>
+                  <tr>
+                    <td><?php echo $key+1; ?></td>
+                    <td><?php echo $row->registered_name; ?></td>
+                    <td><?php echo $row->sex; ?></td>
+                    <td><?php echo $row->email; ?></td>
+                    <td><?php echo $row->origin; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($row->date_received)); ?></td>
+                    <td><?php
+                    $start = new DateTime($row->start);
+                    $end = new DateTime($row->end);
+                    $interval = $start->diff($end);
+                    echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
+                    ?></td>
+                    <td><?php if ($row->approve != true) {
+                          $label_active = 'label-danger';
+                          $label_text = 'Belum Diterima';
+                        } else {
+                          $label_active = 'label-success';
+                          $label_text = 'Diterima';
+                        } ?>
+                      <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
+                    </td>
+                    <td align="center">
+                      <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                      
+                    </td>
+                  </tr>
+                  <?php }?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                <table class="table table-bordered table-striped example1">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Email</th>
+                    <th>Asal</th>
+                    <th>Tanggal Daftar</th> 
+                    <th>Durasi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach ($regis_app as $key => $row) {?>
+                  <tr>
+                    <td><?php echo $key+1; ?></td>
+                    <td><?php echo $row->registered_name; ?></td>
+                    <td><?php echo $row->sex; ?></td>
+                    <td><?php echo $row->email; ?></td>
+                    <td><?php echo $row->origin; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($row->date_received)); ?></td>
+                    <td><?php
+                    $start = new DateTime($row->start);
+                    $end = new DateTime($row->end);
+                    $interval = $start->diff($end);
+                    echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
+                    ?></td>
+                    <td><?php if ($row->approve != true) {
+                          $label_active = 'label-danger';
+                          $label_text = 'Belum Diterima';
+                        } else {
+                          $label_active = 'label-success';
+                          $label_text = 'Diterima';
+                        } ?>
+                      <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
+                    </td>
+                    <td align="center">
+                      <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                      
+                    </td>
+                  </tr>
+                  <?php }?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane <?php echo (count($regis_new) != 0)?'':'active'; ?>" id="tab_4">
+                <table class="table table-bordered table-striped example1">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Email</th>
+                    <th>Asal</th>
+                    <th>Tanggal Daftar</th> 
+                    <th>Durasi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach ($data_regis as $key => $row) {?>
+                  <tr>
+                    <td><?php echo $key+1; ?></td>
+                    <td><?php echo $row->registered_name; ?></td>
+                    <td><?php echo $row->sex; ?></td>
+                    <td><?php echo $row->email; ?></td>
+                    <td><?php echo $row->origin; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($row->date_received)); ?></td>
+                    <td><?php
+                    $start = new DateTime($row->start);
+                    $end = new DateTime($row->end);
+                    $interval = $start->diff($end);
+                    echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
+                    ?></td>
+                    <td><?php if ($row->approve != true) {
+                          $label_active = 'label-danger';
+                          $label_text = 'Belum Diterima';
+                        } else {
+                          $label_active = 'label-success';
+                          $label_text = 'Diterima';
+                        } ?>
+                      <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
+                    </td>
+                    <td align="center">
+                      <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                      
+                    </td>
+                  </tr>
+                  <?php }?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
           </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <table id="example1" class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Jenis Kelamin</th>
-                <th>Email</th>
-                <th>Asal</th>
-                <th>Durasi Magang</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-              </thead>
-              <tbody>
-              <?php foreach ($data_regis as $key => $row) {?>
-              <tr>
-                <td><?php echo $key+1; ?></td>
-                <td><?php echo $row->registered_name; ?></td>
-                <td><?php echo $row->sex; ?></td>
-                <td><?php echo $row->email; ?></td>
-                <td><?php echo $row->origin; ?></td>
-                <td><?php
-                $start = new DateTime($row->start);
-                $end = new DateTime($row->end);
-                $interval = $start->diff($end);
-                echo ($interval->d != 0)?(($interval->m != 0)?$interval->m." bulan, ".$interval->d." hari":$interval->d." hari"):$interval->m." bulan";
-                ?></td>
-                <td><?php if ($row->approve != true) {
-                      $label_active = 'label-danger';
-                      $label_text = 'Belum Diterima';
-                    } else {
-                      $label_active = 'label-success';
-                      $label_text = 'Diterima';
-                    } ?>
-                  <span class="label <?php echo $label_active; ?>"><?php echo $label_text ?></span>
-                </td>
-                <td align="center">
-                  <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
-                  
-                </td>
-              </tr>
-              <?php }?>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.box-body -->
+          <!-- nav-tabs-custom -->
         </div>
-        <!-- /.box -->
+        <!-- /.col -->
       </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
+      <!-- /.row -->
+    <!-- END CUSTOM TABS -->
   </section>
   <div class="modal fade" id="modal-slot">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form role="form" id="form-slot" action="#" method="post">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title-slot"></h4>
-          </div>
-          <div class="box-body">
-            <div class="form-group col-xs-12">
-              <label>Maksimum kuota</label>
-
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-group"></i>
-                </div>
-                <input type="number" class="form-control" name="slot" min="0" required>
-              </div>
-              <!-- /.input group -->
-            </div>
-            <!-- /.form group -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-          </div>
-          </form>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form role="form" id="form-slot" action="#" method="post">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title-slot"></h4>
         </div>
-        <!-- /.modal-content -->
+        <div class="box-body">
+          <div class="form-group col-xs-12">
+            <label>Maksimum kuota</label>
+
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-group"></i>
+              </div>
+              <input type="number" class="form-control" name="slot" min="0" required>
+            </div>
+            <!-- /.input group -->
+          </div>
+          <!-- /.form group -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+        </form>
       </div>
-      <!-- /.modal-dialog -->
+      <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+  </div>
 </div>
 <!-- /.content-wrapper -->
 <?php $this->load->view('headerfooter/footer_admin'); ?>
@@ -278,15 +438,7 @@ $(function () {
   //Initialize Select2 Elements
   $('.select2').select2()
 
-  $('#example1').DataTable()
-  $('#example2').DataTable({
-    'paging'      : true,
-    'lengthChange': false,
-    'searching'   : false,
-    'ordering'    : true,
-    'info'        : true,
-    'autoWidth'   : false
-  })
+  $('.example1').DataTable()
 
   function cb(start, end) {
       $('[name="start"]').val(start.format('DD-MM-YYYY'));

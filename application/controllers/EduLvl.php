@@ -15,6 +15,7 @@ class EduLvl extends CI_Controller
         $this->load->model('EduLvl_model');
         $this->load->model('Student_model');
         $this->load->model('Regis_model');
+        $this->load->model('Regisauto_model');
 	}
 
 	public function index()

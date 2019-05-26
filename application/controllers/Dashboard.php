@@ -18,6 +18,7 @@ class Dashboard extends CI_Controller
         $this->load->model('Mentor_model');
         $this->load->model('Workinghours_model');
         $this->load->model('Regis_model');
+        $this->load->model('Regisauto_model');
     }
 
     public function index()

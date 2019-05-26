@@ -135,7 +135,7 @@
               <?php echo ($notif != 0)? '<span class="label label-success">'.$notif.'</span>' : '' ; ?>
             </a>
             <ul class="dropdown-menu">
-              <?php echo ($notif != 0)? '<li class="header">Kamu punya '.$notif.' notifikasi</li>' : 'Tidak ada notifikasi' ; ?>
+              <?php echo ($notif != 0)? '<li class="header">Kamu punya '.$notif.' notifikasi</li>' : '<li class="header">Tidak ada notifikasi</li>' ; ?>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">

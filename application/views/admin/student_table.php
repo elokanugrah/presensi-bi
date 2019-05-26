@@ -83,16 +83,16 @@
                   $date_now = date("Y-m-d");
                   // $status = (($date_now >= $row->date_in) && ($date_now <= $row->date_out))? 'Aktif' : 'Non Aktif';
                   if (($date_now >= $row->date_in) && ($date_now <= $row->date_out)) {
-                     $status = ($row->active == 'Aktif')? 'bg-purple' : 'bg-orange';
+                     $status = ($row->active == 'Aktif')? 'btn-info' : 'btn-warning';
                   } else {
-                  $status = ($row->active == 'Non Aktif')? 'bg-purple' : 'bg-orange';
+                  $status = ($row->active == 'Non Aktif')? 'btn-info' : 'btn-warning';
                   }
                   echo date("d-m-Y", strtotime($row->date_in)).' ~ '. date("d-m-Y", strtotime($row->date_out));
                   ?>
-                  <div class="pull-right"><span class="label <?php echo $status; ?>"><li class="fa <?php echo $icon = ($status == 'bg-purple')? 'fa-check' : 'fa-close'; ?>"></li></span></div><div class="hidden"><?php echo $forsearch = ($status == 'bg-purple')? 'benar' : 'salah'; ?></div></td>
+                  <div class="hidden"><?php echo $forsearch = ($status == 'btn-info')? 'benar' : 'salah'; ?></div></td>
                   <td align="center">
                     <a href="<?php echo site_url('StudentIntern/student/'.$row->student_id) ?>" class="btn btn-default btn-sm badge mt-1"><i class="fa fa-eye"></i></a>
-                    <a class="btn btn-info btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->student_id; ?>')"><i class="fa fa-pencil"></i></a>
+                    <a class="btn <?php echo $status; ?> btn-sm badge mt-1" href="javascript:void(0)" onclick="edit_datetime('<?php echo $row->student_id; ?>')"><i class="fa fa-pencil"></i></a>
                     <a href="<?php echo site_url('StudentIntern/delete/'.$row->student_id) ?>" data-name="<?php echo $row->name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 23 Mei 2019 pada 15.26
+-- Generation Time: 26 Mei 2019 pada 10.44
 -- Versi Server: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -140,35 +140,22 @@ CREATE TABLE `regis` (
   `end` date NOT NULL,
   `resume` text NOT NULL,
   `approve` tinyint(1) NOT NULL,
-  `already_read` tinyint(1) NOT NULL
+  `already_read` tinyint(1) NOT NULL,
+  `date_received` date NOT NULL,
+  `date_sent` date NOT NULL,
+  `invitation_date` date NOT NULL,
+  `invitation_time` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `regis`
 --
 
-INSERT INTO `regis` (`regis_id`, `edulvl_id`, `registered_name`, `idsch_num`, `sex`, `pob`, `dob`, `email`, `phone`, `origin`, `vocational`, `address`, `story`, `start`, `end`, `resume`, `approve`, `already_read`) VALUES
-(22, 2, 'Elok Anugrah', '1555666777888', 'Laki-laki', 'pekalongan', '1997-11-24', 'elok15ti@mahasiswa.pcr.ac.id', '08123412341234', 'Politeknik Caltex Riau', 'Teknik Informatika', 'Jl. Nuansa', 'Hahahaha', '2019-06-01', '2019-08-01', 'ba6e7a62995a2c9fdf252174a1eb2df4.pdf', 1, 1),
-(25, 2, 'elok', '', 'Laki-laki', '', '1970-01-01', '', '', 'PCR', '', '', '', '1970-01-01', '1970-01-01', 'elok_PCR.pdf', 0, 1),
-(26, 2, 't', '666', 'Laki-laki', '', '1970-01-01', '', '', '', '', '', '', '1970-01-01', '1970-01-01', 't_2019-05-22_14:55.pdf', 0, 1),
-(27, 2, 'tt', '555', 'Laki-laki', '', '1970-01-01', '', '', '', '', '', '', '1970-01-01', '1970-01-01', 'tt__2019-05-22_14:57.pdf', 0, 1),
-(28, 2, 'hhh', '55', 'Laki-laki', '', '1970-01-01', '', '', 'sdff', '', '', '', '1970-01-01', '1970-01-01', 'hhh_sdff_2019-05-22.pdf', 0, 1),
-(29, 2, 'gg', '333', 'Laki-laki', '', '1970-01-01', '', '', 'gg', '', '', '', '1970-01-01', '1970-01-01', 'gg_gg5ce501d8e9d79.pdf', 0, 1),
-(30, 2, 'hh', 'r', 'Laki-laki', '', '1970-01-01', '', '', 'gg', '', '', '', '1970-01-01', '1970-01-01', 'hh_gg_5ce5029469ec5.pdf', 1, 1),
-(31, 2, 'Elok Anugrah', '1223123', 'Laki-laki', 'pekalongan', '2019-05-07', 'elok.anugrah45@gmail.com', '88888', 'Politeknik Caltex Riau', 'Strategi Perang', 'asdfsadf', 'asdfsadfaf asdfasdf adsfas d', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(32, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(33, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(34, 2, 'Prabowo Subianto', '666', 'Perempuan', 'pekalongan', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '88888', 'asdf', 's', 'sdfasdf adfas fas asf asfa sdfasdfasdfasd fasdfasdfasdf', 'asdfasdf asdfasfjkasfl asdlfjalskdjflaksjdfklasdjflkj asdlfjaskldfjalksdj flaskdjflkasjd flkasjdflk ajsdflkjasdkl faslkjdf;laskjf;aksj dfaksjdf klasjdfklj asd fajs fkjaskjfkaj iofuwiefas jfadsf asdfasdfsadf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(35, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(36, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(37, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(38, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'dfdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(39, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'sdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(40, 2, 'dfdf', '666', 'Laki-laki', 'asdf', '2019-05-26', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'gg', 'asdf', 'dfdf', 'sdf', '2019-06-01', '2019-08-01', 'nothing', 0, 0),
-(41, 2, 'as', 'dd', 'Laki-laki', 'asdf', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'Strategi Perang', 'dfa', 'asdf', '2019-07-01', '2019-07-11', 'as_asdf_5ce60db8821eb.pdf', 0, 0),
-(42, 2, 'sdf', '666', 'Laki-laki', 'asdf', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'Strategi Perang', 'sdf', 'dfdf', '2019-07-01', '2019-09-01', 'sdf_asdf_5ce60e6e03302.pdf', 0, 0),
-(43, 2, 'd', '2', 'Laki-laki', 's', '2019-05-23', 'elok15ti@mahasiswa.pcr.ac.id', '3', 'd', 'd', 'd', 'd', '2019-07-01', '2019-09-01', 'd_d_5ce624b3ee666.pdf', 0, 1),
-(44, 2, 'hs', '666', 'Laki-laki', 'asdf', '2019-05-21', 'elok15ti@mahasiswa.pcr.ac.id', '3124132', 'asdf', 'asdf', 'sdf', 'asdf', '2019-07-01', '2019-09-01', 'hs_asdf_5ce62506e05db.pdf', 0, 1);
+INSERT INTO `regis` (`regis_id`, `edulvl_id`, `registered_name`, `idsch_num`, `sex`, `pob`, `dob`, `email`, `phone`, `origin`, `vocational`, `address`, `story`, `start`, `end`, `resume`, `approve`, `already_read`, `date_received`, `date_sent`, `invitation_date`, `invitation_time`) VALUES
+(46, 2, 'elok anugrah alkhliq', '1555301022', 'Laki-laki', 'pekalongan', '1997-11-24', 'elok15ti@mahasiswa.pcr.ac.id', '081278515123', 'politeknik caltex riau', 'teknik informatika', 'Jl. Nuansa, Komp. Nuansa Residence', 'Saya anak pertama dari 2 bersaudara', '2019-07-01', '2019-09-01', 'elok_anugrah_alkhliq_politeknik_caltex_riau_5ce74f935334d.pdf', 1, 1, '2019-05-24', '2019-05-24', '2019-05-30', '15:40'),
+(47, 2, 'selvia firdaus', '1555301078', 'Perempuan', 'Bukittinggi', '1997-09-29', 'selvia15ti@mahasiswa.pcr.ac.id', '081372659081', 'Politeknik Caltex Riau', 'Teknik Informatika', 'Rumbai', 'saya seorang AERI', '2019-08-01', '2019-10-01', 'selvia_firdaus_Politeknik_Caltex_Riau_5ce774ee207b4.pdf', 1, 1, '2019-05-24', '2019-05-24', '2019-05-27', '14:00'),
+(48, 2, 'hahahaha', '123123', 'Laki-laki', 'asdf', '2019-05-27', 'elok15ti@mahasiswa.pcr.ac.id', '12313212312', 'adsfasdfasd', 'adsfasdfasdf', 'asdfasdfa', 'asdfasdfa', '2019-07-01', '2019-09-01', 'hahahaha_adsfasdfasd_5ce7a2b827d1f.pdf', 0, 1, '2019-05-24', '0000-00-00', '0000-00-00', ''),
+(49, 2, 'Ssadf', '123123', 'Laki-laki', 'Pekalongan', '2019-05-28', 'elok15ti@mahasiswa.pcr.ac.id', '123123123', 'Asddd', 'Asdfasdf', 'asdf', 'asdf', '2019-07-01', '2019-09-01', 'ssadf_asddd_5ce7a37ea55dc.pdf', 0, 1, '2019-05-24', '0000-00-00', '0000-00-00', '');
 
 -- --------------------------------------------------------
 
@@ -226,7 +213,7 @@ INSERT INTO `student` (`student_id`, `mentor_id`, `edulvl_id`, `unit_id`, `qrcod
 (2, 1, 2, 7, 'M-21-0002', '5cb05330060f9.png', '1455301082', 'Wahyu Adhi Setiantoro', 'Laki-laki', 'Politeknik Caltex RIau', '123', 'test', '123', '2019-03-11', '2019-07-11', 'Aktif'),
 (3, 1, 1, 7, 'M-21-0003', '5cb053392f8ba.png', '1555301078', 'Selfia Firdaus', 'Perempuan', 'SMA 666', 'ttt', 'ttt', '999', '2019-03-11', '2019-07-11', 'Aktif'),
 (5, 1, 2, 7, 'M-21-0004', '5cb0533fea098.png', '155544203', 'Joko Widodo', 'Laki-laki', 'Universitas Gadjah Mada', 'Kehutanan', 'g', '9999', '2018-11-01', '2019-04-30', 'Non Aktif'),
-(17, 1, 1, 6, 'M-21-0005', 'default.jpg', '666', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer', 'Strategi Perang', 'sadf', '88888', '2019-05-01', '2019-05-18', 'Non Aktif');
+(17, 1, 1, 6, 'M-21-0005', 'default.jpg', '666', 'Prabowo Subianto', 'Laki-laki', 'Akademi Militer', 'Strategi Perang', 'sadf', '88888', '2019-05-01', '2019-05-18', 'Aktif');
 
 -- --------------------------------------------------------
 
@@ -261,7 +248,8 @@ INSERT INTO `token` (`token_id`, `token`, `salt`, `email`, `time`) VALUES
 (13, 's3/svi7AsRpR/K84xCDPEDtZSGI3ODVhNzkyNTM2M2JmMTMzYTdjNTQxM2M1NjNmMzM=', '785a7925363bf133a7c5413c563f33', 'elok15ti@mahasiswa.pcr.ac', '09.53'),
 (14, 'MjAxOS0wNS0xN2UzZjcxZGFmM2E2ZmRiNWJkZTM5NmQ4Mzk4YzgyMQ==', 'e3f71daf3a6fdb5bde396d8398c821', 'elok15ti@mahasiswa.pcr.ac', '09.56'),
 (16, 's3/svi7AsRpR/K84xCDPEDtZSGI1NmU2NGUyNmNhNDM5MjBkNTNjZjdjY2EyN2VjNzM=', '56e64e26ca43920d53cf7cca27ec73', 'elok15ti@mahasiswa.pcr.ac.id', '09.59'),
-(17, 's3/svi7AsRpR/K84xCDPEDtZSGJkNTA3NGMyOGIxYjliNTZkY2I4MDNjODE5OTczYmE=', 'd5074c28b1b9b56dcb803c819973ba', 'elok15ti@mahasiswa.pcr.ac.id', '09.59');
+(17, 's3/svi7AsRpR/K84xCDPEDtZSGJkNTA3NGMyOGIxYjliNTZkY2I4MDNjODE5OTczYmE=', 'd5074c28b1b9b56dcb803c819973ba', 'elok15ti@mahasiswa.pcr.ac.id', '09.59'),
+(18, 'MjAxOS0wNS0yNDM1YTQ1YjNjZjk1NjcyM2FjM2VlNzU3YTk3Y2ViMQ==', '35a45b3cf956723ac3ee757a97ceb1', 'elok15ti@mahasiswa.pcr.ac.id', '10.47');
 
 -- --------------------------------------------------------
 
@@ -403,7 +391,7 @@ ALTER TABLE `mentor`
 -- AUTO_INCREMENT for table `regis`
 --
 ALTER TABLE `regis`
-  MODIFY `regis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `regis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `regis_auto`
 --
@@ -418,7 +406,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `unit`
 --
