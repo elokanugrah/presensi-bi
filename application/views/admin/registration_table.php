@@ -180,8 +180,7 @@
                 <th>Jenis Kelamin</th>
                 <th>Email</th>
                 <th>Asal</th>
-                <th>Pengajuan Periode Magang</th> 
-                <th>Durasi</th>
+                <th>Durasi Magang</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>
@@ -194,7 +193,6 @@
                 <td><?php echo $row->sex; ?></td>
                 <td><?php echo $row->email; ?></td>
                 <td><?php echo $row->origin; ?></td>
-                <td><?php echo date('d/m/Y', strtotime($row->start)); ?> ~ <?php echo date('d/m/Y', strtotime($row->end)); ?></td>
                 <td><?php
                 $start = new DateTime($row->start);
                 $end = new DateTime($row->end);
