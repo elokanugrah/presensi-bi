@@ -220,6 +220,7 @@
                     </td>
                     <td align="center">
                       <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
+                      <a href="<?php echo site_url('InternshipRegistration/delete/'.$row->regis_id) ?>" data-name="<?php echo $row->registered_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                       
                     </td>
                   </tr>
@@ -269,7 +270,7 @@
                     </td>
                     <td align="center">
                       <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
-                      
+                      <a href="<?php echo site_url('InternshipRegistration/delete/'.$row->regis_id) ?>" data-name="<?php echo $row->registered_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
                   <?php }?>
@@ -318,7 +319,7 @@
                     </td>
                     <td align="center">
                       <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
-                      
+                      <a href="<?php echo site_url('InternshipRegistration/delete/'.$row->regis_id) ?>" data-name="<?php echo $row->registered_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
                   <?php }?>
@@ -367,7 +368,7 @@
                     </td>
                     <td align="center">
                       <?php echo ($row->already_read != true)?'<a class="btn btn-success btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>':'<a class="btn btn-default btn-sm badge mt-1" href="'.site_url('InternshipRegistration/applicant/'.$row->regis_id).'"><i class="fa fa-eye"></i></a>'; ?>
-                      
+                      <a href="<?php echo site_url('InternshipRegistration/delete/'.$row->regis_id) ?>" data-name="<?php echo $row->registered_name; ?>" class="btn btn-danger btn-sm badge mt-1 delete-data"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
                   <?php }?>
@@ -507,7 +508,27 @@ $(function () {
     $("#actived").hide()
   <?php endif ?>
 
-  $('#posting').attr('action', '<?php echo site_url('InternshipRegistration/post_action')?>');
+  $('#posting').attr('action', '<?php echo site_url('InternshipRegistration/post_action')?>')
+
+  $('.delete-data').on('click', function(e) {
+      e.preventDefault();
+      const href = $(this).attr('href');
+      const name = $(this).attr('data-name');
+      Swal.fire({
+        title: 'Yakin ingin menghapus data \npendaftaran a/n '+name+'?',
+        text: "data pendaftaran pada hari "+name+" akan dihapus!",
+        type: 'warning',
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!'
+      }).then((result) => {
+        if (result.value) {
+          document.location.href = href;
+        }
+      })
+    })
 })
 
 function edit_slot(id)

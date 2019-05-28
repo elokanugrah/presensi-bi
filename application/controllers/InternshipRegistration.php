@@ -110,6 +110,15 @@ class InternshipRegistration extends CI_Controller
         $this->load->view('admin/applicant_detil', $data);
     }
 
+    function delete($id)
+    {
+        $applicant=$this->Regis_model->getdata_by_id($id);
+        $this->Regis_model->_deleteImage($applicant->resume);
+        $this->Regis_model->delete_data($id);
+        $this->session->set_flashdata('delete_success', 'Data registrasi a/n <u>'.$applicant->registered_name.'</u> berhasil dihapus!');
+        redirect(site_url('InternshipRegistration'));
+    }
+
     public function pdf_delete($id)
     {
         $applicant=$this->Regis_model->getdata_by_id($id);

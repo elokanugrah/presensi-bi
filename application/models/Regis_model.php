@@ -21,6 +21,22 @@
 			return $this->db->get($this->nama_table)->result();
 		}
 
+		function get_data_origin($edulvl_id)
+		{
+			$this->db->select("COUNT(regis.regis_id) AS total, regis.origin");
+			$this->db->join('edulvl', 'edulvl.edulvl_id=regis.edulvl_id');
+			$this->db->where('regis.edulvl_id',$edulvl_id);
+			$this->db->group_by('regis.origin');
+			return $this->db->get($this->nama_table)->result();
+		}
+
+		function get_voc()
+		{
+			$this->db->select("COUNT(regis_id) AS total, vocational");
+			$this->db->group_by('vocational');
+			return $this->db->get($this->nama_table)->result();
+		}
+
 		function get_unread()
 		{
 			$this->db->where('already_read',0);
@@ -66,7 +82,7 @@
 		{
 		    if ($pdf != false) {
 			    $filename = explode(".", $pdf)[0];
-				return array_map('unlink', glob(FCPATH."./upload/$filename.*"));
+				return array_map('unlink', glob(FCPATH."./upload/pdf/$filename.*"));
 		    }
 		}
 	}

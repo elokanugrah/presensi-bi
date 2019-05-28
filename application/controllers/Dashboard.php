@@ -19,6 +19,7 @@ class Dashboard extends CI_Controller
         $this->load->model('Workinghours_model');
         $this->load->model('Regis_model');
         $this->load->model('Regisauto_model');
+        $this->load->model('EduLvl_model');
     }
 
     public function index()
@@ -27,6 +28,8 @@ class Dashboard extends CI_Controller
         $end=date("d-m-Y");
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $attendance=$this->Attendance_model->get_date(date("Y-m-d", strtotime($start)),date("Y-m-d", strtotime($end)));
+        $regis=$this->EduLvl_model->get_count();
+        $voc=$this->Regis_model->get_voc();
         $activestudent=$this->Student_model->get_data_activeonly();
         $year_student=$this->Student_model->data_yearandcount();
         $active_level=$this->Student_model->get_data_activelevel();
@@ -39,8 +42,11 @@ class Dashboard extends CI_Controller
         {
             $data=array(
                 'data_attendance'  => $attendance,
+                'data_regis'  => $regis,
+                'data_vocational'  => $voc,
                 'year_student'  => $year_student,
                 'date'             => $date,
+                'date1'             => $date,
                 'active_student'    => count($activestudent),
                 'mentor'        => count($mentor),
                 'working_hours' => $working,
@@ -61,6 +67,8 @@ class Dashboard extends CI_Controller
         $date = date("d-M-Y", strtotime($start)).' - '.date("d-M-Y", strtotime($end));
         $data=array(
             'data_attendance'  => $attendance,
+            'data_regis'  => $regis,
+            'data_vocational'  => $voc,
             'year_student'  => $year_student,
             'date'             => $date,
             'active_student'    => count($activestudent),

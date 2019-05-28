@@ -31,6 +31,21 @@
 			return $this->db->get($this->nama_table)->row();
 		}
 
+		function get_count()
+		{
+			$this->db->select("edulvl_id, edulvl_name, COUNT(edulvl_id) AS total");
+			$this->db->group_by('edulvl_name');
+			return $this->db->get($this->nama_table)->result();
+		}
+
+		function get_edulvl($edulvl_id)
+		{
+			$this->db->select("edulvl.edulvl_id, edulvl.edulvl_name AS name, COUNT(edulvl.edulvl_id) AS total");
+			$this->db->join('regis', 'edulvl.edulvl_id=regis.edulvl_id');
+			$this->db->where('edulvl.edulvl_id',$edulvl_id);
+			return $this->db->get($this->nama_table)->row();
+		}
+
 		function data_adding($data)
 		{
 			return $this->db->insert($this->nama_table,$data);

@@ -89,7 +89,7 @@
     </div>
     <!-- /.row -->
     <div class="callout callout-info">
-      Data terakhir <?php
+      Data presensi terakhir <?php
       $hari = array ( 
                 1 => 'Senin',
                 'Selasa',
@@ -420,6 +420,7 @@
         <!-- nav-tabs-custom -->
       </div>
       <!-- /.col -->
+      <form role="form" action="" method="get">
       <div class="col-md-7">
         <!-- MAP & BOX PANE -->
         <div class="box box-warning">
@@ -434,7 +435,6 @@
           </div>
           <div class="box-body no-padding">
             <!-- Date -->
-            <form role="form" action="" method="get">
             <div class="form-group has-feedback">
               <div class="col-md-10">
                 <label>Tanggal</label>
@@ -456,7 +456,6 @@
               <!-- /.input group -->
             </div>
             <!-- /.form group -->
-            </form>
           </div>
           <!-- /.box-header -->
           <div class="box-body no-padding">
@@ -466,7 +465,7 @@
                   <div id="container_recap" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                 </div>
                 <script type="text/javascript">
-                var days = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+                // var days = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                 Highcharts.chart('container_recap', {
                 title: {
                     text: 'Kehadiran dan Keterlambatan'
@@ -602,6 +601,149 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <!-- MAP & BOX PANE -->
+        <div class="box box-success">
+          <div class="box-header with-border">
+            <h3 class="box-title">Grafik Asal Pendaftar</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+          <div class="box-body no-padding">
+            <!-- Date -->
+            <div class="form-group has-feedback">
+              <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body no-padding">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <div class="pad">
+                  <div id="container_regis" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <script type="text/javascript">
+                  Highcharts.chart('container_regis', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Pendaftar Magang'
+                    },
+                    subtitle: {
+                        text: 'Klik kolom untuk melihat tiap tingkat pendidikan'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Pendaftar'
+                        },
+                        allowDecimals: false
+
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                      pie: {
+                          dataLabels: {
+                              enabled: true,
+                              distance: -50,
+                              style: {
+                                  fontWeight: 'bold',
+                                  color: 'white'
+                              }
+                          },
+                          startAngle: -90,
+                          endAngle: 90,
+                          center: ['50%', '75%']
+                      },
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                            }
+                        },
+                    },
+
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> pendaftar<br/>'
+                    },
+
+                    "series": [
+                        {
+                            "name": "Tingkat",
+                            "colorByPoint": true,
+                            "data": [
+                            <?php foreach ($data_regis as $key => $row) {
+                            $origins=$this->EduLvl_model->get_edulvl($row->edulvl_id);
+                              echo ' {
+                            "name": "'.$origins->name.'",
+                            "y":'.$origins->total.',
+                            "drilldown": "'.$origins->edulvl_id.'"
+                            },'; } ?>
+                            ]
+                        }, {
+                          type: 'pie',
+                          name: 'Jurusan',
+                          innerSize: '80%',
+                          data: [<?php foreach ($data_vocational as $key => $row) {
+                              echo ' {
+                            "name": "'.$row->vocational.'",
+                            "y":'.$row->total.'
+                            },'; } ?>
+                            ],
+                          center: [50, -30],
+                          size: 100,
+                          showInLegend: false,
+                          dataLabels: {
+                              enabled: false
+                          }
+                      }
+                    ],
+                    "drilldown": {
+                        "series": [
+                            <?php foreach ($data_regis as $key => $row) {
+                              $string = '{
+                                  "type": "column",
+                                  "name":"'.$row->edulvl_name.'",
+                                  "id":"';
+                                  $string .= $row->edulvl_id;
+                                  $string .= '",
+                                  "data":[';
+                                  $originn=$this->Regis_model->get_data_origin($row->edulvl_id);
+                                          foreach ($originn as $key => $rows) { 
+                                            $string .= "['".$rows->origin."',".$rows->total."],";
+                                          }
+                                  $string .=']
+                              },'; 
+                              echo $string;
+                              }?>
+                        ]
+                    }
+                });
+                </script>
+              </div>
+              <!-- /.col -->
+            </div>
+            </form>
+            <!-- /.row -->
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
   </section>
   <!-- /.content -->
 </div>

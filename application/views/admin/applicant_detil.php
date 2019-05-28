@@ -124,22 +124,22 @@
               <h3 class="box-title">Dokumen Pendaftar</h3>
               <div class="pull-right">
                 <i class="fa fa-file-pdf-o"></i>
-                <a href="<?php echo 'http://localhost/presensi-bi/upload/'.$applicant->resume?>">Download PDF</a>
+                <a href="<?php echo 'http://localhost/presensi-bi/upload/pdf/'.$applicant->resume?>">Download PDF</a>
               </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <?php echo ($applicant->resume != false)?'<iframe src="https://docs.google.com/viewer?url=https://calonwisudawan.com/uploads/PresensiSiswaMagang.pdf&embedded=true" frameborder="0" height="500px" width="100%"></iframe>':'<div style="height=500px; width=100%;"> Nothing to show </div>'?>
+              <?php echo ($applicant->resume != false)?'<iframe src="https://docs.google.com/viewer?url=https://calonwisudawan.com/uploads/PresensiSiswaMagang.pdf&embedded=true" frameborder="0" height="500px" width="100%"></iframe>':'<div class="col pull-center" style="height:150px; text-align: center; vertical-align: middle; line-height: 150px;"> Dokumen tidak ditemukan </div>'?>
             </div>
             <!-- /.box-body -->
-            <?php if ($applicant->approve != true):?>
             <div class="box-footer">
               <div class="pull-left">
-                <a href="<?php echo site_url('InternshipRegistration/pdf_delete/'.$applicant->regis_id) ?>" class="delete-pdf">Hapus PDF</a>
+                <?php echo ($applicant->resume != false)? '<a href="'.site_url('InternshipRegistration/pdf_delete/'.$applicant->regis_id).'" class="delete-pdf">Hapus PDF</a>':''?>
               </div>
+            <?php if ($applicant->approve != true):?>
               <a href="javascript:void(0)" onclick="send_mail()" class="btn btn-info pull-right">Terima Pendaftar</a>
-            </div>
             <?php endif ?>
+            </div>
           </div>
           <!-- /.box -->
         </div>
