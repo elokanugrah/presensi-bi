@@ -20,7 +20,7 @@ class Attendance extends CI_Controller
 	public function index()
 	{
 		
-		$this->load->view('attendance');
+		// $this->load->view('attendance');
 	}
 
     /*function check_att($date)
